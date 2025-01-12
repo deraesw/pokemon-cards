@@ -15,8 +15,8 @@ expect fun createHttpEngine(): HttpClientEngine
 class NetworkClient(
     private val httpClientEngine: HttpClientEngine
 ) {
-    fun newInstance(): HttpClient {
-        return HttpClient(httpClientEngine) {
+    val client: HttpClient by lazy {
+        HttpClient(httpClientEngine) {
             install(ContentNegotiation) {
                 json(
                     Json {

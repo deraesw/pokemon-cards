@@ -2,10 +2,13 @@ package com.deraesw.pokemoncards
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
+import com.deraesw.pokemoncards.di.appModules
+import org.koin.core.context.startKoin
 
 fun main() = application {
+    startKoin {
+        modules(appModules)
+    }
     Window(
         onCloseRequest = ::exitApplication,
         title = "PokemonCards",

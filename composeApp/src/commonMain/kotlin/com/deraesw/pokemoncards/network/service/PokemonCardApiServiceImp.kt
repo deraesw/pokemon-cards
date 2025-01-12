@@ -1,6 +1,7 @@
 package com.deraesw.pokemoncards.network.service
 
 import com.deraesw.pokemoncards.network.Constant
+import com.deraesw.pokemoncards.network.NetworkClient
 import com.deraesw.pokemoncards.network.model.CardSet
 import com.deraesw.pokemoncards.network.model.ListDataModel
 import io.ktor.client.HttpClient
@@ -9,14 +10,15 @@ import io.ktor.client.request.get
 import io.ktor.http.headers
 
 class PokemonCardApiServiceImp(
-    private val client: HttpClient
+    private val networkClient: NetworkClient
 ) : PokemonCardApiService {
     private val baseUrl = "https://api.pokemontcg.io/v2"
 
     override suspend fun getAllSets(): List<CardSet> {
         return runCatching {
-            val response = client.getWithKey("$baseUrl/sets")
+            val response = networkClient.client.getWithKey("$baseUrl/sets")
             val responseData = response.body<ListDataModel<CardSet>>()
+            networkClient.client.close()
             responseData.data
         }.onFailure {
             println("Error while processing the request: ${it.message}")

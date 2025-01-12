@@ -7,16 +7,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.deraesw.pokemoncards.network.NetworkClient
-import com.deraesw.pokemoncards.network.createHttpEngine
-import com.deraesw.pokemoncards.network.service.PokemonCardApiServiceImp
+import com.deraesw.pokemoncards.network.service.PokemonCardApiService
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.compose_multiplatform
 
@@ -41,7 +45,7 @@ fun App() {
 
             Button(onClick = {
                 corountine.launch {
-                    val response = PokemonCardApiServiceImp(NetworkClient(createHttpEngine()).newInstance()).getAllSets()
+                    val response = MyComponent().pokemonCardApiService.getAllSets()
                     println(response)
                     content = response.first().toString()
                 }
@@ -51,4 +55,8 @@ fun App() {
             Text(content)
         }
     }
+}
+
+class MyComponent : KoinComponent {
+    val pokemonCardApiService: PokemonCardApiService by inject()
 }
