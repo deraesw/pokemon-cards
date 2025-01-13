@@ -30,6 +30,7 @@ fun App() {
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
         var content by remember { mutableStateOf("") }
+        var content1 by remember { mutableStateOf("") }
         val corountine = rememberCoroutineScope()
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Button(onClick = { showContent = !showContent }) {
@@ -50,9 +51,20 @@ fun App() {
                     content = response.first().toString()
                 }
             }) {
-                Text("Click me!")
+                Text("Click me! sets")
             }
             Text(content)
+
+            Button(onClick = {
+                corountine.launch {
+                    val response = MyComponent().pokemonCardApiService.getSetCards("base1")
+                    println(response)
+                    content1 = response.first().toString()
+                }
+            }) {
+                Text("Click me! card base 1")
+            }
+            Text(content1)
         }
     }
 }

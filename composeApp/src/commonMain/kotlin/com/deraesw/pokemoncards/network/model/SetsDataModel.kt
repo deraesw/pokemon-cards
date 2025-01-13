@@ -9,20 +9,20 @@ data class CardSet(
     val series: String,
     val printedTotal: Int,
     val total: Int,
-    val legalities: Legalities,
+    val legalities: SetLegalities,
     //val ptcgoCode: String, // TODO to handle might be optional
     val releaseDate: String,
     val updatedAt: String,
-    val images: Images
+    val images: SetImages
 )
 
 @Serializable
-data class Legalities(
+data class SetLegalities(
     val unlimited: String
 )
 
 @Serializable
-data class Images(
+data class SetImages(
     val symbol: String,
     val logo: String
 )
