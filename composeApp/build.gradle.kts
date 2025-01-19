@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.sqlDelight)
 }
 
 kotlin {
@@ -18,7 +19,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -29,17 +30,18 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     jvm("desktop")
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
 
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.sql.delight.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -64,6 +66,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
 
             implementation(libs.ktor.client.cio)
+            implementation(libs.sql.delight.sqlite)
         }
     }
 }
@@ -107,6 +110,14 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.deraesw.pokemoncards"
             packageVersion = "1.0.0"
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("PokemonCardDatabase") {
+            packageName = "com.deraesw.pokemoncards.data.database"
         }
     }
 }

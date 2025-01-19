@@ -1,3 +1,3 @@
 package com.deraesw.pokemoncards.di
 
-val appModules = listOf(networkModule)
+val appModules = listOf(networkModule, dataModule)

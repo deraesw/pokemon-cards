@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.network.service.PokemonCardApiService
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
@@ -64,6 +65,16 @@ fun App() {
             }) {
                 Text("Click me! card base 1")
             }
+
+            Button(onClick = {
+                corountine.launch {
+                    val response = MyComponent().cardSetRepository.getAllSets()
+                    println(response)
+                    content1 = response.firstOrNull()?.toString() ?: "no data"
+                }
+            }) {
+                Text("Click me! databse")
+            }
             Text(content1)
         }
     }
@@ -71,4 +82,5 @@ fun App() {
 
 class MyComponent : KoinComponent {
     val pokemonCardApiService: PokemonCardApiService by inject()
+    val cardSetRepository: CardSetRepository by inject()
 }

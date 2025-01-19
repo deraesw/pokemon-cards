@@ -1,0 +1,12 @@
+CREATE TABLE card_set(
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT,
+    total INTEGER
+);
+
+INSERT INTO card_set(id, name, total) VALUES ("1", "test1", 0);
+INSERT INTO card_set(id, name, total) VALUES ("2", "test2", 1);
+INSERT INTO card_set(id, name, total) VALUES ("3", "test3", 2);
+
+selectAllSet:
+SELECT * FROM card_set;
