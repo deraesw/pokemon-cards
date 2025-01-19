@@ -10,3 +10,6 @@ INSERT INTO card_set(id, name, total) VALUES ("3", "test3", 2);
 
 selectAllSet:
 SELECT * FROM card_set;
+
+insertCard:
+INSERT INTO card_set VALUES :data;
