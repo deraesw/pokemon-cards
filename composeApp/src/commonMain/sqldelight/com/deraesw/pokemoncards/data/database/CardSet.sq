@@ -4,9 +4,14 @@ CREATE TABLE card_set(
     total INTEGER
 );
 
-INSERT INTO card_set(id, name, total) VALUES ("1", "test1", 0);
-INSERT INTO card_set(id, name, total) VALUES ("2", "test2", 1);
-INSERT INTO card_set(id, name, total) VALUES ("3", "test3", 2);
+-- Tempory insert
+INSERT INTO card_set (id, name, total) VALUES
+('base2', 'Jungle', 64),
+('ecard2', 'Aquapolis', 182),
+('base6', 'Legendary Collection', 110),
+('ex1', 'Ruby & Sapphire', 109),
+('ex2', 'Sandstorm', 100),
+('ex4', 'Team Magma vs Team Aqua', 97);
 
 selectAllSet:
 SELECT * FROM card_set;

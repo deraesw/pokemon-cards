@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.model.CardSet
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,13 +28,6 @@ class CardSetViewModel(
                         it.copy(cardSetList = list)
                     }
                 }
-        }
-
-        viewModelScope.launch {
-            repeat(5) {
-                delay(5000)
-                cardSetRepository.saveCardSetList(listOf(CardSet("repease: $it", "test - $it", 0)))
-            }
         }
     }
 }
