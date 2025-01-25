@@ -1,17 +1,17 @@
-CREATE TABLE card_set(
+CREATE TABLE IF NOT EXISTS card_set(
     id TEXT PRIMARY KEY NOT NULL,
     name TEXT,
     total INTEGER
 );
 
 -- Tempory insert
-INSERT INTO card_set (id, name, total) VALUES
-('base2', 'Jungle', 64),
-('ecard2', 'Aquapolis', 182),
-('base6', 'Legendary Collection', 110),
-('ex1', 'Ruby & Sapphire', 109),
-('ex2', 'Sandstorm', 100),
-('ex4', 'Team Magma vs Team Aqua', 97);
+-- INSERT INTO card_set (id, name, total) VALUES
+-- ('base2', 'Jungle', 64),
+-- ('ecard2', 'Aquapolis', 182),
+-- ('base6', 'Legendary Collection', 110),
+-- ('ex1', 'Ruby & Sapphire', 109),
+-- ('ex2', 'Sandstorm', 100),
+-- ('ex4', 'Team Magma vs Team Aqua', 97);
 
 selectAllSet:
 SELECT * FROM card_set;

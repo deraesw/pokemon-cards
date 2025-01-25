@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS app_preferences(
+     pref_key TEXT PRIMARY KEY,
+     pref_value TEXT
+);
+
+selectLastSyncTime:
+SELECT pref_value FROM app_preferences WHERE pref_key = 'last_sync_time';
+
+insertLastSyncTime:
+INSERT INTO app_preferences (pref_key, pref_value) VALUES ('last_sync_time', :time);

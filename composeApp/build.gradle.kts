@@ -40,7 +40,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
 
-//            implementation(libs.koin.android)
+            implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.sql.delight.android)
         }
@@ -60,6 +60,8 @@ kotlin {
             implementation(libs.koin.test)
             implementation(libs.koin.compose)
 //            implementation(libs.koin.compose.viewmodel.navigation)
+
+            implementation(libs.kotlinx.datetime)
 
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
