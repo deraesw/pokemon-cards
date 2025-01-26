@@ -10,8 +10,15 @@ fun Flow<List<Card_set>>.toCardSetList(): Flow<List<CardSet>> {
         list.map {
             CardSet(
                 id = it.id,
-                name = it.name ?: "",
-                total = it.total?.toInt() ?: 0
+                name = it.name,
+                total = it.total.toInt(),
+                series = it.series ?: "",
+                printedTotal = it.printedTotal.toInt(),
+                releaseDate = it.releaseDate,
+                updatedAt = it.updatedAt,
+                legalities = it.legalities,
+                imageSymbol = it.imageSymbol,
+                imageLogo = it.imageLogo
             )
         }
     }

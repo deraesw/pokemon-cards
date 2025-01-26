@@ -8,7 +8,14 @@ fun List<CardSet>.toCardSetEntity(): List<Card_set> {
         Card_set(
             id = it.id,
             name = it.name,
-            total = it.total.toLong()
+            total = it.total.toLong(),
+            series = it.series,
+            printedTotal = it.printedTotal.toLong(),
+            releaseDate = it.releaseDate,
+            updatedAt = it.updatedAt,
+            legalities = it.legalities,
+            imageSymbol = it.imageSymbol,
+            imageLogo = it.imageLogo
         )
     }
 }

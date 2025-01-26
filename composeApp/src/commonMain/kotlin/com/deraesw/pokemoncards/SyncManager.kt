@@ -21,7 +21,7 @@ object SyncManager : KoinComponent {
 
         val lastSync = appPreferencesRepository.getLastSyncTime()
         if (lastSync != null) {
-            println("Already perform an initial sync.")
+            println("Already perform an initial sync. $lastSync")
             return
         }
 
@@ -32,7 +32,14 @@ object SyncManager : KoinComponent {
             CardSet(
                 id = item.id,
                 name = item.name,
-                total = item.total
+                total = item.total,
+                series = item.series,
+                printedTotal = item.printedTotal,
+                releaseDate = item.releaseDate,
+                updatedAt = item.updatedAt,
+                legalities = item.legalities.unlimited,
+                imageSymbol = item.images.symbol,
+                imageLogo = item.images.logo
             )
         }
         println("Saving all sets...")

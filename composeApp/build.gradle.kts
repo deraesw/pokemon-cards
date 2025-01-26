@@ -68,6 +68,8 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
 
+            implementation(libs.landscapist.coil3)
+
             implementation(libs.sql.delight.coroutines.extensions)
         }
         desktopMain.dependencies {

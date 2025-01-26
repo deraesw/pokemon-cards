@@ -1,6 +1,6 @@
 [versions]
 agp = "8.5.2"
-android-compileSdk = "34"
+android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "34"
 androidx-activityCompose = "1.9.3"
@@ -20,6 +20,7 @@ kotlin-serialization = "2.0.0"
 kotlinx-coroutines = "1.9.0"
 kotlinx-datetime = "0.6.1"
 ktor = "3.0.3"
+landscapist-coil3 = "2.4.6"
 sqldelight = "2.0.2"
 
 [libraries]
@@ -58,6 +59,8 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+landscapist-coil3 = { module = "com.github.skydoves:landscapist-coil3", version.ref = "landscapist-coil3" }
 
 sql-delight-android = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
 sql-delight-native = { group = "app.cash.sqldelight", name = "native-driver", version.ref = "sqldelight" }

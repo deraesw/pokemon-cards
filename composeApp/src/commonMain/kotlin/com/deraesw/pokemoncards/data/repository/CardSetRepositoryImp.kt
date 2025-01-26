@@ -15,7 +15,18 @@ class CardSetRepositoryImp(
 ) : CardSetRepository {
     override fun getAllSets(): List<CardSet> {
         return databaseFactory.database.cardSetQueries.selectAllSet().executeAsList().map {
-            CardSet(it.id, it.name ?: "", it.total?.toInt() ?: 0)
+            CardSet(
+                id = it.id,
+                name = it.name,
+                series = it.series ?: "",
+                printedTotal = it.printedTotal?.toInt() ?: 0,
+                total = it.total?.toInt() ?: 0,
+                releaseDate = it.releaseDate ?: "",
+                updatedAt = it.updatedAt ?: "",
+                legalities = it.legalities ?: "",
+                imageSymbol = it.imageSymbol ?: "",
+                imageLogo = it.imageLogo ?: ""
+            )
         }
     }
 
