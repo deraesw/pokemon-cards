@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Pokemon Cards</string>
+    <string name="select_card_set">Select Card set.</string>
+</resources>

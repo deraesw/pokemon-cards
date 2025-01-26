@@ -14,5 +14,8 @@ CREATE TABLE IF NOT EXISTS card_set(
 selectAllSet:
 SELECT * FROM card_set ORDER BY releaseDate ASC;
 
+selectSetById:
+SELECT * FROM card_set WHERE id = :id;
+
 insertCard:
 INSERT INTO card_set VALUES :data;

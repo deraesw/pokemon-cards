@@ -1,6 +1,7 @@
 package com.deraesw.pokemoncards.presentation.cardset
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -34,6 +35,7 @@ import org.koin.compose.koinInject
 @Composable
 fun CardSetContent(
     modifier: Modifier = Modifier,
+    onCardSetClick: (String) -> Unit = {},
     viewModel: CardSetViewModel = koinInject()
 ) {
     val state = viewModel.uiState.collectAsState().value
@@ -45,11 +47,11 @@ fun CardSetContent(
             items = state.cardSetList,
             key = { cardSet -> cardSet.id }
         ) { cardSet ->
-
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clickable { onCardSetClick(cardSet.id) }
                     .padding(16.dp)
             ) {
                 Box(

@@ -1,23 +1,18 @@
 package com.deraesw.pokemoncards
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.VerticalDivider
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPlacement
+import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.deraesw.pokemoncards.di.appModules
-import com.deraesw.pokemoncards.presentation.cardset.CardSetContent
-import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
-import kotlinx.coroutines.launch
+import com.deraesw.pokemoncards.ui.MainScreen
+import org.jetbrains.compose.resources.stringResource
 import org.koin.core.context.startKoin
+import pokemoncards.composeapp.generated.resources.Res
+import pokemoncards.composeapp.generated.resources.app_name
 
 fun main() = application {
     startKoin {
@@ -25,33 +20,24 @@ fun main() = application {
     }
     Window(
         onCloseRequest = ::exitApplication,
-        title = "PokemonCards",
+        title = stringResource(Res.string.app_name),
         state = rememberWindowState(
             width = 1024.dp,
-            height = 768.dp
+            height = 768.dp,
+            placement = WindowPlacement.Floating,
+            position = WindowPosition.Aligned(alignment = Alignment.Center)
         )
     ) {
-        PokemonCardTheme {
-            val corountine = rememberCoroutineScope()
-            SideEffect {
-                println("SideEffect")
-                corountine.launch {
-                    println("launch")
-                    SyncManager.initialSync()
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                CardSetContent(
-                    modifier = Modifier.width(256.dp)
-                )
-                VerticalDivider()
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                )
-            }
-        }
+
+
+//            val corountine = rememberCoroutineScope()
+//            SideEffect {
+//                println("SideEffect")
+//                corountine.launch {
+//                    println("launch")
+//                    SyncManager.initialSync()
+//                }
+//            }
+        MainScreen()
     }
 }
