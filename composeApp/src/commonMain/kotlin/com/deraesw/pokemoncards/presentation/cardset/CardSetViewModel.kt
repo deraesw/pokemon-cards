@@ -30,8 +30,15 @@ class CardSetViewModel(
                 }
         }
     }
+
+    fun setSelectedCardSet(id: String) {
+        _uiState.update {
+            it.copy(selectedCardSetId = id)
+        }
+    }
 }
 
 data class CardSetState(
-    val cardSetList: List<CardSet> = listOf()
+    val cardSetList: List<CardSet> = listOf(),
+    val selectedCardSetId: String? = null
 )

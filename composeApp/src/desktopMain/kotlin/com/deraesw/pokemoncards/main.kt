@@ -8,6 +8,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.deraesw.pokemoncards.di.appModules
+import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import com.deraesw.pokemoncards.ui.MainScreen
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.context.startKoin
@@ -38,6 +39,8 @@ fun main() = application {
 //                    SyncManager.initialSync()
 //                }
 //            }
-        MainScreen()
+        PokemonCardTheme {
+            MainScreen()
+        }
     }
 }

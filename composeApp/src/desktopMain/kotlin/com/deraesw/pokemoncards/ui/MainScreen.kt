@@ -1,26 +1,30 @@
 package com.deraesw.pokemoncards.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.model.CardSet
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailContent
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailState
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
-import com.deraesw.pokemoncards.presentation.cardset.CardSetContent
-import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
+import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pokemoncards.composeapp.generated.resources.Res
@@ -28,7 +32,11 @@ import pokemoncards.composeapp.generated.resources.select_card_set
 
 @Composable
 fun MainScreen() {
-    PokemonCardTheme {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(ColorPalette.Gray200)
+    ) {
         TwoPanelLayout()
     }
 }
@@ -37,25 +45,26 @@ fun MainScreen() {
 fun TwoPanelLayout(
     setDetailViewModel: CardSetDetailViewModel = koinInject()
 ) {
-
     val uiState = setDetailViewModel.uiState.collectAsState()
-
-
 
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
-        CardSetContent(
-            modifier = Modifier.width(256.dp),
-            onCardSetClick = {
-                println("CardSetClick $it")
-                setDetailViewModel.getCardSet(it)
-            }
+
+        CardSetSection(
+            setDetailViewModel = setDetailViewModel,
+            modifier = Modifier
+                .padding(16.dp)
+                .width(320.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White)
         )
-        VerticalDivider()
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(16.dp)
+                .clip(RoundedCornerShape(16.dp))
         ) {
             AnimatedContent(
                 targetState = uiState.value is CardSetDetailState.Success,
@@ -65,7 +74,8 @@ fun TwoPanelLayout(
                     is CardSetDetailState.Success -> {
                         DetailSection(
                             cardSet = state.cardSet,
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier
+                                .fillMaxSize()
                         )
                     }
 
@@ -91,9 +101,28 @@ fun DetailSection(
     ) {
         CardSetDetailContent(
             set = cardSet,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(16.dp)
         )
         HorizontalDivider(
             thickness = 1.dp,
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp)
+                .background(ColorPalette.Gray200)
+        )
+        HorizontalDivider(
+            thickness = 1.dp,
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .background(Color.White)
         )
     }
 }
