@@ -73,56 +73,65 @@ fun CardSetContent(
     cardSetSelected: String? = null,
     scrollableContent: @Composable (BoxScope.() -> Unit) = {}
 ) {
-    Box {
-        scrollableContent()
-        LazyColumn(
-            state = listState,
-            modifier = modifier
+    if (cardSetList.isEmpty()) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = modifier.fillMaxSize()
         ) {
-            items(
-                items = cardSetList,
-                key = { cardSet -> cardSet.id }
-            ) { cardSet ->
-                Row(
-                    modifier = modifier
-                        .height(IntrinsicSize.Min)
-                ) {
-                    AnimatedVisibility(
-                        visible = cardSetSelected == cardSet.id
-                    ) {
-                        SelectorIndicator()
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onCardSetClick(cardSet.id)
-                            }
-                            .drawBehind {
-                                if (cardSetSelected == cardSet.id) {
-                                    drawRect(
-                                        color = ColorPalette.Gray100,
-                                    )
-                                }
-                            }
-                            .padding(16.dp)
-
-                    ) {
-                        SymbolImage(
-                            imageSymbol = cardSet.imageSymbol
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        RowDetails(
-                            cardSet = cardSet,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                }
-                PcsHorDivider()
-            }
+            Text("No card sets found")
         }
+    } else {
+        Box {
+            scrollableContent()
+            LazyColumn(
+                state = listState,
+                modifier = modifier
+            ) {
+                items(
+                    items = cardSetList,
+                    key = { cardSet -> cardSet.id }
+                ) { cardSet ->
+                    Row(
+                        modifier = modifier
+                            .height(IntrinsicSize.Min)
+                    ) {
+                        AnimatedVisibility(
+                            visible = cardSetSelected == cardSet.id
+                        ) {
+                            SelectorIndicator()
+                        }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    onCardSetClick(cardSet.id)
+                                }
+                                .drawBehind {
+                                    if (cardSetSelected == cardSet.id) {
+                                        drawRect(
+                                            color = ColorPalette.Gray100,
+                                        )
+                                    }
+                                }
+                                .padding(16.dp)
 
+                        ) {
+                            SymbolImage(
+                                imageSymbol = cardSet.imageSymbol
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            RowDetails(
+                                cardSet = cardSet,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
+                    PcsHorDivider()
+                }
+            }
+
+        }
     }
 }
 

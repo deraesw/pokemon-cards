@@ -1,5 +1,7 @@
 package com.deraesw.pokemoncards
 
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -10,6 +12,7 @@ import androidx.compose.ui.window.rememberWindowState
 import com.deraesw.pokemoncards.di.appModules
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import com.deraesw.pokemoncards.ui.MainScreen
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.context.startKoin
 import pokemoncards.composeapp.generated.resources.Res
@@ -29,16 +32,14 @@ fun main() = application {
             position = WindowPosition.Aligned(alignment = Alignment.Center)
         )
     ) {
-
-
-//            val corountine = rememberCoroutineScope()
-//            SideEffect {
-//                println("SideEffect")
-//                corountine.launch {
-//                    println("launch")
-//                    SyncManager.initialSync()
-//                }
-//            }
+        val corountine = rememberCoroutineScope()
+        SideEffect {
+            println("SideEffect")
+            corountine.launch {
+                println("launch")
+                SyncManager.initialSync()
+            }
+        }
         PokemonCardTheme {
             MainScreen()
         }

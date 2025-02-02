@@ -29,9 +29,9 @@ class CardSetViewModel(
     }
 
     fun fetchAllCardSets(
-        sorter: SortData
+        sorter: SortData,
+        query: String = ""
     ) {
-        println("This: $this")
         job?.cancel()
         job = viewModelScope.launch {
             cardSetRepository
@@ -40,7 +40,12 @@ class CardSetViewModel(
                 )
                 .collect { list ->
                     _uiState.update {
-                        it.copy(cardSetList = list)
+                        it.copy(
+                            cardSetList = filterCardSets(
+                                query = query,
+                                list = list
+                            )
+                        )
                     }
                 }
         }
@@ -53,16 +58,42 @@ class CardSetViewModel(
     }
 
     fun setSortData(sortData: SortData) {
-        println("This: $this")
         _uiState.update {
             it.copy(sortData = sortData)
         }
-        fetchAllCardSets(sortData)
+        fetchAllCardSets(
+            sorter = sortData,
+            query = _uiState.value.searchQuery
+        )
+    }
+
+    fun updateSearchQuery(query: String) {
+        _uiState.update {
+            it.copy(searchQuery = query)
+        }
+        fetchAllCardSets(
+            sorter = _uiState.value.sortData,
+            query = query
+        )
+    }
+
+    private fun filterCardSets(
+        query: String,
+        list: List<CardSet>
+    ): List<CardSet> {
+        return if (query.isEmpty()) {
+            list
+        } else {
+            list.filter {
+                it.name.contains(query, ignoreCase = true)
+            }
+        }
     }
 }
 
 data class CardSetState(
     val cardSetList: List<CardSet> = listOf(),
     val selectedCardSetId: String? = null,
-    val sortData: SortData = SortData.NAME
+    val sortData: SortData = SortData.NAME,
+    val searchQuery: String = ""
 )

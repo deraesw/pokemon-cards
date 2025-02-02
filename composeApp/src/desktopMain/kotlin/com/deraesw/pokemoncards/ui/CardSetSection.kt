@@ -37,11 +37,13 @@ import com.deraesw.pokemoncards.model.SortData
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
 import com.deraesw.pokemoncards.presentation.cardset.CardSetContent
 import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
+import com.deraesw.pokemoncards.presentation.compose.PcsSearchComponent
 import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import org.jetbrains.compose.resources.stringResource
 import pokemoncards.composeapp.generated.resources.Res
+import pokemoncards.composeapp.generated.resources.search_card_set
 import pokemoncards.composeapp.generated.resources.set_title
 import pokemoncards.composeapp.generated.resources.sort_by_card_count
 import pokemoncards.composeapp.generated.resources.sort_by_name
@@ -63,6 +65,9 @@ fun CardSetSection(
             sortData = uiState.sortData,
             onSelected = {
                 cardSetViewModel.setSortData(it)
+            },
+            onSearchQueryChanged = {
+                cardSetViewModel.updateSearchQuery(it)
             }
         )
         PcsHorDivider()
@@ -90,19 +95,20 @@ fun CardSetSection(
 @Composable
 private fun CardSetSectionHeader(
     sortData: SortData,
-    onSelected: (SortData) -> Unit = {}
+    onSelected: (SortData) -> Unit = {},
+    onSearchQueryChanged: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .height(128.dp)
+            .padding(16.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
         ) {
             Text(
                 text = stringResource(Res.string.set_title),
@@ -114,6 +120,16 @@ private fun CardSetSectionHeader(
                 onSelected = onSelected
             )
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        PcsSearchComponent(
+            placeholder = stringResource(Res.string.search_card_set),
+            onQueryChange = onSearchQueryChanged,
+            onClearQuery = {
+                onSearchQueryChanged("")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+        )
     }
 }
 
