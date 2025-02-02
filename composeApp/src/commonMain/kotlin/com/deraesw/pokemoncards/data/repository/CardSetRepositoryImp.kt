@@ -8,6 +8,7 @@ import com.deraesw.pokemoncards.data.mapper.toCardSetEntity
 import com.deraesw.pokemoncards.data.mapper.toCardSetList
 import com.deraesw.pokemoncards.data.mapper.toCardSetListFlow
 import com.deraesw.pokemoncards.model.CardSet
+import com.deraesw.pokemoncards.model.SortData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
@@ -20,16 +21,24 @@ class CardSetRepositoryImp(
         databaseFactory.database.cardSetQueries
     }
 
-    override fun getAllSets(): List<CardSet> {
-        return queries.selectAllSet().executeAsList().toCardSetList()
+    override fun getAllSets(
+        sorter: SortData
+    ): List<CardSet> {
+        return queries.selectAllSet(
+            sorter = sorter.name
+        ).executeAsList().toCardSetList()
     }
 
     override fun getSet(id: String): CardSet? {
         return queries.selectSetById(id).executeAsOneOrNull()?.toCardSet()
     }
 
-    override suspend fun allCardSets(): Flow<List<CardSet>> {
-        return queries.selectAllSet()
+    override suspend fun allCardSets(
+        sorter: SortData
+    ): Flow<List<CardSet>> {
+        return queries.selectAllSet(
+            sorter = sorter.name
+        )
             .asFlow()
             .mapToList(Dispatchers.IO)
             .toCardSetListFlow()

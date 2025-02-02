@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.model.CardSet
+import com.deraesw.pokemoncards.model.SortData
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,12 +20,25 @@ class CardSetViewModel(
     )
     val uiState: StateFlow<CardSetState> = _uiState.asStateFlow()
 
+    private var job: Job? = null
+
     init {
-        viewModelScope.launch {
+        fetchAllCardSets(
+            sorter = _uiState.value.sortData
+        )
+    }
+
+    fun fetchAllCardSets(
+        sorter: SortData
+    ) {
+        println("This: $this")
+        job?.cancel()
+        job = viewModelScope.launch {
             cardSetRepository
-                .allCardSets()
+                .allCardSets(
+                    sorter = sorter
+                )
                 .collect { list ->
-                    println("collect: $list")
                     _uiState.update {
                         it.copy(cardSetList = list)
                     }
@@ -36,9 +51,18 @@ class CardSetViewModel(
             it.copy(selectedCardSetId = id)
         }
     }
+
+    fun setSortData(sortData: SortData) {
+        println("This: $this")
+        _uiState.update {
+            it.copy(sortData = sortData)
+        }
+        fetchAllCardSets(sortData)
+    }
 }
 
 data class CardSetState(
     val cardSetList: List<CardSet> = listOf(),
-    val selectedCardSetId: String? = null
+    val selectedCardSetId: String? = null,
+    val sortData: SortData = SortData.NAME
 )

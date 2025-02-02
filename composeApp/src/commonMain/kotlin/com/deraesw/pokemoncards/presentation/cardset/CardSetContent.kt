@@ -44,17 +44,35 @@ import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
 import org.koin.compose.koinInject
 
+@Composable
+fun CardSetScreen(
+    modifier: Modifier = Modifier,
+    onCardSetClick: (String) -> Unit = {},
+    viewModel: CardSetViewModel = koinInject(),
+) {
+    val uiState = viewModel.uiState.collectAsState().value
+
+    CardSetContent(
+        modifier = modifier,
+        cardSetList = uiState.cardSetList,
+        cardSetSelected = uiState.selectedCardSetId,
+        onCardSetClick = {
+            viewModel.setSelectedCardSet(it)
+            onCardSetClick(it)
+        }
+    )
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CardSetContent(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
     onCardSetClick: (String) -> Unit = {},
-    viewModel: CardSetViewModel = koinInject(),
+    cardSetList: List<CardSet> = listOf(),
+    cardSetSelected: String? = null,
     scrollableContent: @Composable (BoxScope.() -> Unit) = {}
 ) {
-    val uiState = viewModel.uiState.collectAsState().value
-
     Box {
         scrollableContent()
         LazyColumn(
@@ -62,7 +80,7 @@ fun CardSetContent(
             modifier = modifier
         ) {
             items(
-                items = uiState.cardSetList,
+                items = cardSetList,
                 key = { cardSet -> cardSet.id }
             ) { cardSet ->
                 Row(
@@ -70,7 +88,7 @@ fun CardSetContent(
                         .height(IntrinsicSize.Min)
                 ) {
                     AnimatedVisibility(
-                        visible = uiState.selectedCardSetId == cardSet.id
+                        visible = cardSetSelected == cardSet.id
                     ) {
                         SelectorIndicator()
                     }
@@ -79,11 +97,10 @@ fun CardSetContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                viewModel.setSelectedCardSet(cardSet.id)
                                 onCardSetClick(cardSet.id)
                             }
                             .drawBehind {
-                                if (uiState.selectedCardSetId == cardSet.id) {
+                                if (cardSetSelected == cardSet.id) {
                                     drawRect(
                                         color = ColorPalette.Gray100,
                                     )

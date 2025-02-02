@@ -15,4 +15,5 @@ data class CardSet(
     val imageLogo: String? = null
 ) {
     val formatReleaseDate = DateUtil.convertDateToDisplayDate(releaseDate)
+    fun formatUpdatedAt() = DateUtil.convertToDateTimeDisplay(updatedAt)
 }

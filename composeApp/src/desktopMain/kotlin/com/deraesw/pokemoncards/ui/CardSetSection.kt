@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,29 +33,45 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.deraesw.pokemoncards.model.SortData
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
 import com.deraesw.pokemoncards.presentation.cardset.CardSetContent
+import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
 import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import org.jetbrains.compose.resources.stringResource
 import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.set_title
+import pokemoncards.composeapp.generated.resources.sort_by_card_count
+import pokemoncards.composeapp.generated.resources.sort_by_name
+import pokemoncards.composeapp.generated.resources.sort_by_release_date
 
 @Composable
 fun CardSetSection(
+    cardSetViewModel: CardSetViewModel,
     setDetailViewModel: CardSetDetailViewModel,
     modifier: Modifier = Modifier,
 ) {
+    val uiState = cardSetViewModel.uiState.collectAsState().value
+
     Column(
         modifier = modifier
     ) {
         val state = rememberLazyListState()
-        CardSetSectionHeader()
+        CardSetSectionHeader(
+            sortData = uiState.sortData,
+            onSelected = {
+                cardSetViewModel.setSortData(it)
+            }
+        )
         PcsHorDivider()
         CardSetContent(
+            cardSetList = uiState.cardSetList,
+            cardSetSelected = uiState.selectedCardSetId,
             listState = state,
             onCardSetClick = {
+                cardSetViewModel.setSelectedCardSet(it)
                 setDetailViewModel.getCardSet(it)
             },
             scrollableContent = {
@@ -71,7 +88,10 @@ fun CardSetSection(
 }
 
 @Composable
-private fun CardSetSectionHeader() {
+private fun CardSetSectionHeader(
+    sortData: SortData,
+    onSelected: (SortData) -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -89,16 +109,23 @@ private fun CardSetSectionHeader() {
                 style = PokemonCardTheme.typography.titleLarge,
             )
             Spacer(modifier = Modifier.width(8.dp))
-            CardSetSort()
+            CardSetSort(
+                sortData = sortData,
+                onSelected = onSelected
+            )
         }
     }
 }
 
 @Composable
-private fun CardSetSort() {
+private fun CardSetSort(
+    sortData: SortData,
+    onSelected: (SortData) -> Unit = {}
+) {
     var expanded by remember { mutableStateOf(false) }
-    var itemText by remember { mutableStateOf("Name") }
-    val items = listOf("Name", "Release Date")
+    val items = remember {
+        SortData.entries.toList()
+    }
 
     Column {
         OutlinedButton(
@@ -107,7 +134,7 @@ private fun CardSetSort() {
                 containerColor = ColorPalette.Gray200,
                 contentColor = Color.Black
             ),
-            contentPadding = PaddingValues(horizontal = 16.dp),
+            contentPadding = PaddingValues(start = 16.dp),
             onClick = { expanded = !expanded },
             modifier = Modifier
                 .width(128.dp)
@@ -116,11 +143,14 @@ private fun CardSetSort() {
                     minHeight = 24.dp
                 )
         ) {
-            Row {
-                Text("Sort by: $itemText")
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(sortData.toStringResource())
                 Icon(Icons.Default.ArrowDropDown, contentDescription = null)
             }
-
         }
         DropdownMenu(
             expanded = expanded,
@@ -131,14 +161,23 @@ private fun CardSetSort() {
             items.forEach { item ->
                 DropdownMenuItem(
                     text = {
-                        Text(item)
+                        Text(item.toStringResource())
                     },
                     onClick = {
                         expanded = false
-                        itemText = item
+                        onSelected(item)
                     }
                 )
             }
         }
+    }
+}
+
+@Composable
+fun SortData.toStringResource(): String {
+    return when (this) {
+        SortData.NAME -> stringResource(Res.string.sort_by_name)
+        SortData.RELEASE_DATE -> stringResource(Res.string.sort_by_release_date)
+        SortData.CARD_COUNT -> stringResource(Res.string.sort_by_card_count)
     }
 }

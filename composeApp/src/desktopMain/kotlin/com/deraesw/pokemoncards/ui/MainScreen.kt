@@ -24,6 +24,7 @@ import com.deraesw.pokemoncards.model.CardSet
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailContent
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailState
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
+import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -43,6 +44,7 @@ fun MainScreen() {
 
 @Composable
 fun TwoPanelLayout(
+    cardSetViewModel: CardSetViewModel = koinInject(),
     setDetailViewModel: CardSetDetailViewModel = koinInject()
 ) {
     val uiState = setDetailViewModel.uiState.collectAsState()
@@ -52,6 +54,7 @@ fun TwoPanelLayout(
     ) {
 
         CardSetSection(
+            cardSetViewModel = cardSetViewModel,
             setDetailViewModel = setDetailViewModel,
             modifier = Modifier
                 .padding(16.dp)

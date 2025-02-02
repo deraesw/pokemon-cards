@@ -12,7 +12,12 @@ CREATE TABLE IF NOT EXISTS card_set(
 );
 
 selectAllSet:
-SELECT * FROM card_set ORDER BY releaseDate ASC;
+SELECT * FROM card_set ORDER BY
+    CASE
+        WHEN :sorter = 'NAME' THEN name
+        WHEN :sorter = 'RELEASE_DATE' THEN releaseDate
+        WHEN :sorter = 'CARD_COUNT' THEN total
+    END ASC;
 
 selectSetById:
 SELECT * FROM card_set WHERE id = :id;
