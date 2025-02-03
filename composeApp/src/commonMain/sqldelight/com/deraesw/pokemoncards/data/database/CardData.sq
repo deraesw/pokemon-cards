@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS card_data(
+    id  TEXT PRIMARY KEY NOT NULL,
+    link_card_set TEXT NOT NULL,
+    name TEXT NOT NULL,
+    supertype TEXT DEFAULT NULL,
+    level TEXT DEFAULT NULL,
+    hp TEXT DEFAULT NULL,
+    image_symbol TEXT DEFAULT NULL,
+    image_logo TEXT DEFAULT NULL,
+    image_small TEXT DEFAULT NULL,
+    image_large TEXT DEFAULT NULL
+);
+
+CREATE INDEX IF NOT EXISTS index_link_card_set ON card_data(link_card_set);
+
+countCardDataForSet:
+SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
+
+selectAllCardData:
+SELECT * FROM card_data WHERE link_card_set = :cardSetId;
+
+insertCardData:
+INSERT OR REPLACE INTO card_data VALUES :data;

@@ -186,7 +186,6 @@ private fun SymbolImage(
                 modifier = Modifier.size(32.dp).align(Alignment.Center)
             )
         }
-
     }
 }
 

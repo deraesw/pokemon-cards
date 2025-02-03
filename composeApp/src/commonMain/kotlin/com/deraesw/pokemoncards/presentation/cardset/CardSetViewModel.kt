@@ -3,8 +3,11 @@ package com.deraesw.pokemoncards.presentation.cardset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deraesw.pokemoncards.data.repository.CardSetRepository
+import com.deraesw.pokemoncards.domain.NetworkManager
 import com.deraesw.pokemoncards.model.CardSet
 import com.deraesw.pokemoncards.model.SortData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +16,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CardSetViewModel(
-    private val cardSetRepository: CardSetRepository
+    private val cardSetRepository: CardSetRepository,
+    private val networkManager: NetworkManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         CardSetState()
@@ -54,6 +58,9 @@ class CardSetViewModel(
     fun setSelectedCardSet(id: String) {
         _uiState.update {
             it.copy(selectedCardSetId = id)
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            networkManager.fetchSetCardsList(id)
         }
     }
 

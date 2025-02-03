@@ -15,14 +15,3 @@ data class NetworkCardSet(
     val updatedAt: String,
     val images: NetWorkSetImages
 )
-
-@Serializable
-data class NetworkSetLegalities(
-    val unlimited: String
-)
-
-@Serializable
-data class NetWorkSetImages(
-    val symbol: String,
-    val logo: String
-)

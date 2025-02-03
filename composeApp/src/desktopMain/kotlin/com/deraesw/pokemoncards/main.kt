@@ -9,19 +9,16 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.deraesw.pokemoncards.di.appModules
+import com.deraesw.pokemoncards.di.pcsInitKoin
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import com.deraesw.pokemoncards.ui.MainScreen
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.koin.core.context.startKoin
 import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.app_name
 
 fun main() = application {
-    startKoin {
-        modules(appModules)
-    }
+    pcsInitKoin()
     Window(
         onCloseRequest = ::exitApplication,
         title = stringResource(Res.string.app_name),

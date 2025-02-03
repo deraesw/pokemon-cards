@@ -2,8 +2,8 @@ package com.deraesw.pokemoncards.network.service
 
 import com.deraesw.pokemoncards.network.Constant
 import com.deraesw.pokemoncards.network.NetworkClient
-import com.deraesw.pokemoncards.network.model.CardDataModel
 import com.deraesw.pokemoncards.network.model.ListDataModel
+import com.deraesw.pokemoncards.network.model.NetworkCardData
 import com.deraesw.pokemoncards.network.model.NetworkCardSet
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -35,7 +35,7 @@ class PokemonCardApiServiceImp(
 
     override suspend fun getSetCards(
         baseId: String
-    ): List<CardDataModel> {
+    ): List<NetworkCardData> {
         return runCatching {
             val response = networkClient
                 .client
@@ -44,7 +44,7 @@ class PokemonCardApiServiceImp(
                         parameters.append("q", "set.id:$baseId")
                     }
                 }
-            val responseData = response.body<ListDataModel<CardDataModel>>()
+            val responseData = response.body<ListDataModel<NetworkCardData>>()
             networkClient.client.close()
             responseData.data
         }.onFailure {

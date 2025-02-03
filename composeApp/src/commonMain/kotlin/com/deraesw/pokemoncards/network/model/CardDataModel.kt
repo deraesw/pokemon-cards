@@ -57,13 +57,6 @@ data class CardLegalities(
     @SerialName("unlimited") val unlimited: String
 )
 
-@Serializable
-data class CardImages(
-    @SerialName("symbol") val symbol: String? = null,
-    @SerialName("logo") val logo: String? = null,
-    @SerialName("small") val small: String? = null,
-    @SerialName("large") val large: String? = null
-)
 
 @Serializable
 data class Tcgplayer(
