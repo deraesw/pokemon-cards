@@ -17,7 +17,7 @@ class CardSetRepositoryImp(
     private val databaseFactory: DatabaseFactory,
 ) : CardSetRepository {
 
-    val queries by lazy {
+    private val queries by lazy {
         databaseFactory.database.cardSetQueries
     }
 

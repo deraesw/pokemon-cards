@@ -24,6 +24,7 @@ import com.deraesw.pokemoncards.model.CardSet
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailContent
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailState
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
+import com.deraesw.pokemoncards.presentation.cardlist.CardListViewModel
 import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import org.jetbrains.compose.resources.stringResource
@@ -45,17 +46,20 @@ fun MainScreen() {
 @Composable
 fun TwoPanelLayout(
     cardSetViewModel: CardSetViewModel = koinInject(),
-    setDetailViewModel: CardSetDetailViewModel = koinInject()
+    setDetailViewModel: CardSetDetailViewModel = koinInject(),
+    cardListViewModel: CardListViewModel = koinInject(),
 ) {
     val uiState = setDetailViewModel.uiState.collectAsState()
 
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
-
         CardSetSection(
             cardSetViewModel = cardSetViewModel,
-            setDetailViewModel = setDetailViewModel,
+            onCardSetClick = {
+                setDetailViewModel.getCardSet(it)
+                cardListViewModel.selectCardSet(it)
+            },
             modifier = Modifier
                 .padding(16.dp)
                 .width(320.dp)
@@ -77,6 +81,7 @@ fun TwoPanelLayout(
                     is CardSetDetailState.Success -> {
                         DetailSection(
                             cardSet = state.cardSet,
+                            cardListViewModel = cardListViewModel,
                             modifier = Modifier
                                 .fillMaxSize()
                         )
@@ -97,6 +102,7 @@ fun TwoPanelLayout(
 @Composable
 fun DetailSection(
     cardSet: CardSet,
+    cardListViewModel: CardListViewModel,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -121,7 +127,8 @@ fun DetailSection(
         HorizontalDivider(
             thickness = 1.dp,
         )
-        Box(
+        CardListSection(
+            cardListViewModel = cardListViewModel,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)

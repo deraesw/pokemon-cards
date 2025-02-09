@@ -34,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.model.SortData
-import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
 import com.deraesw.pokemoncards.presentation.cardset.CardSetContent
 import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
 import com.deraesw.pokemoncards.presentation.compose.PcsSearchComponent
@@ -52,10 +51,10 @@ import pokemoncards.composeapp.generated.resources.sort_by_release_date
 @Composable
 fun CardSetSection(
     cardSetViewModel: CardSetViewModel,
-    setDetailViewModel: CardSetDetailViewModel,
     modifier: Modifier = Modifier,
+    onCardSetClick: (String) -> Unit = {}
 ) {
-    val uiState = cardSetViewModel.uiState.collectAsState().value
+    val uiState by cardSetViewModel.uiState.collectAsState()
 
     Column(
         modifier = modifier
@@ -77,7 +76,7 @@ fun CardSetSection(
             listState = state,
             onCardSetClick = {
                 cardSetViewModel.setSelectedCardSet(it)
-                setDetailViewModel.getCardSet(it)
+                onCardSetClick(it)
             },
             scrollableContent = {
                 VerticalScrollbar(

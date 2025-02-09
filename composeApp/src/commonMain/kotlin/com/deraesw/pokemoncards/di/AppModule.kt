@@ -16,6 +16,7 @@ import com.deraesw.pokemoncards.network.createHttpEngine
 import com.deraesw.pokemoncards.network.service.PokemonCardApiService
 import com.deraesw.pokemoncards.network.service.PokemonCardApiServiceImp
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
+import com.deraesw.pokemoncards.presentation.cardlist.CardListViewModel
 import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
 import io.ktor.client.engine.HttpClientEngine
 import org.koin.core.KoinApplication
@@ -55,4 +56,5 @@ private val networkModule = module {
 val presentationModule = module {
     viewModel { CardSetViewModel(get(), get()) }
     viewModel { CardSetDetailViewModel(get()) }
+    viewModel { CardListViewModel(get()) }
 }
