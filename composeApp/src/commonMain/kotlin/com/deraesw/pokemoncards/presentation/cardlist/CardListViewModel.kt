@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deraesw.pokemoncards.data.repository.CardRepository
 import com.deraesw.pokemoncards.model.CardListItem
+import com.deraesw.pokemoncards.util.Logger
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +24,7 @@ class CardListViewModel(
     }
 
     private fun fetchCardList(cardSetId: String) {
+        Logger.debug("CardListViewModel", "fetchCardList - $cardSetId - ${job != null}")
         job?.cancel()
         job = viewModelScope.launch {
             cardRepository
@@ -37,6 +39,7 @@ class CardListViewModel(
                             )
                         }
                     )
+                    Logger.debug("CardListViewModel", "fetchCardList list found - ${list.size}")
                 }
         }
     }

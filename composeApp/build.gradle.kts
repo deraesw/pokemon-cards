@@ -79,6 +79,22 @@ kotlin {
             implementation(libs.ktor.client.cio)
             implementation(libs.sql.delight.sqlite)
         }
+        commonTest.dependencies {
+            implementation(libs.junit)
+            implementation(libs.kotlin.test)
+            implementation(libs.koin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.ktor.client.mock)
+//            implementation(libs.sql.delight.sqlite)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.turbine)
+            implementation(libs.sql.delight.sqlite)
+        }
+        jvmTest.dependencies {
+            implementation(libs.turbine)
+            implementation(libs.sql.delight.sqlite)
+        }
     }
 }
 

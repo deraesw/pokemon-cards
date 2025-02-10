@@ -35,8 +35,6 @@ fun NetworkCardData.toCard(): CardDetail {
         superType = this.superType,
         level = this.level,
         hp = this.hp,
-        imageSymbol = this.images.symbol,
-        imageLogo = this.images.logo,
         imageSmall = this.images.small,
         imageLarge = this.images.large
     )

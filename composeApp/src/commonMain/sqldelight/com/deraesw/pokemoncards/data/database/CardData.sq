@@ -2,16 +2,31 @@ CREATE TABLE IF NOT EXISTS card_data(
     id  TEXT PRIMARY KEY NOT NULL,
     link_card_set TEXT NOT NULL,
     name TEXT NOT NULL,
-    supertype TEXT DEFAULT NULL,
     level TEXT DEFAULT NULL,
     hp TEXT DEFAULT NULL,
-    image_symbol TEXT DEFAULT NULL,
-    image_logo TEXT DEFAULT NULL,
     image_small TEXT DEFAULT NULL,
-    image_large TEXT DEFAULT NULL
+    image_large TEXT DEFAULT NULL,
+    evolves_from TEXT DEFAULT NULL,
+    converted_retreat_cost INTEGER DEFAULT -1,
+    number TEXT,
+    artist TEXT DEFAULT NULL,
+    flavor_text TEXT DEFAULT NULL,
+    rarity TEXT
+);
+CREATE INDEX IF NOT EXISTS index_link_card_set ON card_data(link_card_set);
+
+CREATE TABLE IF NOT EXISTS card_type (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT UNIQUE NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS index_link_card_set ON card_data(link_card_set);
+CREATE TABLE IF NOT EXISTS junction_card_card_type (
+    card_id TEXT NOT NULL,
+    type_id INTEGER NOT NULL,
+    FOREIGN KEY (card_id) REFERENCES card_data(id),
+    FOREIGN KEY (type_id) REFERENCES card_type(id),
+    PRIMARY KEY (card_id, type_id)
+);
 
 countCardDataForSet:
 SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
@@ -21,3 +36,9 @@ SELECT * FROM card_data WHERE link_card_set = :cardSetId;
 
 insertCardData:
 INSERT OR REPLACE INTO card_data VALUES :data;
+
+insertCardType:
+INSERT OR IGNORE INTO card_type(name) VALUES :name;
+
+insertCardTypeJunction:
+INSERT OR IGNORE INTO junction_card_card_type VALUES :data;

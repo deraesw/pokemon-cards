@@ -6,6 +6,7 @@ import com.deraesw.pokemoncards.data.repository.AppPreferencesRepository
 import com.deraesw.pokemoncards.data.repository.CardRepository
 import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.network.service.PokemonCardApiService
+import com.deraesw.pokemoncards.util.Logger
 
 class NetworkManagerImp(
     private val pokemonService: PokemonCardApiService,
@@ -44,20 +45,21 @@ class NetworkManagerImp(
     ) {
         val count = cardRepository.getCardCountForSet(carSetId)
         if (count > 0) {
-            println("Set cards already fetched.")
+            Logger.info("NetworkManager", "Set cards already fetched.")
             return
         }
-        println("Fetching set cards.")
+        Logger.info("NetworkManager", "Fetching set cards.")
+
         val data = pokemonService
             .getSetCards(carSetId)
             .toCardList()
 
         if (data.isEmpty()) {
-            println("No data found!.")
+            Logger.info("NetworkManager", "No data found.")
             return
         }
 
-        println("Saving set cards.")
+        Logger.info("NetworkManager", "Data found: ${data.size}, saving.")
         cardRepository.saveCardList(carSetId, data)
     }
 }

@@ -5,6 +5,7 @@ import com.deraesw.pokemoncards.network.NetworkClient
 import com.deraesw.pokemoncards.network.model.ListDataModel
 import com.deraesw.pokemoncards.network.model.NetworkCardData
 import com.deraesw.pokemoncards.network.model.NetworkCardSet
+import com.deraesw.pokemoncards.util.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
@@ -29,7 +30,11 @@ class PokemonCardApiServiceImp(
             println("getAllSets runCatching 2")
             responseData.data
         }.onFailure {
-            println("Error while processing the request: ${it.message}")
+            Logger.error(
+                "PokemonCardApiService",
+                "Error while processing the request: ${it.message}",
+                it
+            )
         }.getOrDefault(listOf())
     }
 
@@ -48,7 +53,11 @@ class PokemonCardApiServiceImp(
             networkClient.client.close()
             responseData.data
         }.onFailure {
-            println("Error while processing the request: ${it.message}")
+            Logger.error(
+                "PokemonCardApiService",
+                "Error while processing the request: ${it.message}",
+                it
+            )
         }.getOrDefault(listOf())
     }
 

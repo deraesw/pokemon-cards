@@ -42,12 +42,16 @@ fun Card_data.toCardDetail(): CardDetail {
     return CardDetail(
         id = this.id,
         name = this.name,
-        superType = this.supertype,
         level = this.level,
         hp = this.hp,
-        imageSymbol = this.image_symbol,
-        imageLogo = this.image_logo,
         imageSmall = this.image_small,
         imageLarge = this.image_large,
+        evolvesFrom = this.evolves_from,
+        convertedRetreatCost = this.converted_retreat_cost?.toInt(),
+        number = this.number,
+        artist = this.artist,
+        flavorText = this.flavor_text,
+        rarity = this.rarity,
+        superType = null
     )
 }

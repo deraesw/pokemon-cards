@@ -28,13 +28,16 @@ fun List<CardDetail>.toCardEntity(baseId: String): List<Card_data> {
             id = it.id,
             link_card_set = baseId,
             name = it.name,
-            supertype = it.superType,
             level = it.level,
             hp = it.hp,
-            image_symbol = it.imageSymbol,
-            image_logo = it.imageLogo,
             image_small = it.imageSmall,
-            image_large = it.imageLarge
+            image_large = it.imageLarge,
+            evolves_from = it.evolvesFrom,
+            converted_retreat_cost = it.convertedRetreatCost?.toLong(),
+            number = it.number,
+            artist = it.artist,
+            flavor_text = it.flavorText,
+            rarity = it.rarity
         )
     }
 }
