@@ -40,4 +40,16 @@ class CardRepositoryImp(
             }
         }
     }
+
+    override suspend fun savedCardType(types: List<String>) {
+        queries.transaction {
+            runCatching {
+                types.forEach { item ->
+                    queries.insertCardType(name = item)
+                }
+            }.onSuccess {
+                this.rollback()
+            }
+        }
+    }
 }

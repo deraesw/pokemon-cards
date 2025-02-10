@@ -10,3 +10,8 @@ data class ListDataModel<T>(
     val count: Int,
     val totalCount: Int
 )
+
+@Serializable
+data class ListSimpleModel<T>(
+    val data: List<T>,
+)

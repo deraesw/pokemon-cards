@@ -34,11 +34,14 @@ SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
 selectAllCardData:
 SELECT * FROM card_data WHERE link_card_set = :cardSetId;
 
+selectAllCardTypes:
+SELECT * FROM card_type;
+
 insertCardData:
 INSERT OR REPLACE INTO card_data VALUES :data;
 
 insertCardType:
-INSERT OR IGNORE INTO card_type(name) VALUES :name;
+INSERT OR IGNORE INTO card_type(name) VALUES (:name);
 
 insertCardTypeJunction:
 INSERT OR IGNORE INTO junction_card_card_type VALUES :data;

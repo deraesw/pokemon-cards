@@ -16,7 +16,7 @@ class NetworkManagerImp(
 ) : NetworkManager {
     private var syncInProgress = false
 
-    suspend fun initialSync() {
+    override suspend fun initialSync() {
         println("Trigger logic to initial sync")
         if (syncInProgress) return
         syncInProgress = true
@@ -34,6 +34,9 @@ class NetworkManagerImp(
 
         println("Saving all sets...")
         cardSetRepository.saveCardSetList(data)
+
+        val types = pokemonService.getCardTypes()
+        cardRepository.savedCardType(types)
 
         println("Sync done...")
         appPreferencesRepository.saveLastSyncTime()

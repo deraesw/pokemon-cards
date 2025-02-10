@@ -33,7 +33,9 @@ import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.select_card_set
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    viewModel: MainViewModel = koinInject()
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()

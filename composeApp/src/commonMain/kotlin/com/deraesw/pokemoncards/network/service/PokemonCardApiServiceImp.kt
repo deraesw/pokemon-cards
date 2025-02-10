@@ -3,6 +3,7 @@ package com.deraesw.pokemoncards.network.service
 import com.deraesw.pokemoncards.network.Constant
 import com.deraesw.pokemoncards.network.NetworkClient
 import com.deraesw.pokemoncards.network.model.ListDataModel
+import com.deraesw.pokemoncards.network.model.ListSimpleModel
 import com.deraesw.pokemoncards.network.model.NetworkCardData
 import com.deraesw.pokemoncards.network.model.NetworkCardSet
 import com.deraesw.pokemoncards.util.Logger
@@ -50,6 +51,23 @@ class PokemonCardApiServiceImp(
                     }
                 }
             val responseData = response.body<ListDataModel<NetworkCardData>>()
+            networkClient.client.close()
+            responseData.data
+        }.onFailure {
+            Logger.error(
+                "PokemonCardApiService",
+                "Error while processing the request: ${it.message}",
+                it
+            )
+        }.getOrDefault(listOf())
+    }
+
+    override suspend fun getCardTypes(): List<String> {
+        return runCatching {
+            val response = networkClient
+                .client
+                .getWithKey("$baseUrl/types")
+            val responseData = response.body<ListSimpleModel<String>>()
             networkClient.client.close()
             responseData.data
         }.onFailure {
