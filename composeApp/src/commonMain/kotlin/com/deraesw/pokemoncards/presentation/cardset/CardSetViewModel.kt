@@ -2,9 +2,9 @@ package com.deraesw.pokemoncards.presentation.cardset
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.domain.NetworkManager
-import com.deraesw.pokemoncards.model.CardSet
 import com.deraesw.pokemoncards.model.SortData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

@@ -2,12 +2,11 @@ package com.deraesw.pokemoncards.data.repository
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
+import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.data.database.DatabaseFactory
 import com.deraesw.pokemoncards.data.mapper.toCardSet
-import com.deraesw.pokemoncards.data.mapper.toCardSetEntity
 import com.deraesw.pokemoncards.data.mapper.toCardSetList
 import com.deraesw.pokemoncards.data.mapper.toCardSetListFlow
-import com.deraesw.pokemoncards.model.CardSet
 import com.deraesw.pokemoncards.model.SortData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -45,11 +44,11 @@ class CardSetRepositoryImp(
     }
 
     override suspend fun saveCardSetList(cardSets: List<CardSet>) {
-        val data = cardSets.toCardSetEntity()
-        queries.transaction {
-            data.forEach { item ->
-                queries.insertCard(item)
-            }
-        }
+//        val data = cardSets.toCardSetEntity()
+//        queries.transaction {
+//            data.forEach { item ->
+//                queries.insertCard(item)
+//            }
+//        }
     }
 }

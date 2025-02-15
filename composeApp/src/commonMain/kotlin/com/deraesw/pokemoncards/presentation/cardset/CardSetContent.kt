@@ -36,7 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.deraesw.pokemoncards.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
@@ -209,7 +209,7 @@ private fun RowDetails(
         )
 
         Text(
-            text = cardSet.formatReleaseDate,
+            text = cardSet.formatedReleaseDate,
             style = PokemonCardTheme.typography.labelMedium,
             color = ColorPalette.Gray600,
         )

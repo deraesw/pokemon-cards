@@ -2,9 +2,9 @@ package com.deraesw.pokemoncards.presentation.cardlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.data.repository.CardRepository
 import com.deraesw.pokemoncards.model.CardListItem
-import com.deraesw.pokemoncards.util.Logger
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

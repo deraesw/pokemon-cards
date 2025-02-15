@@ -2,10 +2,9 @@ package com.deraesw.pokemoncards.data.repository
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
+import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.data.database.DatabaseFactory
 import com.deraesw.pokemoncards.data.mapper.toCardDetailListFlow
-import com.deraesw.pokemoncards.data.mapper.toCardEntity
-import com.deraesw.pokemoncards.model.CardDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +16,7 @@ class CardRepositoryImp(
         databaseFactory.database.cardDataQueries
     }
 
-    override suspend fun getCardList(cardSetId: String): Flow<List<CardDetail>> {
+    override suspend fun getCardList(cardSetId: String): Flow<List<Card>> {
         return queries
             .selectAllCardData(cardSetId)
             .asFlow()
@@ -32,13 +31,14 @@ class CardRepositoryImp(
             .toInt()
     }
 
-    override suspend fun saveCardList(cardSetId: String, cardList: List<CardDetail>) {
-        val data = cardList.toCardEntity(cardSetId)
-        queries.transaction {
-            data.forEach { item ->
-                queries.insertCardData(item)
-            }
-        }
+    override suspend fun saveCardList(cardSetId: String, cardList: List<Card>) {
+//        //TODO
+        //        val data = cardList.toCardEntity(cardSetId)
+//        queries.transaction {
+//            data.forEach { item ->
+//                queries.insertCardData(item)
+//            }
+//        }
     }
 
     override suspend fun savedCardType(types: List<String>) {

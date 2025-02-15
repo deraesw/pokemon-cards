@@ -1,5 +1,6 @@
 package com.deraesw.pokemoncards.network.service
 
+import com.deraesw.pokemoncards.core.network.service.PokemonCardApiServiceImp
 import com.deraesw.pokemoncards.network.NetworkClient
 import com.deraesw.pokemoncards.network.mock.MockCard
 import com.deraesw.pokemoncards.network.mock.MockCardSet

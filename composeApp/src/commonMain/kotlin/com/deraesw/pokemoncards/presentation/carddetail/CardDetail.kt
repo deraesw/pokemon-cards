@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.deraesw.pokemoncards.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import com.skydoves.landscapist.ImageOptions
@@ -149,7 +149,7 @@ fun HeaderSection(
             )
             Spacer(modifier = Modifier.size(4.dp))
             Text(
-                text = set.formatUpdatedAt(),
+                text = set.formatedUpdatedAt(),
                 style = PokemonCardTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -176,7 +176,7 @@ fun MainSetInformationSection(
             color = ColorPalette.Gray600,
         )
         Text(
-            text = stringResource(Res.string.release_date_label, set.formatReleaseDate),
+            text = stringResource(Res.string.release_date_label, set.formatedReleaseDate),
             style = PokemonCardTheme.typography.titleSmall,
             color = ColorPalette.Gray600,
         )

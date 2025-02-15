@@ -1,12 +1,10 @@
 package com.deraesw.pokemoncards.domain
 
-import com.deraesw.pokemoncards.data.mapper.toCardList
-import com.deraesw.pokemoncards.data.mapper.toCardSetList
+import com.deraesw.pokemoncards.core.core.util.Logger
+import com.deraesw.pokemoncards.core.network.service.PokemonCardApiService
 import com.deraesw.pokemoncards.data.repository.AppPreferencesRepository
 import com.deraesw.pokemoncards.data.repository.CardRepository
 import com.deraesw.pokemoncards.data.repository.CardSetRepository
-import com.deraesw.pokemoncards.network.service.PokemonCardApiService
-import com.deraesw.pokemoncards.util.Logger
 
 class NetworkManagerImp(
     private val pokemonService: PokemonCardApiService,
@@ -30,7 +28,6 @@ class NetworkManagerImp(
         println("Fetching all sets...")
         val data = pokemonService
             .getAllSets()
-            .toCardSetList()
 
         println("Saving all sets...")
         cardSetRepository.saveCardSetList(data)
@@ -55,7 +52,6 @@ class NetworkManagerImp(
 
         val data = pokemonService
             .getSetCards(carSetId)
-            .toCardList()
 
         if (data.isEmpty()) {
             Logger.info("NetworkManager", "No data found.")

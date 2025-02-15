@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.deraesw.pokemoncards.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailContent
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailState
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel

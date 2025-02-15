@@ -1,6 +1,7 @@
 package com.deraesw.pokemoncards.di
 
 import app.cash.sqldelight.db.SqlDriver
+import com.deraesw.pokemoncards.core.network.di.networkModule
 import com.deraesw.pokemoncards.data.database.DatabaseFactory
 import com.deraesw.pokemoncards.data.database.createDriver
 import com.deraesw.pokemoncards.data.repository.AppPreferencesRepository
@@ -11,14 +12,9 @@ import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.data.repository.CardSetRepositoryImp
 import com.deraesw.pokemoncards.domain.NetworkManager
 import com.deraesw.pokemoncards.domain.NetworkManagerImp
-import com.deraesw.pokemoncards.network.NetworkClient
-import com.deraesw.pokemoncards.network.createHttpEngine
-import com.deraesw.pokemoncards.network.service.PokemonCardApiService
-import com.deraesw.pokemoncards.network.service.PokemonCardApiServiceImp
 import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
 import com.deraesw.pokemoncards.presentation.cardlist.CardListViewModel
 import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
-import io.ktor.client.engine.HttpClientEngine
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.singleOf
@@ -47,11 +43,11 @@ private val domainModule = module {
     singleOf(::NetworkManagerImp) bind NetworkManager::class
 }
 
-private val networkModule = module {
-    single<HttpClientEngine> { createHttpEngine() }
-    single { NetworkClient(get()) }
-    singleOf(::PokemonCardApiServiceImp) bind PokemonCardApiService::class
-}
+//private val networkModule = module {
+//    single<HttpClientEngine> { createHttpEngine() }
+//    single { NetworkClient(get()) }
+//    singleOf(::PokemonCardApiServiceImp) bind PokemonCardApiService::class
+//}
 
 val presentationModule = module {
     viewModel { CardSetViewModel(get(), get()) }

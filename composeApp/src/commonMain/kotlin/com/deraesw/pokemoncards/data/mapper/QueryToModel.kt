@@ -1,9 +1,9 @@
 package com.deraesw.pokemoncards.data.mapper
 
+import com.deraesw.pokemoncards.core.core.model.Card
+import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.data.database.Card_data
 import com.deraesw.pokemoncards.data.database.Card_set
-import com.deraesw.pokemoncards.model.CardDetail
-import com.deraesw.pokemoncards.model.CardSet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -30,16 +30,16 @@ fun Card_set.toCardSet(): CardSet {
     )
 }
 
-fun Flow<List<Card_data>>.toCardDetailListFlow(): Flow<List<CardDetail>> {
+fun Flow<List<Card_data>>.toCardDetailListFlow(): Flow<List<Card>> {
     return this.map { list -> list.toCardDetailList() }
 }
 
-fun List<Card_data>.toCardDetailList(): List<CardDetail> {
+fun List<Card_data>.toCardDetailList(): List<Card> {
     return this.map { item -> item.toCardDetail() }
 }
 
-fun Card_data.toCardDetail(): CardDetail {
-    return CardDetail(
+fun Card_data.toCardDetail(): Card {
+    return Card(
         id = this.id,
         name = this.name,
         level = this.level,
