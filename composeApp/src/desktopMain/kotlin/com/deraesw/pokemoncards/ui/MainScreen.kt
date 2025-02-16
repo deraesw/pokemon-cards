@@ -21,11 +21,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.core.core.model.CardSet
-import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailContent
-import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailState
-import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
-import com.deraesw.pokemoncards.presentation.cardlist.CardListViewModel
-import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
+import com.deraesw.pokemoncards.presentation.card.list.CardListViewModel
+import com.deraesw.pokemoncards.presentation.set.detail.CardSetDetailContent
+import com.deraesw.pokemoncards.presentation.set.detail.CardSetDetailState
+import com.deraesw.pokemoncards.presentation.set.detail.CardSetDetailViewModel
+import com.deraesw.pokemoncards.presentation.set.list.CardSetViewModel
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject

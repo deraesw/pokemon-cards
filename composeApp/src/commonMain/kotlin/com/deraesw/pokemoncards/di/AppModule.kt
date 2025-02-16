@@ -1,9 +1,7 @@
 package com.deraesw.pokemoncards.di
 
-import app.cash.sqldelight.db.SqlDriver
+import com.deraesw.pokemoncards.core.database.di.databaseModule
 import com.deraesw.pokemoncards.core.network.di.networkModule
-import com.deraesw.pokemoncards.data.database.DatabaseFactory
-import com.deraesw.pokemoncards.data.database.createDriver
 import com.deraesw.pokemoncards.data.repository.AppPreferencesRepository
 import com.deraesw.pokemoncards.data.repository.AppPreferencesRepositoryImp
 import com.deraesw.pokemoncards.data.repository.CardRepository
@@ -12,9 +10,9 @@ import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.data.repository.CardSetRepositoryImp
 import com.deraesw.pokemoncards.domain.NetworkManager
 import com.deraesw.pokemoncards.domain.NetworkManagerImp
-import com.deraesw.pokemoncards.presentation.carddetail.CardSetDetailViewModel
-import com.deraesw.pokemoncards.presentation.cardlist.CardListViewModel
-import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
+import com.deraesw.pokemoncards.presentation.card.list.CardListViewModel
+import com.deraesw.pokemoncards.presentation.set.detail.CardSetDetailViewModel
+import com.deraesw.pokemoncards.presentation.set.list.CardSetViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.singleOf
@@ -27,13 +25,17 @@ fun pcsInitKoin(
 ): KoinApplication {
     return startKoin {
         appDeclaration()
-        modules(networkModule, dataModule, presentationModule, domainModule)
+        modules(
+            databaseModule,
+            networkModule,
+            dataModule,
+            presentationModule,
+            domainModule
+        )
     }
 }
 
 private val dataModule = module {
-    single<SqlDriver> { createDriver() }
-    single { DatabaseFactory(get()) }
     singleOf(::CardSetRepositoryImp) bind CardSetRepository::class
     singleOf(::AppPreferencesRepositoryImp) bind AppPreferencesRepository::class
     singleOf(::CardRepositoryImp) bind CardRepository::class
@@ -42,12 +44,6 @@ private val dataModule = module {
 private val domainModule = module {
     singleOf(::NetworkManagerImp) bind NetworkManager::class
 }
-
-//private val networkModule = module {
-//    single<HttpClientEngine> { createHttpEngine() }
-//    single { NetworkClient(get()) }
-//    singleOf(::PokemonCardApiServiceImp) bind PokemonCardApiService::class
-//}
 
 val presentationModule = module {
     viewModel { CardSetViewModel(get(), get()) }

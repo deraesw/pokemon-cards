@@ -3,7 +3,6 @@ package com.deraesw.pokemoncards.data.repository
 import com.deraesw.pokemoncards.data.database.DatabaseFactory
 import com.deraesw.pokemoncards.data.database.PokemonCardDatabase
 import com.deraesw.pokemoncards.data.database.createTestDriver
-import com.deraesw.pokemoncards.model.CardSet
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

@@ -33,11 +33,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.deraesw.pokemoncards.model.SortData
-import com.deraesw.pokemoncards.presentation.cardset.CardSetContent
-import com.deraesw.pokemoncards.presentation.cardset.CardSetViewModel
+import com.deraesw.pokemoncards.core.core.model.SortData
 import com.deraesw.pokemoncards.presentation.compose.PcsSearchComponent
 import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
+import com.deraesw.pokemoncards.presentation.set.list.CardSetContent
+import com.deraesw.pokemoncards.presentation.set.list.CardSetViewModel
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import org.jetbrains.compose.resources.stringResource
