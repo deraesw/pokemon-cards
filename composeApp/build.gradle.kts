@@ -89,7 +89,6 @@ kotlin {
             implementation(libs.koin.test)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.mock)
-//            implementation(libs.sql.delight.sqlite)
         }
         androidUnitTest.dependencies {
             implementation(libs.turbine)

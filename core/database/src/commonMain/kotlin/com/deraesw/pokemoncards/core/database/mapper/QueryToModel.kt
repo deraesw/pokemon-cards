@@ -2,8 +2,10 @@ package com.deraesw.pokemoncards.core.database.mapper
 
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.CardType
 import com.deraesw.pokemoncards.core.database.Card_data
 import com.deraesw.pokemoncards.core.database.Card_set
+import com.deraesw.pokemoncards.core.database.Card_type
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -38,7 +40,15 @@ fun List<Card_data>.toCardDetailList(): List<Card> {
     return this.map { item -> item.toCardDetail() }
 }
 
-fun Card_data.toCardDetail(): Card {
+fun Flow<Card_data>.toCardDetailFlow(
+    types: List<CardType> = emptyList()
+): Flow<Card> {
+    return this.map { item -> item.toCardDetail(types) }
+}
+
+fun Card_data.toCardDetail(
+    types: List<CardType> = emptyList()
+): Card {
     return Card(
         id = this.id,
         name = this.name,
@@ -52,6 +62,16 @@ fun Card_data.toCardDetail(): Card {
         artist = this.artist,
         flavorText = this.flavor_text,
         rarity = this.rarity,
-        superType = null
+        superType = null,
+        types = types
     )
+}
+
+fun List<Card_type>.toCardTypeList(): List<CardType> {
+    return this.map { item ->
+        CardType(
+            id = item.id,
+            name = item.name
+        )
+    }
 }

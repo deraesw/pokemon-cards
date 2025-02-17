@@ -4,6 +4,7 @@ import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.database.Card_data
 import com.deraesw.pokemoncards.core.database.Card_set
+import com.deraesw.pokemoncards.core.database.Junction_card_card_type
 
 fun List<CardSet>.toCardSetEntity(): List<Card_set> {
     return this.map {
@@ -39,5 +40,13 @@ fun List<Card>.toCardEntity(baseId: String): List<Card_data> {
             flavor_text = it.flavorText,
             rarity = it.rarity
         )
+    }
+}
+
+fun List<Card>.toJunctionCardTypeEntity(): List<Junction_card_card_type> {
+    return this.flatMap { card ->
+        card.types.map {
+            Junction_card_card_type(card_id = card.id, type_id = it.id)
+        }
     }
 }

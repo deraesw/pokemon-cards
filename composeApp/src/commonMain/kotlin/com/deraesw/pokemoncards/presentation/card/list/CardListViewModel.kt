@@ -6,10 +6,12 @@ import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.data.repository.CardRepository
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.model.CardListItem
+import com.deraesw.pokemoncards.presentation.model.mapper.toCardDetail
 import com.deraesw.pokemoncards.presentation.model.mapper.toCardListItems
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CardListViewModel(
@@ -37,6 +39,47 @@ class CardListViewModel(
                     )
                     Logger.debug("CardListViewModel", "fetchCardList list found - ${list.size}")
                 }
+        }
+    }
+
+    fun selectCard(cardId: String) {
+        fetchCard(cardId)
+    }
+
+    private fun fetchCard(cardId: String) {
+        viewModelScope.launch {
+            cardRepository
+                .getCard(cardId)
+                .collect { card ->
+                    _uiState.update { cardListState ->
+                        when (cardListState) {
+                            is CardListState.Success -> {
+                                cardListState.copy(
+                                    selectedCard = card.toCardDetail()
+                                )
+                            }
+
+                            else -> {
+                                cardListState
+                            }
+                        }
+                    }
+                    Logger.debug("CardListViewModel", "fetchCard - $card")
+                }
+        }
+    }
+
+    fun dismissSelectedCard() {
+        _uiState.update { cardListState ->
+            when (cardListState) {
+                is CardListState.Success -> {
+                    cardListState.copy(selectedCard = null)
+                }
+
+                else -> {
+                    cardListState
+                }
+            }
         }
     }
 }

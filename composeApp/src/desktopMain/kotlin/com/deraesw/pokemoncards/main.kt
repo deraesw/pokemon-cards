@@ -7,6 +7,7 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.deraesw.pokemoncards.core.database.factory.DriverFactory
 import com.deraesw.pokemoncards.di.pcsInitKoin
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import com.deraesw.pokemoncards.ui.MainScreen
@@ -21,6 +22,7 @@ fun main() = application {
     pcsInitKoin {
         modules(
             module {
+                single { DriverFactory() }
                 viewModel { MainViewModel(get()) }
             }
         )

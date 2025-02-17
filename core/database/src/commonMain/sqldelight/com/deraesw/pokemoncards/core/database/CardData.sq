@@ -16,13 +16,13 @@ CREATE TABLE IF NOT EXISTS card_data(
 CREATE INDEX IF NOT EXISTS index_link_card_set ON card_data(link_card_set);
 
 CREATE TABLE IF NOT EXISTS card_type (
-    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    id  TEXT PRIMARY KEY NOT NULL,
     name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS junction_card_card_type (
     card_id TEXT NOT NULL,
-    type_id INTEGER NOT NULL,
+    type_id TEXT NOT NULL,
     FOREIGN KEY (card_id) REFERENCES card_data(id),
     FOREIGN KEY (type_id) REFERENCES card_type(id),
     PRIMARY KEY (card_id, type_id)
@@ -34,14 +34,22 @@ SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
 selectAllCardData:
 SELECT * FROM card_data WHERE link_card_set = :cardSetId;
 
+selectCardData:
+SELECT * FROM card_data WHERE id = :cardId;
+
 selectAllCardTypes:
 SELECT * FROM card_type;
+
+selectCardTypes:
+SELECT card_type.* FROM card_type
+INNER JOIN junction_card_card_type ON junction_card_card_type.type_id = card_type.id
+WHERE junction_card_card_type.card_id = :cardId;
 
 insertCardData:
 INSERT OR REPLACE INTO card_data VALUES :data;
 
 insertCardType:
-INSERT OR IGNORE INTO card_type(name) VALUES (:name);
+INSERT OR IGNORE INTO card_type(id, name) VALUES (:id, :name);
 
 insertCardTypeJunction:
 INSERT OR IGNORE INTO junction_card_card_type VALUES :data;

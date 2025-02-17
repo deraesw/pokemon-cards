@@ -2,6 +2,7 @@ package com.deraesw.pokemoncards.core.network.mapper
 
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.CardType
 import com.deraesw.pokemoncards.core.network.model.NetworkCardData
 import com.deraesw.pokemoncards.core.network.model.NetworkCardSet
 
@@ -37,7 +38,13 @@ internal object NetworkToModel {
             level = this.level,
             hp = this.hp,
             imageSmall = this.images.small,
-            imageLarge = this.images.large
+            imageLarge = this.images.large,
+            evolvesFrom = this.evolvesFrom,
+            convertedRetreatCost = this.convertedRetreatCost,
+            number = this.number,
+            artist = this.artist,
+            flavorText = this.flavorText,
+            types = this.types?.map { CardType(id = it.uppercase(), name = it) } ?: listOf()
         )
     }
 }

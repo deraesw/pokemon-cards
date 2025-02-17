@@ -30,7 +30,6 @@ class PokemonCardApiServiceImp(
                 .getWithKey("$baseUrl/sets")
             val responseData = response.body<ListDataModel<NetworkCardSet>>()
             Logger.debug("PokemonCardApiService", "getAllSets response: $responseData")
-            networkClient.client.close()
             responseData.data.toCardSetList()
         }.onFailure {
             Logger.error(
@@ -55,7 +54,6 @@ class PokemonCardApiServiceImp(
                 }
             val responseData = response.body<ListDataModel<NetworkCardData>>()
             Logger.debug("PokemonCardApiService", "getSetCards response: $responseData")
-            networkClient.client.close()
             responseData.data.toCardList()
         }.onFailure {
             Logger.error(
@@ -72,7 +70,6 @@ class PokemonCardApiServiceImp(
                 .client
                 .getWithKey("$baseUrl/types")
             val responseData = response.body<ListSimpleModel<String>>()
-            networkClient.client.close()
             responseData.data
         }.onFailure {
             Logger.error(

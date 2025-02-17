@@ -8,7 +8,6 @@ import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.domain.NetworkManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +23,7 @@ class CardSetViewModel(
     )
     val uiState: StateFlow<CardSetState> = _uiState.asStateFlow()
 
-    private var job: Job? = null
+//    private var job: Job? = null
 
     init {
         fetchAllCardSets(
@@ -36,8 +35,9 @@ class CardSetViewModel(
         sorter: SortData,
         query: String = ""
     ) {
-        job?.cancel()
-        job = viewModelScope.launch {
+//        job?.cancel()
+//        job =
+        viewModelScope.launch {
             cardSetRepository
                 .allCardSets(
                     sorter = sorter

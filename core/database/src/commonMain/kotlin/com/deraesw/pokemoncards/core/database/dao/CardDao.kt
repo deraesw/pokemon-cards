@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CardDao {
     suspend fun selectCardListFlow(cardSetId: String): Flow<List<Card>>
+    suspend fun selectCardFlow(cardId: String): Flow<Card>
     suspend fun selectCardSetCount(cardSetId: String): Int
     suspend fun bulkInsertCard(cardSetId: String, cardList: List<Card>)
     suspend fun bulkInsertCardType(types: List<String>)

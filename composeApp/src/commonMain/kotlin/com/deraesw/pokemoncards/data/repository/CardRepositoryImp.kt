@@ -12,6 +12,10 @@ class CardRepositoryImp(
         return cardDao.selectCardListFlow(cardSetId)
     }
 
+    override suspend fun getCard(cardId: String): Flow<Card> {
+        return cardDao.selectCardFlow(cardId)
+    }
+
     override suspend fun getCardCountForSet(cardSetId: String): Int {
         return cardDao.selectCardSetCount(cardSetId)
     }

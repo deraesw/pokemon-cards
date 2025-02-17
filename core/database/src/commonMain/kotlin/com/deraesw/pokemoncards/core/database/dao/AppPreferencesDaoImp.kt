@@ -1,7 +1,7 @@
 package com.deraesw.pokemoncards.core.database.dao
 
 import com.deraesw.pokemoncards.core.core.util.DateUtil
-import com.deraesw.pokemoncards.core.database.DatabaseFactory
+import com.deraesw.pokemoncards.core.database.factory.DatabaseFactory
 
 class AppPreferencesDaoImp(
     private val databaseFactory: DatabaseFactory

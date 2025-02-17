@@ -4,7 +4,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.SortData
-import com.deraesw.pokemoncards.core.database.DatabaseFactory
+import com.deraesw.pokemoncards.core.database.factory.DatabaseFactory
 import com.deraesw.pokemoncards.core.database.mapper.toCardSet
 import com.deraesw.pokemoncards.core.database.mapper.toCardSetEntity
 import com.deraesw.pokemoncards.core.database.mapper.toCardSetList
