@@ -10,9 +10,9 @@ import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.data.repository.CardSetRepositoryImp
 import com.deraesw.pokemoncards.domain.NetworkManager
 import com.deraesw.pokemoncards.domain.NetworkManagerImp
-import com.deraesw.pokemoncards.presentation.card.list.CardListViewModel
-import com.deraesw.pokemoncards.presentation.set.detail.CardSetDetailViewModel
-import com.deraesw.pokemoncards.presentation.set.list.CardSetViewModel
+import com.deraesw.pokemoncards.presentation.screen.card.list.CardListViewModel
+import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailViewModel
+import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.singleOf

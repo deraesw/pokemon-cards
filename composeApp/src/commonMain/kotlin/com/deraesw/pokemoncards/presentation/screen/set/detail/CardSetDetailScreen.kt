@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.presentation.set.detail
+package com.deraesw.pokemoncards.presentation.screen.set.detail
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

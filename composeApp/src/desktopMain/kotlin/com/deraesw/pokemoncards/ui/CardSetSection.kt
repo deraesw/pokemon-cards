@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.core.core.model.SortData
 import com.deraesw.pokemoncards.presentation.compose.PcsSearchComponent
 import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
-import com.deraesw.pokemoncards.presentation.set.list.CardSetContent
-import com.deraesw.pokemoncards.presentation.set.list.CardSetViewModel
+import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetContent
+import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetViewModel
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import org.jetbrains.compose.resources.stringResource

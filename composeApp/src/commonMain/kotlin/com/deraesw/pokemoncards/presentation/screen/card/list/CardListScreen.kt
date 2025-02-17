@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.presentation.card.list
+package com.deraesw.pokemoncards.presentation.screen.card.list
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

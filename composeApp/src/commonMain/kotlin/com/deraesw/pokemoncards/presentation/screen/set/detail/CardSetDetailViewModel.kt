@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.presentation.set.detail
+package com.deraesw.pokemoncards.presentation.screen.set.detail
 
 import androidx.lifecycle.ViewModel
 import com.deraesw.pokemoncards.core.core.model.CardSet

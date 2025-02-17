@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.presentation.card.list
+package com.deraesw.pokemoncards.presentation.screen.card.list
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background

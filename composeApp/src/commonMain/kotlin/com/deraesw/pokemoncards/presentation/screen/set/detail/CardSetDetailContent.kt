@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.presentation.set.detail
+package com.deraesw.pokemoncards.presentation.screen.set.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

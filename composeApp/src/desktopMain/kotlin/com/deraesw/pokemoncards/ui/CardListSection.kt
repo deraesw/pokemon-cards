@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.deraesw.pokemoncards.presentation.card.detail.CardContent
-import com.deraesw.pokemoncards.presentation.card.list.CardListContent
-import com.deraesw.pokemoncards.presentation.card.list.CardListState
-import com.deraesw.pokemoncards.presentation.card.list.CardListViewModel
+import com.deraesw.pokemoncards.presentation.screen.card.detail.CardContent
+import com.deraesw.pokemoncards.presentation.screen.card.list.CardListContent
+import com.deraesw.pokemoncards.presentation.screen.card.list.CardListState
+import com.deraesw.pokemoncards.presentation.screen.card.list.CardListViewModel
 
 @Composable
 fun CardListSection(

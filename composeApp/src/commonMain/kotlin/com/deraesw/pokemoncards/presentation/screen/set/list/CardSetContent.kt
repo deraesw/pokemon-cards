@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.presentation.set.list
+package com.deraesw.pokemoncards.presentation.screen.set.list
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
