@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +30,7 @@ import com.deraesw.pokemoncards.presentation.compose.images.PcsImage
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
+import com.deraesw.pokemoncards.presentation.theme.colorCardType
 import org.jetbrains.compose.resources.stringResource
 import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.pokemon_card_hp
@@ -140,20 +142,31 @@ fun CardInformationSection(
                 )
 
                 cardDetail.types.forEach {
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(50))
-                            .background(ColorPalette.Gray200)
-                    ) {
-                        Text(
-                            text = it,
-                            style = PokemonCardTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-//                            color = ColorPalette.Gray700
-                        )
-                    }
+                    CardTypeBox(type = it)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CardTypeBox(
+    type: String,
+    modifier: Modifier = Modifier,
+) {
+    val color = remember { colorCardType(type) }
+
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(50))
+            .background(color)
+    ) {
+        Text(
+            text = type,
+            style = PokemonCardTheme.typography.bodyMedium,
+            modifier = Modifier.padding(horizontal = 16.dp),
+            //color = color,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }
