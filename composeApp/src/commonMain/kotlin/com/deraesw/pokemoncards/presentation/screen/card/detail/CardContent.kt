@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,11 +25,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.deraesw.pokemoncards.presentation.compose.CardTypeBox
+import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
 import com.deraesw.pokemoncards.presentation.compose.images.PcsImage
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
-import com.deraesw.pokemoncards.presentation.theme.colorCardType
 import org.jetbrains.compose.resources.stringResource
 import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.pokemon_card_hp
@@ -136,37 +136,67 @@ fun CardInformationSection(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
-                    text = stringResource(Res.string.pokemon_card_hp, "90"),
-                    style = PokemonCardTheme.typography.headlineMedium,
-                    color = ColorPalette.Gray700
+                    text = stringResource(Res.string.pokemon_card_hp, cardDetail.hp),
+                    style = PokemonCardTheme.typography.headlineSmall,
+                    color = ColorPalette.Gray700,
                 )
 
-                cardDetail.types.forEach {
-                    CardTypeBox(type = it)
+                cardDetail.types.forEach { type ->
+                    CardTypeBox(type = type)
                 }
             }
+            PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
+            AttacksSection()
+            PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
+            BattleStatsSection()
+            PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
+            CardDetailSection()
+            PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
         }
     }
 }
 
 @Composable
-fun CardTypeBox(
-    type: String,
-    modifier: Modifier = Modifier,
+fun AttacksSection(
+    modifier: Modifier = Modifier
 ) {
-    val color = remember { colorCardType(type) }
-
-    Box(
+    Column(
         modifier = modifier
-            .clip(RoundedCornerShape(50))
-            .background(color)
     ) {
         Text(
-            text = type,
-            style = PokemonCardTheme.typography.bodyMedium,
-            modifier = Modifier.padding(horizontal = 16.dp),
-            //color = color,
-            fontWeight = FontWeight.SemiBold
+            text = "Attaks",
+            style = PokemonCardTheme.typography.titleMedium,
+//            color = ColorPalette.Gray700,
+        )
+    }
+}
+
+@Composable
+fun BattleStatsSection(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = "Battle stats",
+            style = PokemonCardTheme.typography.titleMedium,
+//            color = ColorPalette.Gray700,
+        )
+    }
+}
+
+@Composable
+fun CardDetailSection(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = "Card detail",
+            style = PokemonCardTheme.typography.titleMedium,
+//            color = ColorPalette.Gray700,
         )
     }
 }

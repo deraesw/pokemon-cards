@@ -21,6 +21,7 @@ fun Card.toCardDetail(): CardDetail {
         id = this.id,
         name = this.name,
         number = this.number ?: "",
+        hp = this.hp ?: "",
         imageLarge = this.imageLarge,
         types = this.types.map { it.name }
     )
