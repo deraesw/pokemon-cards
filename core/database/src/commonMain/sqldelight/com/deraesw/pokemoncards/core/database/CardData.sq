@@ -28,6 +28,22 @@ CREATE TABLE IF NOT EXISTS junction_card_card_type (
     PRIMARY KEY (card_id, type_id)
 );
 
+CREATE TABLE IF NOT EXISTS card_attacks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    link_card_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    damage TEXT NOT NULL,
+    description TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id)
+);
+
+CREATE TABLE IF NOT EXISTS card_attacks_cost (
+    link_card_attacks_id INTEGER NOT NULL,
+    link_card_type_id TEXT NOT NULL,
+    FOREIGN KEY (link_card_attacks_id) REFERENCES card_attacks(id),
+    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id)
+);
+
 countCardDataForSet:
 SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
 
@@ -45,6 +61,18 @@ SELECT card_type.* FROM card_type
 INNER JOIN junction_card_card_type ON junction_card_card_type.type_id = card_type.id
 WHERE junction_card_card_type.card_id = :cardId;
 
+selectCardAttacks:
+SELECT * FROM card_attacks
+WHERE card_attacks.link_card_id = :cardId;
+
+selectCardAttacksCost:
+SELECT card_type.name FROM card_attacks_cost
+INNER JOIN card_type ON card_type.id = card_attacks_cost.link_card_type_id
+WHERE card_attacks_cost.link_card_attacks_id = :attackId;
+
+selectLastInsertId:
+SELECT last_insert_rowid();
+
 insertCardData:
 INSERT OR REPLACE INTO card_data VALUES :data;
 
@@ -53,3 +81,9 @@ INSERT OR IGNORE INTO card_type(id, name) VALUES (:id, :name);
 
 insertCardTypeJunction:
 INSERT OR IGNORE INTO junction_card_card_type VALUES :data;
+
+insertCardAttacks:
+INSERT OR IGNORE INTO card_attacks(link_card_id, name, damage, description) VALUES (:cardId, :name, :damage, :desciption);
+
+insertCardAttacksCost:
+INSERT OR IGNORE INTO card_attacks_cost VALUES :data;

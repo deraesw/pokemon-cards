@@ -43,10 +43,37 @@ fun List<Card>.toCardEntity(baseId: String): List<Card_data> {
     }
 }
 
+fun Card.toCardEntity(baseId: String): Card_data {
+    return Card_data(
+        id = this.id,
+        link_card_set = baseId,
+        name = this.name,
+        level = this.level,
+        hp = this.hp,
+        image_small = this.imageSmall,
+        image_large = this.imageLarge,
+        evolves_from = this.evolvesFrom,
+        converted_retreat_cost = this.convertedRetreatCost?.toLong(),
+        number = this.number,
+        artist = this.artist,
+        flavor_text = this.flavorText,
+        rarity = this.rarity
+    )
+}
+
 fun List<Card>.toJunctionCardTypeEntity(): List<Junction_card_card_type> {
     return this.flatMap { card ->
         card.types.map {
             Junction_card_card_type(card_id = card.id, type_id = it.id)
         }
+    }
+}
+
+fun Card.toJunctionCardTypeEntity(): List<Junction_card_card_type> {
+    return this.types.map {
+        Junction_card_card_type(
+            card_id = this.id,
+            type_id = it.id
+        )
     }
 }

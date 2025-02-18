@@ -31,8 +31,12 @@ object ColorPalette {
     val Amber900 = Color(0xFFFF5722)
 
     val Blue200 = Color(0xFF90CAF9)
+    val Blue300 = Color(0xFF64B5F6)
     val Blue400 = Color(0xFF42A5F5)
+    val Blue500 = Color(0xFF2196F3)
+    val Blue600 = Color(0xFF1E88E5)
     val Blue700 = Color(0xFF1976D2)
+    val Blue800 = Color(0xFF1565C0)
     val Blue900 = Color(0xFF01579B)
 
     val Brow400 = Color(0xFF8D6E63)
@@ -77,7 +81,9 @@ object ColorPalette {
 
     val Purple200 = Color(0xFFBB86FC)
     val Purple500 = Color(0xFF6200EE)
+    val Purple600 = Color(0xFF5300A0)
     val Purple700 = Color(0xFF3700B3)
+    val Purple800 = Color(0xFF30007D)
     val Purple900 = Color(0xFF311B92)
     val PurpleA100 = Color(0xFFEA80FC)
 
@@ -104,6 +110,32 @@ fun colorCardType(typeName: String): Color {
         "LIGHTNING" -> ColorPalette.Yellow600
         "PSYCHIC" -> ColorPalette.Purple200
         "WATER" -> ColorPalette.Blue400
+
+
+//        "POISON" -> ColorPalette.PurpleA100
+//        "GROUND" -> ColorPalette.Orange600
+//        "NORMAL" -> ColorPalette.Gray600
+//        "BUG" -> ColorPalette.Green700
+//        "FAIRY" -> ColorPalette.Pink200
+//        "FLYING" -> ColorPalette.Indigo200
+//        "ROCK" -> ColorPalette.Lime400
+//        "ICE" -> ColorPalette.Blue200
+//        "GHOST" -> ColorPalette.DeepPurple400
+        else -> Color.White
+    }
+}
+
+fun colorOverlayCardType(typeName: String): Color {
+    return when (typeName.uppercase()) {
+        "COLORLESS" -> ColorPalette.Gray600
+        "DARKNESS" -> ColorPalette.Gray900
+        "DRAGON" -> ColorPalette.Amber600
+        "FIGHTING" -> ColorPalette.Orange900
+        "FIRE" -> ColorPalette.Red800
+        "GRASS" -> ColorPalette.Green700
+        "LIGHTNING" -> ColorPalette.Yellow900
+        "PSYCHIC" -> ColorPalette.Purple600
+        "WATER" -> ColorPalette.Blue800
 
 
 //        "POISON" -> ColorPalette.PurpleA100

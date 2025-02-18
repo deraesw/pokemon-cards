@@ -23,6 +23,7 @@ fun Card.toCardDetail(): CardDetail {
         number = this.number ?: "",
         hp = this.hp ?: "",
         imageLarge = this.imageLarge,
-        types = this.types.map { it.name }
+        types = this.types.map { it.name },
+        attacks = this.attacks
     )
 }

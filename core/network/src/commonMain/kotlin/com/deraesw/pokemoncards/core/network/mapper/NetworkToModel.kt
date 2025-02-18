@@ -1,8 +1,10 @@
 package com.deraesw.pokemoncards.core.network.mapper
 
 import com.deraesw.pokemoncards.core.core.model.Card
+import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.CardType
+import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.network.model.NetworkCardData
 import com.deraesw.pokemoncards.core.network.model.NetworkCardSet
 
@@ -44,7 +46,15 @@ internal object NetworkToModel {
             number = this.number,
             artist = this.artist,
             flavorText = this.flavorText,
-            types = this.types?.map { CardType(id = it.uppercase(), name = it) } ?: listOf()
+            types = this.types?.map { CardType(id = it.uppercase(), name = it) } ?: listOf(),
+            attacks = this.attacks?.map { attack ->
+                CardAttacks(
+                    name = attack.name,
+                    damage = attack.damage ?: "",
+                    description = attack.text ?: "",
+                    cost = attack.cost.map { CardTypeKey(it) }
+                )
+            } ?: listOf()
         )
     }
 }

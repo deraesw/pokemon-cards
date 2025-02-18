@@ -1,10 +1,13 @@
 package com.deraesw.pokemoncards.presentation.model
 
+import com.deraesw.pokemoncards.core.core.model.CardAttacks
+
 data class CardDetail(
     val id: String,
     val name: String,
     val number: String = "",
     val hp: String = "",
     val imageLarge: String? = null,
-    val types: List<String> = emptyList()
+    val types: List<String> = emptyList(),
+    val attacks: List<CardAttacks> = emptyList()
 )

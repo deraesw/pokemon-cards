@@ -32,7 +32,8 @@ fun CardListSection(
                 CardContent(
                     cardDetail = (uiState as CardListState.Success).selectedCard!!,
                     onDismiss = cardListViewModel::dismissSelectedCard,
-//                    modifier = Modifier.fillMaxSize()
+//                    modifier = Modifier
+//                        .align(Alignment.Center)
                 )
             }
         }

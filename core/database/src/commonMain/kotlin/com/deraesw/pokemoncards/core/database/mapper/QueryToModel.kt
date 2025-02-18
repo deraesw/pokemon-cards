@@ -1,6 +1,7 @@
 package com.deraesw.pokemoncards.core.database.mapper
 
 import com.deraesw.pokemoncards.core.core.model.Card
+import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.CardType
 import com.deraesw.pokemoncards.core.database.Card_data
@@ -41,13 +42,15 @@ fun List<Card_data>.toCardDetailList(): List<Card> {
 }
 
 fun Flow<Card_data>.toCardDetailFlow(
-    types: List<CardType> = emptyList()
+    types: List<CardType> = emptyList(),
+    attacks: List<CardAttacks> = emptyList()
 ): Flow<Card> {
-    return this.map { item -> item.toCardDetail(types) }
+    return this.map { item -> item.toCardDetail(types, attacks) }
 }
 
 fun Card_data.toCardDetail(
-    types: List<CardType> = emptyList()
+    types: List<CardType> = emptyList(),
+    attacks: List<CardAttacks> = emptyList()
 ): Card {
     return Card(
         id = this.id,
@@ -63,7 +66,8 @@ fun Card_data.toCardDetail(
         flavorText = this.flavor_text,
         rarity = this.rarity,
         superType = null,
-        types = types
+        types = types,
+        attacks = attacks
     )
 }
 
