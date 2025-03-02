@@ -37,7 +37,6 @@ class CardDaoImp(
         val cardType = queries.selectCardTypes(cardId).executeAsList()
 
         val attacks = queries.selectCardAttacks(cardId).executeAsList().map {
-            println("attacks: ${it.id}, ${it.link_card_id}, ${it.name}, ${it.damage}, ${it.description}")
             val cost = queries.selectCardAttacksCost(it.id).executeAsList().map { costType ->
                 CardTypeKey(costType)
             }

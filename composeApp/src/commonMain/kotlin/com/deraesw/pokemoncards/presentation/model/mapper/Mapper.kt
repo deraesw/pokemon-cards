@@ -24,6 +24,9 @@ fun Card.toCardDetail(): CardDetail {
         hp = this.hp ?: "",
         imageLarge = this.imageLarge,
         types = this.types.map { it.name },
-        attacks = this.attacks
+        attacks = this.attacks,
+        rarity = this.rarity ?: "",
+        flavorText = this.flavorText ?: "",
+        artist = this.artist ?: "",
     )
 }

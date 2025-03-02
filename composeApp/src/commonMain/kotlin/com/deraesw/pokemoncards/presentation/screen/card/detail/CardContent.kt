@@ -16,28 +16,25 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.presentation.compose.CardTypeBox
 import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
 import com.deraesw.pokemoncards.presentation.compose.images.PcsImage
 import com.deraesw.pokemoncards.presentation.model.CardDetail
+import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.AttacksSection
+import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.CardDetailSection
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
-import com.deraesw.pokemoncards.presentation.theme.colorCardType
-import com.deraesw.pokemoncards.presentation.theme.colorOverlayCardType
 import org.jetbrains.compose.resources.stringResource
 import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.pokemon_card_hp
@@ -53,6 +50,9 @@ fun CardContent(
         modifier = modifier
             .background(ColorPalette.GrimBlack)
             .fillMaxSize()
+            .clickable(interactionSource = null, indication = null) {
+                // No click
+            }
     ) {
         Box(
             modifier = Modifier
@@ -65,7 +65,6 @@ fun CardContent(
                     .padding(32.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.White)
-                //modifier = Modifier.horizontalScroll(rememberScrollState())
             ) {
                 CardImageSection(
                     imageUrl = cardDetail.imageLarge,
@@ -169,97 +168,24 @@ fun CardInformationSection(
             PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
             BattleStatsSection()
             PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
-            CardDetailSection()
+            CardDetailSection(
+                cardDetail = cardDetail,
+                modifier = Modifier.fillMaxWidth(0.8f)
+            )
             PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
-        }
-    }
-}
-
-@Composable
-fun AttacksSection(
-    attacks: List<CardAttacks>,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-    ) {
-        Text(
-            text = "Attaks",
-            style = PokemonCardTheme.typography.titleMedium,
-//            color = ColorPalette.Gray700,
-        )
-        Spacer(modifier = Modifier.size(8.dp))
-        attacks.forEach { attack ->
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(ColorPalette.Gray100)
-            ) {
-                Column(
-                    modifier = Modifier.padding(8.dp)
-                ) {
-                    Row(
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Box(modifier = Modifier.weight(1f)) {
-                            Row {
-                                attack.cost.forEach {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(32.dp)
-                                            .clip(RoundedCornerShape(50))
-                                            .background(
-                                                brush =
-//                                                    Brush.linearGradient(
-//                                                    colors = listOf(
-//                                                        colorCardType(it.key()),
-//                                                        Color.White,
-//                                                        colorCardType(it.key())
-//                                                    )
-//                                                )
-                                                    Brush.radialGradient(
-                                                        0.3f to colorCardType(it.key()),
-                                                        1.0f to colorOverlayCardType(it.key()),
-//                                            center = Offset(side1 / 2.0f, side2 / 2.0f),
-//                                            radius = side1 / 2.0f,
-                                                        tileMode = TileMode.Decal
-                                                    )
-
-                                            )
-//                                        .background(colorCardType(it.key()))
-                                    )
-//                                    {
-//                                        Icon(Icons.Default.Close, contentDescription = it.key())
-//                                    }
-                                }
-                            }
-                        }
-                        Text(
-                            attack.name,
-                            style = PokemonCardTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.weight(1f),
-                        )
-                        Text(
-                            attack.damage,
-                            style = PokemonCardTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.End,
-                            modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
-                        )
-                    }
+            if (cardDetail.flavorText.isNotEmpty()) {
+                Row {
+                    Icon(
+                        Icons.Default.Info,
+                        contentDescription = "info",
+                        tint = ColorPalette.Blue500,
+                    )
                     Text(
-                        attack.description,
-                        style = PokemonCardTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Thin,
-                        color = ColorPalette.Gray800,
+                        text = cardDetail.flavorText,
+                        style = PokemonCardTheme.typography.labelLarge,
                     )
                 }
             }
-            Spacer(modifier = Modifier.size(8.dp))
         }
     }
 }
@@ -279,17 +205,3 @@ fun BattleStatsSection(
     }
 }
 
-@Composable
-fun CardDetailSection(
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-    ) {
-        Text(
-            text = "Card detail",
-            style = PokemonCardTheme.typography.titleMedium,
-//            color = ColorPalette.Gray700,
-        )
-    }
-}

@@ -7,53 +7,42 @@ import com.deraesw.pokemoncards.core.core.model.SortData
 import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.domain.NetworkManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CardSetViewModel(
     private val cardSetRepository: CardSetRepository,
     private val networkManager: NetworkManager
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(
-        CardSetState()
-    )
-    val uiState: StateFlow<CardSetState> = _uiState.asStateFlow()
 
-//    private var job: Job? = null
-
-    init {
-        fetchAllCardSets(
-            sorter = _uiState.value.sortData
-        )
-    }
-
-    fun fetchAllCardSets(
-        sorter: SortData,
-        query: String = ""
-    ) {
-//        job?.cancel()
-//        job =
-        viewModelScope.launch {
-            cardSetRepository
-                .allCardSets(
-                    sorter = sorter
+    private val _uiState = MutableStateFlow(CardSetState())
+    val uiState: StateFlow<CardSetState> = _uiState
+        //.debounce(300) to read about it
+        .flatMapLatest { state ->
+            cardSetRepository.allCardSets(
+                sorter = state.sortData
+            ).map { cardSetList ->
+                state.copy(
+                    cardSetList = filterCardSets(
+                        query = state.searchQuery,
+                        list = cardSetList
+                    ),
                 )
-                .collect { list ->
-                    _uiState.update {
-                        it.copy(
-                            cardSetList = filterCardSets(
-                                query = query,
-                                list = list
-                            )
-                        )
-                    }
-                }
-        }
-    }
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5000),
+            initialValue = _uiState.value
+        )
 
     fun setSelectedCardSet(id: String) {
         _uiState.update {
@@ -68,20 +57,12 @@ class CardSetViewModel(
         _uiState.update {
             it.copy(sortData = sortData)
         }
-        fetchAllCardSets(
-            sorter = sortData,
-            query = _uiState.value.searchQuery
-        )
     }
 
     fun updateSearchQuery(query: String) {
         _uiState.update {
             it.copy(searchQuery = query)
         }
-        fetchAllCardSets(
-            sorter = _uiState.value.sortData,
-            query = query
-        )
     }
 
     private fun filterCardSets(

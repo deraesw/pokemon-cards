@@ -8,6 +8,9 @@ data class CardDetail(
     val number: String = "",
     val hp: String = "",
     val imageLarge: String? = null,
+    val artist: String = "",
+    val flavorText: String = "",
+    val rarity: String = "",
     val types: List<String> = emptyList(),
     val attacks: List<CardAttacks> = emptyList()
 )
