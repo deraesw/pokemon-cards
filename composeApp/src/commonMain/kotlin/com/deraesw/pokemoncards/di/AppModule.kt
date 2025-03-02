@@ -48,5 +48,5 @@ private val domainModule = module {
 val presentationModule = module {
     viewModel { CardSetViewModel(get(), get()) }
     viewModel { CardSetDetailViewModel(get()) }
-    viewModel { CardListViewModel(get()) }
+    viewModel { CardListViewModel(get(), get()) }
 }

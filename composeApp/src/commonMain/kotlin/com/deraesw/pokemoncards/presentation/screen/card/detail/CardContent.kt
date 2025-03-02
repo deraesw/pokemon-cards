@@ -72,13 +72,16 @@ fun CardContent(
                 )
                 CardInformationSection(
                     cardDetail = cardDetail,
-                    modifier = Modifier.width(464.dp).padding(start = 8.dp, end = 16.dp)
+                    modifier = Modifier.width(464.dp)
+                        .padding(start = 8.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
                 )
             }
             Box(
                 modifier = Modifier
+                    .padding(top = 8.dp)
                     .align(Alignment.TopEnd)
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(50f))
+                    .size(32.dp)
                     .background(Color.White)
                     .clickable {
                         onDismiss()

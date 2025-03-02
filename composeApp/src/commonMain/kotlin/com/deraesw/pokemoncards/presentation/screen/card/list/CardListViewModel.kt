@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.data.repository.CardRepository
+import com.deraesw.pokemoncards.domain.NetworkManager
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.model.CardListItem
 import com.deraesw.pokemoncards.presentation.model.mapper.toCardDetail
@@ -16,10 +17,12 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CardListViewModel(
-    private val cardRepository: CardRepository
+    private val cardRepository: CardRepository,
+    private val networkManager: NetworkManager
 ) : ViewModel() {
 
     private val cardSetId = MutableStateFlow("")
@@ -70,6 +73,15 @@ class CardListViewModel(
     fun dismissSelectedCard() {
         Logger.debug("CardListViewModel", "dismissSelectedCard")
         this.cardId.value = ""
+    }
+
+    fun reSyncCardList() {
+        viewModelScope.launch {
+            networkManager.fetchSetCardsList(
+                carSetId = cardSetId.value,
+                force = true
+            )
+        }
     }
 }
 

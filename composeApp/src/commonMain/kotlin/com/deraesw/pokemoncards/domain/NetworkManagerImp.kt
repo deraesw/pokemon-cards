@@ -41,12 +41,15 @@ class NetworkManagerImp(
     }
 
     override suspend fun fetchSetCardsList(
-        carSetId: String
+        carSetId: String,
+        force: Boolean
     ) {
-        val count = cardRepository.getCardCountForSet(carSetId)
-        if (count > 0) {
-            Logger.info("NetworkManager", "Set cards already fetched.")
-            return
+        if (force.not()) {
+            val count = cardRepository.getCardCountForSet(carSetId)
+            if (count > 0) {
+                Logger.info("NetworkManager", "Set cards already fetched.")
+                return
+            }
         }
         Logger.info("NetworkManager", "Fetching set cards.")
 
