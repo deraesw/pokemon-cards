@@ -144,7 +144,7 @@ private fun CardSetSort(
 
     Column {
         OutlinedButton(
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = ColorPalette.Gray200,
                 contentColor = Color.Black

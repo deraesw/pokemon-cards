@@ -6,6 +6,7 @@ import app.cash.sqldelight.coroutines.mapToOne
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardTypeKey
+import com.deraesw.pokemoncards.core.core.model.SortCardData
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.core.database.Card_attacks_cost
 import com.deraesw.pokemoncards.core.database.factory.DatabaseFactory
@@ -25,9 +26,15 @@ class CardDaoImp(
         databaseFactory.database.cardDataQueries
     }
 
-    override suspend fun selectCardListFlow(cardSetId: String): Flow<List<Card>> {
+    override suspend fun selectCardListFlow(
+        cardSetId: String,
+        sorter: SortCardData
+    ): Flow<List<Card>> {
         return queries
-            .selectAllCardData(cardSetId)
+            .selectAllCardData(
+                cardSetId = cardSetId,
+                sorter = sorter.name
+            )
             .asFlow()
             .mapToList(Dispatchers.IO)
             .toCardDetailListFlow()

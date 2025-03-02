@@ -2,6 +2,7 @@ package com.deraesw.pokemoncards.presentation.screen.card.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.deraesw.pokemoncards.core.core.model.SortCardData
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.data.repository.CardRepository
 import com.deraesw.pokemoncards.domain.NetworkManager
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -25,16 +27,21 @@ class CardListViewModel(
     private val networkManager: NetworkManager
 ) : ViewModel() {
 
-    private val cardSetId = MutableStateFlow("")
-    val uiState: StateFlow<CardListState> = cardSetId
-        .flatMapLatest { id ->
+    private val localState = MutableStateFlow(CardListLocalState())
+
+    val uiState: StateFlow<CardListState> = localState
+        .flatMapLatest { state ->
             cardRepository
-                .getCardList(id)
+                .getCardList(
+                    cardSetId = state.cardSetId,
+                    sorter = state.sortCardData
+                )
                 .map {
                     Logger.debug("CardListViewModel", "fetchCardList list found - ${it.size}")
                     CardListState(
                         cardList = it.toCardListItems(),
-                        isLoading = false
+                        isLoading = false,
+                        sortCardData = state.sortCardData
                     )
                 }
         }.stateIn(
@@ -61,7 +68,9 @@ class CardListViewModel(
     fun selectCardSet(cardSetId: String) {
         Logger.debug("CardListViewModel", "fetchCardList - $cardSetId")
         this.cardId.value = ""
-        this.cardSetId.value = cardSetId
+        this.localState.update {
+            it.copy(cardSetId = cardSetId)
+        }
     }
 
 
@@ -75,17 +84,29 @@ class CardListViewModel(
         this.cardId.value = ""
     }
 
+    fun setSortCardData(sortCardData: SortCardData) {
+        localState.update {
+            it.copy(sortCardData = sortCardData)
+        }
+    }
+
     fun reSyncCardList() {
         viewModelScope.launch {
             networkManager.fetchSetCardsList(
-                carSetId = cardSetId.value,
+                carSetId = localState.value.cardSetId,
                 force = true
             )
         }
     }
 }
 
+data class CardListLocalState(
+    val cardSetId: String = "",
+    val sortCardData: SortCardData = SortCardData.CARD_NUMBER
+)
+
 data class CardListState(
     val cardList: List<CardListItem> = listOf(),
     val isLoading: Boolean = false,
+    val sortCardData: SortCardData = SortCardData.CARD_NUMBER
 )

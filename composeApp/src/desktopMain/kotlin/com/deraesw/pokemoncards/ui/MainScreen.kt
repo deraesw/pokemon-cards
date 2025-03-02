@@ -16,17 +16,22 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.core.core.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.SortCardData
+import com.deraesw.pokemoncards.presentation.compose.CardSortButton
 import com.deraesw.pokemoncards.presentation.compose.PcsSearchComponent
 import com.deraesw.pokemoncards.presentation.screen.card.list.CardListViewModel
 import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailContent
@@ -59,7 +64,7 @@ fun TwoPanelLayout(
     cardListViewModel: CardListViewModel = koinInject(),
 ) {
     val uiState = setDetailViewModel.uiState.collectAsState()
-
+    val uiCardState by cardListViewModel.uiState.collectAsState()
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -89,6 +94,7 @@ fun TwoPanelLayout(
                 when (val state = uiState.value) {
                     is CardSetDetailState.Success -> {
                         DetailSection(
+                            sortCardData = uiCardState.sortCardData,
                             cardSet = state.cardSet,
                             cardListViewModel = cardListViewModel,
                             modifier = Modifier
@@ -110,6 +116,7 @@ fun TwoPanelLayout(
 
 @Composable
 fun DetailSection(
+    sortCardData: SortCardData,
     cardSet: CardSet,
     cardListViewModel: CardListViewModel,
     modifier: Modifier = Modifier
@@ -134,8 +141,12 @@ fun DetailSection(
                 .background(ColorPalette.Gray200)
         ) {
             CardListActionSection(
+                sortCardData = sortCardData,
                 onClickReSync = {
                     cardListViewModel.reSyncCardList()
+                },
+                onSortSelect = {
+                    cardListViewModel.setSortCardData(it)
                 }
             )
         }
@@ -154,7 +165,9 @@ fun DetailSection(
 
 @Composable
 fun CardListActionSection(
+    sortCardData: SortCardData,
     onClickReSync: () -> Unit,
+    onSortSelect: (SortCardData) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -170,8 +183,19 @@ fun CardListActionSection(
         )
 
         Row(
-
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            CardSortButton(
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black
+                ),
+                size = DpSize(128.dp, 32.dp),
+                sortCardData = sortCardData,
+                onSortSelect = onSortSelect
+            )
+
             Box(
                 modifier = Modifier
                     .border(1.dp, ColorPalette.Gray400, RoundedCornerShape(8.dp))

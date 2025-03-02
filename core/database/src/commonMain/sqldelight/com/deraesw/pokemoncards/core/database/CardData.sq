@@ -48,7 +48,12 @@ countCardDataForSet:
 SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
 
 selectAllCardData:
-SELECT * FROM card_data WHERE link_card_set = :cardSetId;
+SELECT * FROM card_data WHERE link_card_set = :cardSetId
+ORDER BY
+    CASE
+        WHEN :sorter = 'NAME' THEN card_data.name
+        WHEN :sorter = 'CARD_NUMBER' THEN card_data.number
+    END ASC;
 
 selectCardData:
 SELECT * FROM card_data WHERE id = :cardId;
