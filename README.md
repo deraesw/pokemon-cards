@@ -26,4 +26,8 @@ https://insert-koin.io/
 https://github.com/Kotlin/kotlinx-datetime
 https://ktor.io/docs/client-create-new-application.html
 
+Images
+attacks icons
+https://bulbapedia.bulbagarden.net/wiki/
+
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
