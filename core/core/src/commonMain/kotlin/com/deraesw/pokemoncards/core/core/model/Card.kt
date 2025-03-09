@@ -6,6 +6,7 @@ data class Card(
     val id: String,
     val name: String,
     val superType: String?,
+    val setId: String,
     val level: String? = null,
     val hp: String? = null,
     val imageSmall: String? = null,
@@ -18,6 +19,8 @@ data class Card(
     val rarity: String? = null,
     val types: List<CardType> = listOf(),
     val attacks: List<CardAttacks> = listOf(),
+    val weaknesses: List<CardWeakness> = listOf(),
+    val resistances: List<CardResistance> = listOf()
 )
 
 data class CardType(
@@ -26,11 +29,20 @@ data class CardType(
 )
 
 data class CardAttacks(
-    //val id: String,
     val name: String,
     val damage: String,
     val description: String,
     val cost: List<CardTypeKey>
+)
+
+data class CardWeakness(
+    val typeKey: String,
+    val value: String
+)
+
+data class CardResistance(
+    val typeKey: String,
+    val value: String
 )
 
 @JvmInline

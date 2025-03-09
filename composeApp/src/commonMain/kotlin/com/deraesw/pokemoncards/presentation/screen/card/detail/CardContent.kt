@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
 import com.deraesw.pokemoncards.presentation.compose.images.PcsImage
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.AttacksSection
+import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.BattleStatsSection
 import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.CardDetailSection
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
@@ -44,7 +46,8 @@ import pokemoncards.composeapp.generated.resources.pokemon_card_number
 fun CardContent(
     cardDetail: CardDetail,
     modifier: Modifier = Modifier,
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit = {},
+    onRefresh: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -54,17 +57,41 @@ fun CardContent(
                 // No click
             }
     ) {
-        Box(
+        Column(
             modifier = Modifier
+                .padding(32.dp)
+                .width(928.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(Color.White)
                 .align(Alignment.Center)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
+            ) {
+                Row {
+                    Icon(
+                        Icons.Default.Refresh,
+                        contentDescription = "Refresh",
+                        modifier = Modifier.clickable {
+                            onRefresh()
+                        }
+                    )
+                }
+                Icon(
+                    Icons.Default.Close,
+                    contentDescription = "Close",
+                    modifier = Modifier.clickable {
+                        onDismiss()
+                    }
+                )
+            }
+            PcsHorDivider()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .padding(32.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.White)
+
             ) {
                 CardImageSection(
                     imageUrl = cardDetail.imageLarge,
@@ -76,26 +103,8 @@ fun CardContent(
                         .padding(start = 8.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
                 )
             }
-            Box(
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .align(Alignment.TopEnd)
-                    .clip(RoundedCornerShape(50f))
-                    .size(32.dp)
-                    .background(Color.White)
-                    .clickable {
-                        onDismiss()
-                    }
-            ) {
-                Icon(
-                    Icons.Default.Close,
-                    contentDescription = "Close",
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
         }
     }
-
 }
 
 @Composable
@@ -169,7 +178,7 @@ fun CardInformationSection(
                 AttacksSection(cardDetail.attacks)
             }
             PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
-            BattleStatsSection()
+            BattleStatsSection(cardDetail = cardDetail)
             PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
             CardDetailSection(
                 cardDetail = cardDetail,
@@ -192,19 +201,3 @@ fun CardInformationSection(
         }
     }
 }
-
-@Composable
-fun BattleStatsSection(
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-    ) {
-        Text(
-            text = "Battle stats",
-            style = PokemonCardTheme.typography.titleMedium,
-//            color = ColorPalette.Gray700,
-        )
-    }
-}
-

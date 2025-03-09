@@ -10,6 +10,8 @@
     <string name="last_updated_at">Last updated at</string>
     <string name="format_legality">Format legality</string>
 
+    <string name="battle_stats">Battle stats</string>
+
     <string name="pokemon_card_number">#%1$s</string>
     <string name="pokemon_card_hp">HP %1$s</string>
 

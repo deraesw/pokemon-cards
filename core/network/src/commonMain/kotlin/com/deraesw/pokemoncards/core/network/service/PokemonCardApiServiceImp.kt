@@ -5,12 +5,14 @@ import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.util.Constant
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.core.network.client.NetworkClient
+import com.deraesw.pokemoncards.core.network.mapper.NetworkToModel.toCard
 import com.deraesw.pokemoncards.core.network.mapper.NetworkToModel.toCardList
 import com.deraesw.pokemoncards.core.network.mapper.NetworkToModel.toCardSetList
 import com.deraesw.pokemoncards.core.network.model.ListDataModel
 import com.deraesw.pokemoncards.core.network.model.ListSimpleModel
 import com.deraesw.pokemoncards.core.network.model.NetworkCardData
 import com.deraesw.pokemoncards.core.network.model.NetworkCardSet
+import com.deraesw.pokemoncards.core.network.model.SimpleModel
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
@@ -20,30 +22,27 @@ import io.ktor.http.headers
 class PokemonCardApiServiceImp(
     private val networkClient: NetworkClient
 ) : PokemonCardApiService {
+    private val tag = "PokemonCardApiService"
     private val baseUrl = "https://api.pokemontcg.io/v2"
 
     override suspend fun getAllSets(): List<CardSet> {
-        Logger.debug("PokemonCardApiService", "getAllSets")
+        Logger.debug(tag, "getAllSets")
         return runCatching {
             val response = networkClient
                 .client
                 .getWithKey("$baseUrl/sets")
             val responseData = response.body<ListDataModel<NetworkCardSet>>()
-            Logger.debug("PokemonCardApiService", "getAllSets response: $responseData")
+            Logger.debug(tag, "getAllSets response: $responseData")
             responseData.data.toCardSetList()
         }.onFailure {
-            Logger.error(
-                "PokemonCardApiService",
-                "Error while processing the request: ${it.message}",
-                it
-            )
+            logError(it.message ?: "", it)
         }.getOrDefault(listOf())
     }
 
     override suspend fun getSetCards(
         baseId: String
     ): List<Card> {
-        Logger.debug("PokemonCardApiService", "getSetCards")
+        Logger.debug(tag, "getSetCards")
         return runCatching {
             val response = networkClient
                 .client
@@ -53,15 +52,27 @@ class PokemonCardApiServiceImp(
                     }
                 }
             val responseData = response.body<ListDataModel<NetworkCardData>>()
-            Logger.debug("PokemonCardApiService", "getSetCards response: $responseData")
+            Logger.debug(tag, "getSetCards response: $responseData")
             responseData.data.toCardList()
         }.onFailure {
-            Logger.error(
-                "PokemonCardApiService",
-                "Error while processing the request: ${it.message}",
-                it
-            )
+            logError(it.message ?: "", it)
         }.getOrDefault(listOf())
+    }
+
+    override suspend fun getCards(
+        cardId: String
+    ): Card? {
+        Logger.debug(tag, "getCards")
+        return runCatching {
+            val response = networkClient
+                .client
+                .getWithKey("$baseUrl/cards/$cardId")
+            val responseData = response.body<SimpleModel<NetworkCardData>>()
+            Logger.debug(tag, "getSetCards response: $responseData")
+            responseData.data.toCard()
+        }.onFailure {
+            logError(it.message ?: "", it)
+        }.getOrNull()
     }
 
     override suspend fun getCardTypes(): List<String> {
@@ -72,11 +83,7 @@ class PokemonCardApiServiceImp(
             val responseData = response.body<ListSimpleModel<String>>()
             responseData.data
         }.onFailure {
-            Logger.error(
-                "PokemonCardApiService",
-                "Error while processing the request: ${it.message}",
-                it
-            )
+            logError(it.message ?: "", it)
         }.getOrDefault(listOf())
     }
 
@@ -88,5 +95,16 @@ class PokemonCardApiServiceImp(
             append("X-Api-Key", Constant.apiKey)
         }
         block()
+    }
+
+    private fun logError(
+        message: String,
+        throwable: Throwable
+    ) {
+        Logger.error(
+            tag,
+            "Error while processing the request: $message",
+            throwable
+        )
     }
 }

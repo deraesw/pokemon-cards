@@ -64,4 +64,18 @@ class NetworkManagerImp(
         Logger.info("NetworkManager", "Data found: ${data.size}, saving.")
         cardRepository.saveCardList(carSetId, data)
     }
+
+    override suspend fun fetchCard(carId: String) {
+        Logger.info("NetworkManager", "Fetching card.")
+
+        val data = pokemonService.getCards(carId)
+
+        if (data == null) {
+            Logger.info("NetworkManager", "No data found.")
+            return
+        }
+
+        Logger.info("NetworkManager", "Data found saving.")
+        cardRepository.saveCard(data)
+    }
 }

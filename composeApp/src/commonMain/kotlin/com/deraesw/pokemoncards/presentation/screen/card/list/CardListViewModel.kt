@@ -98,6 +98,12 @@ class CardListViewModel(
             )
         }
     }
+
+    fun reSyncCard(cardId: String) {
+        viewModelScope.launch {
+            networkManager.fetchCard(carId = cardId)
+        }
+    }
 }
 
 data class CardListLocalState(

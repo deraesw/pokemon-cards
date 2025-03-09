@@ -26,16 +26,15 @@ fun CardListSection(
             modifier = Modifier.fillMaxSize(),
             onCardClick = cardListViewModel::selectCard
         )
-        if (cardDetail != null) {
+
+        cardDetail?.apply {
             CardContent(
-                cardDetail = cardDetail!!,
+                cardDetail = this,
                 onDismiss = cardListViewModel::dismissSelectedCard,
-//                    modifier = Modifier
-//                        .align(Alignment.Center)
+                onRefresh = {
+                    cardListViewModel.reSyncCard(cardId = this.id)
+                }
             )
         }
-//        if (uiState is CardListState.Success) {
-//
-//        }
     }
 }

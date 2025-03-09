@@ -122,7 +122,7 @@ fun AttackTypeIcon(
         if (attackIcon != null) {
             Image(
                 painter = painterResource(attackIcon),
-                contentDescription = "",
+                contentDescription = "icon attack of type $type",
                 modifier = Modifier
                     .matchParentSize()
                     .align(Alignment.Center)
@@ -131,7 +131,7 @@ fun AttackTypeIcon(
     }
 }
 
-private fun getAttackIcon(type: String): DrawableResource? {
+fun getAttackIcon(type: String): DrawableResource? {
     return when (type.uppercase()) {
         "COLORLESS" -> Res.drawable.icon_colorless_attack
         "DARKNESS" -> Res.drawable.icon_darkness_attack

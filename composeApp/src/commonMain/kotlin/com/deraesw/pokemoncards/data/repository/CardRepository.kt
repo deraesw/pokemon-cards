@@ -13,5 +13,6 @@ interface CardRepository {
     suspend fun getCard(cardId: String): Flow<Card>
     suspend fun getCardCountForSet(cardSetId: String): Int
     suspend fun saveCardList(cardSetId: String, cardList: List<Card>)
+    suspend fun saveCard(card: Card)
     suspend fun savedCardType(types: List<String>)
 }

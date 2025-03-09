@@ -2,8 +2,10 @@ package com.deraesw.pokemoncards.core.database.mapper
 
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
+import com.deraesw.pokemoncards.core.core.model.CardResistance
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.CardType
+import com.deraesw.pokemoncards.core.core.model.CardWeakness
 import com.deraesw.pokemoncards.core.database.Card_data
 import com.deraesw.pokemoncards.core.database.Card_set
 import com.deraesw.pokemoncards.core.database.Card_type
@@ -43,14 +45,25 @@ fun List<Card_data>.toCardDetailList(): List<Card> {
 
 fun Flow<Card_data>.toCardDetailFlow(
     types: List<CardType> = emptyList(),
-    attacks: List<CardAttacks> = emptyList()
+    attacks: List<CardAttacks> = emptyList(),
+    weaknesses: List<CardWeakness> = emptyList(),
+    resistances: List<CardResistance> = emptyList()
 ): Flow<Card> {
-    return this.map { item -> item.toCardDetail(types, attacks) }
+    return this.map { item ->
+        item.toCardDetail(
+            types = types,
+            attacks = attacks,
+            weaknesses = weaknesses,
+            resistances = resistances
+        )
+    }
 }
 
 fun Card_data.toCardDetail(
     types: List<CardType> = emptyList(),
-    attacks: List<CardAttacks> = emptyList()
+    attacks: List<CardAttacks> = emptyList(),
+    weaknesses: List<CardWeakness> = emptyList(),
+    resistances: List<CardResistance> = emptyList()
 ): Card {
     return Card(
         id = this.id,
@@ -67,7 +80,10 @@ fun Card_data.toCardDetail(
         rarity = this.rarity,
         superType = null,
         types = types,
-        attacks = attacks
+        attacks = attacks,
+        setId = this.link_card_set,
+        weaknesses = weaknesses,
+        resistances = resistances
     )
 }
 

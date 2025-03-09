@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS card_type (
 CREATE TABLE IF NOT EXISTS junction_card_card_type (
     card_id TEXT NOT NULL,
     type_id TEXT NOT NULL,
-    FOREIGN KEY (card_id) REFERENCES card_data(id),
-    FOREIGN KEY (type_id) REFERENCES card_type(id),
+    FOREIGN KEY (card_id) REFERENCES card_data(id) ON DELETE CASCADE,
+    FOREIGN KEY (type_id) REFERENCES card_type(id) ON DELETE CASCADE,
     PRIMARY KEY (card_id, type_id)
 );
 
@@ -34,14 +34,30 @@ CREATE TABLE IF NOT EXISTS card_attacks (
     name TEXT NOT NULL,
     damage TEXT NOT NULL,
     description TEXT NOT NULL,
-    FOREIGN KEY (link_card_id) REFERENCES card_data(id)
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS card_attacks_cost (
     link_card_attacks_id INTEGER NOT NULL,
     link_card_type_id TEXT NOT NULL,
-    FOREIGN KEY (link_card_attacks_id) REFERENCES card_attacks(id),
-    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id)
+    FOREIGN KEY (link_card_attacks_id) REFERENCES card_attacks(id) ON DELETE CASCADE,
+    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_weakness(
+    link_card_id TEXT NOT NULL,
+    link_card_type_id TEXT NOT NULL,
+    value TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE,
+    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_resistance(
+    link_card_id TEXT NOT NULL,
+    link_card_type_id TEXT NOT NULL,
+    value TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE,
+    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
 );
 
 countCardDataForSet:
@@ -75,6 +91,16 @@ SELECT card_type.name FROM card_attacks_cost
 INNER JOIN card_type ON card_type.id = card_attacks_cost.link_card_type_id
 WHERE card_attacks_cost.link_card_attacks_id = :attackId;
 
+selectCardWeaknesses:
+SELECT card_weakness.*, card_type.name FROM card_weakness
+INNER JOIN card_type ON card_type.id = card_weakness.link_card_type_id
+WHERE card_weakness.link_card_id = :cardId;
+
+selectCardResistances:
+SELECT card_resistance.*, card_type.name FROM card_resistance
+INNER JOIN card_type ON card_type.id = card_resistance.link_card_type_id
+WHERE card_resistance.link_card_id = :cardId;
+
 selectLastInsertId:
 SELECT last_insert_rowid();
 
@@ -88,7 +114,17 @@ insertCardTypeJunction:
 INSERT OR IGNORE INTO junction_card_card_type VALUES :data;
 
 insertCardAttacks:
-INSERT OR IGNORE INTO card_attacks(link_card_id, name, damage, description) VALUES (:cardId, :name, :damage, :desciption);
+INSERT OR IGNORE INTO card_attacks(link_card_id, name, damage, description)
+VALUES (:cardId, :name, :damage, :desciption);
 
 insertCardAttacksCost:
 INSERT OR IGNORE INTO card_attacks_cost VALUES :data;
+
+insertCardWeakness:
+INSERT OR IGNORE INTO card_weakness VALUES :data;
+
+insertCardResistance:
+INSERT OR IGNORE INTO card_resistance VALUES :data;
+
+deleteCard:
+DELETE FROM card_data WHERE card_data.id = :card_id;

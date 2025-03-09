@@ -2,9 +2,11 @@ package com.deraesw.pokemoncards.core.network.mapper
 
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
+import com.deraesw.pokemoncards.core.core.model.CardResistance
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.CardType
 import com.deraesw.pokemoncards.core.core.model.CardTypeKey
+import com.deraesw.pokemoncards.core.core.model.CardWeakness
 import com.deraesw.pokemoncards.core.network.model.NetworkCardData
 import com.deraesw.pokemoncards.core.network.model.NetworkCardSet
 
@@ -32,11 +34,12 @@ internal object NetworkToModel {
         return this.map { item -> item.toCard() }
     }
 
-    private fun NetworkCardData.toCard(): Card {
+    fun NetworkCardData.toCard(): Card {
         return Card(
             id = this.id,
             name = this.name,
             superType = this.superType,
+            setId = this.set.id,
             level = this.level,
             hp = this.hp,
             imageSmall = this.images.small,
@@ -46,6 +49,19 @@ internal object NetworkToModel {
             number = this.number,
             artist = this.artist,
             flavorText = this.flavorText,
+            rarity = this.rarity,
+            resistances = this.resistances?.map {
+                CardResistance(
+                    typeKey = it.type.uppercase(),
+                    value = it.value
+                )
+            } ?: listOf(),
+            weaknesses = this.weaknesses?.map {
+                CardWeakness(
+                    typeKey = it.type.uppercase(),
+                    value = it.value
+                )
+            } ?: listOf(),
             types = this.types?.map { CardType(id = it.uppercase(), name = it) } ?: listOf(),
             attacks = this.attacks?.map { attack ->
                 CardAttacks(

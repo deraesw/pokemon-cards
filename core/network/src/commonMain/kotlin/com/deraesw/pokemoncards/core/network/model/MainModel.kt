@@ -15,3 +15,8 @@ internal data class ListDataModel<T>(
 internal data class ListSimpleModel<T>(
     val data: List<T>,
 )
+
+@Serializable
+internal data class SimpleModel<T>(
+    val data: T,
+)

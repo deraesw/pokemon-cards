@@ -9,5 +9,6 @@ interface CardDao {
     suspend fun selectCardFlow(cardId: String): Flow<Card>
     suspend fun selectCardSetCount(cardSetId: String): Int
     suspend fun bulkInsertCard(cardSetId: String, cardList: List<Card>)
+    suspend fun insertCard(card: Card)
     suspend fun bulkInsertCardType(types: List<String>)
 }

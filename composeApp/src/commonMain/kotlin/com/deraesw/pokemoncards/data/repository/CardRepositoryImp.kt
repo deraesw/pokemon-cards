@@ -31,6 +31,10 @@ class CardRepositoryImp(
         cardDao.bulkInsertCard(cardSetId, cardList)
     }
 
+    override suspend fun saveCard(card: Card) {
+        cardDao.insertCard(card)
+    }
+
     override suspend fun savedCardType(types: List<String>) {
         cardDao.bulkInsertCardType(types)
     }

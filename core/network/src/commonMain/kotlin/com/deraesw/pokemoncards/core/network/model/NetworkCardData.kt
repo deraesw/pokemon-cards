@@ -17,6 +17,7 @@ internal data class NetworkCardData(
     val abilities: List<NetworkCardAbility>? = null,
     val attacks: List<NetworkCardAttack>? = null,
     val weaknesses: List<NetworkCardWeakness>? = null,
+    val resistances: List<NetworkCardResistance>? = null,
     val retreatCost: List<String>? = null,
     val convertedRetreatCost: Int? = null,
     val artist: String? = null,
@@ -26,7 +27,8 @@ internal data class NetworkCardData(
 //    @SerialName("legalities") val legalities: CardLegalities,
     val images: NetworkCardImages,
 //    @SerialName("tcgplayer") val tcgplayer: Tcgplayer? = null,
-//    @SerialName("cardmarket") val cardmarket: Cardmarket? = null
+//    @SerialName("cardmarket") val cardmarket: Cardmarket? = null,
+    val set: NetworkCardSetData
 )
 
 @Serializable
@@ -55,4 +57,15 @@ internal data class NetworkCardImages(
 internal data class NetworkCardWeakness(
     val type: String,
     val value: String
+)
+
+@Serializable
+internal data class NetworkCardResistance(
+    val type: String,
+    val value: String
+)
+
+@Serializable
+internal data class NetworkCardSetData(
+    val id: String
 )
