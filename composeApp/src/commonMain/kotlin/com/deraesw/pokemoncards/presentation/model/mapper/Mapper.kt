@@ -29,6 +29,7 @@ fun Card.toCardDetail(): CardDetail {
         flavorText = this.flavorText ?: "",
         artist = this.artist ?: "",
         weaknesses = this.weaknesses,
-        resistances = this.resistances
+        resistances = this.resistances,
+        retreatCost = this.retreatCost
     )
 }

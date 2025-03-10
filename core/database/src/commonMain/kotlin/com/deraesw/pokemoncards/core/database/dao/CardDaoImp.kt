@@ -5,19 +5,20 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
-import com.deraesw.pokemoncards.core.core.model.CardResistance
 import com.deraesw.pokemoncards.core.core.model.CardTypeKey
-import com.deraesw.pokemoncards.core.core.model.CardWeakness
 import com.deraesw.pokemoncards.core.core.model.SortCardData
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.core.database.Card_attacks_cost
 import com.deraesw.pokemoncards.core.database.Card_resistance
+import com.deraesw.pokemoncards.core.database.Card_retreat_cost
 import com.deraesw.pokemoncards.core.database.Card_weakness
 import com.deraesw.pokemoncards.core.database.factory.DatabaseFactory
 import com.deraesw.pokemoncards.core.database.mapper.toCardDetailFlow
 import com.deraesw.pokemoncards.core.database.mapper.toCardDetailListFlow
 import com.deraesw.pokemoncards.core.database.mapper.toCardEntity
+import com.deraesw.pokemoncards.core.database.mapper.toCardResistanceList
 import com.deraesw.pokemoncards.core.database.mapper.toCardTypeList
+import com.deraesw.pokemoncards.core.database.mapper.toCardWeaknessList
 import com.deraesw.pokemoncards.core.database.mapper.toJunctionCardTypeEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -59,18 +60,20 @@ class CardDaoImp(
             )
         }
 
-        val weakness = queries.selectCardWeaknesses(cardId).executeAsList().map {
-            CardWeakness(
-                typeKey = it.link_card_type_id,
-                value = it.value_
-            )
-        }
-        val resistance = queries.selectCardResistances(cardId).executeAsList().map {
-            CardResistance(
-                typeKey = it.link_card_type_id,
-                value = it.value_
-            )
-        }
+        val weakness = queries
+            .selectCardWeaknesses(cardId)
+            .executeAsList()
+            .toCardWeaknessList()
+
+        val resistance = queries
+            .selectCardResistances(cardId)
+            .executeAsList()
+            .toCardResistanceList()
+
+        val retreatCost = queries
+            .selectCardRetreatCost(cardId)
+            .executeAsList()
+            .map { CardTypeKey(it.link_card_type_id) }
 
         return queries
             .selectCardData(cardId)
@@ -80,7 +83,8 @@ class CardDaoImp(
                 types = cardType.toCardTypeList(),
                 attacks = attacks,
                 weaknesses = weakness,
-                resistances = resistance
+                resistances = resistance,
+                retreatCost = retreatCost
             )
     }
 
@@ -96,56 +100,42 @@ class CardDaoImp(
         cardList: List<Card>
     ) {
         cardList.forEach { card ->
-            queries.transaction {
-                runCatching {
-                    val cardData = card.toCardEntity(cardSetId)
-                    val typeJunction = card.toJunctionCardTypeEntity()
-
-                    queries.insertCardData(cardData)
-                    typeJunction.forEach { item ->
-                        queries.insertCardTypeJunction(item)
-                    }
-
-                    Logger.debug("CardDao", "insert card - save card attacks.")
-                    saveCardAttacks(card)
-                    Logger.debug("CardDao", "insert card - save card weakness.")
-                    saveCardWeakness(card)
-                    Logger.debug("CardDao", "insert card - save card resistance.")
-                    saveCardResistance(card)
-                }.onFailure {
-                    Logger.error("CardDao", "Error while inserting card data")
-                    this.rollback()
-                }
-            }
+            insertCard(card)
         }
     }
 
     override suspend fun insertCard(card: Card) {
         queries.transaction {
             runCatching {
-                Logger.debug("CardDao", "insert card - delete card.")
-                queries.deleteCard(card_id = card.id)
-
-                val cardData = card.toCardEntity(card.setId)
-                val typeJunction = card.toJunctionCardTypeEntity()
-
-                Logger.debug("CardDao", "insert card - save card.")
-                queries.insertCardData(cardData)
-                typeJunction.forEach { item ->
-                    queries.insertCardTypeJunction(item)
-                }
-
-                Logger.debug("CardDao", "insert card - save card attacks.")
-                saveCardAttacks(card)
-                Logger.debug("CardDao", "insert card - save card weakness.")
-                saveCardWeakness(card)
-                Logger.debug("CardDao", "insert card - save card resistance.")
-                saveCardResistance(card)
+                saveCardData(card)
             }.onFailure {
                 Logger.error("CardDao", "Error while inserting card data")
                 this.rollback()
             }
         }
+    }
+
+    private fun saveCardData(card: Card) {
+        Logger.debug("CardDao", "insert card - delete card.")
+        queries.deleteCard(card_id = card.id)
+
+        val cardData = card.toCardEntity(card.setId)
+        val typeJunction = card.toJunctionCardTypeEntity()
+
+        Logger.debug("CardDao", "insert card - save card.")
+        queries.insertCardData(cardData)
+        typeJunction.forEach { item ->
+            queries.insertCardTypeJunction(item)
+        }
+
+        Logger.debug("CardDao", "insert card - save card attacks.")
+        saveCardAttacks(card)
+        Logger.debug("CardDao", "insert card - save card weakness.")
+        saveCardWeakness(card)
+        Logger.debug("CardDao", "insert card - save card resistance.")
+        saveCardResistance(card)
+        Logger.debug("CardDao", "insert card - save card retreat cost.")
+        saveCardRetreatCost(card)
     }
 
     private fun saveCardAttacks(card: Card) {
@@ -167,7 +157,6 @@ class CardDaoImp(
                 )
             }
         }
-
     }
 
     private fun saveCardWeakness(card: Card) {
@@ -189,6 +178,17 @@ class CardDaoImp(
                     link_card_id = card.id,
                     link_card_type_id = it.typeKey,
                     value_ = it.value
+                )
+            )
+        }
+    }
+
+    private fun saveCardRetreatCost(card: Card) {
+        card.retreatCost.forEach {
+            queries.insertCardRetreatCost(
+                Card_retreat_cost(
+                    link_card_id = card.id,
+                    link_card_type_id = it.key()
                 )
             )
         }

@@ -5,10 +5,13 @@ import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardResistance
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.CardType
+import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.CardWeakness
 import com.deraesw.pokemoncards.core.database.Card_data
 import com.deraesw.pokemoncards.core.database.Card_set
 import com.deraesw.pokemoncards.core.database.Card_type
+import com.deraesw.pokemoncards.core.database.SelectCardResistances
+import com.deraesw.pokemoncards.core.database.SelectCardWeaknesses
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -47,14 +50,16 @@ fun Flow<Card_data>.toCardDetailFlow(
     types: List<CardType> = emptyList(),
     attacks: List<CardAttacks> = emptyList(),
     weaknesses: List<CardWeakness> = emptyList(),
-    resistances: List<CardResistance> = emptyList()
+    resistances: List<CardResistance> = emptyList(),
+    retreatCost: List<CardTypeKey> = emptyList()
 ): Flow<Card> {
     return this.map { item ->
         item.toCardDetail(
             types = types,
             attacks = attacks,
             weaknesses = weaknesses,
-            resistances = resistances
+            resistances = resistances,
+            retreatCost = retreatCost
         )
     }
 }
@@ -63,7 +68,8 @@ fun Card_data.toCardDetail(
     types: List<CardType> = emptyList(),
     attacks: List<CardAttacks> = emptyList(),
     weaknesses: List<CardWeakness> = emptyList(),
-    resistances: List<CardResistance> = emptyList()
+    resistances: List<CardResistance> = emptyList(),
+    retreatCost: List<CardTypeKey> = emptyList()
 ): Card {
     return Card(
         id = this.id,
@@ -83,7 +89,8 @@ fun Card_data.toCardDetail(
         attacks = attacks,
         setId = this.link_card_set,
         weaknesses = weaknesses,
-        resistances = resistances
+        resistances = resistances,
+        retreatCost = retreatCost
     )
 }
 
@@ -92,6 +99,24 @@ fun List<Card_type>.toCardTypeList(): List<CardType> {
         CardType(
             id = item.id,
             name = item.name
+        )
+    }
+}
+
+fun List<SelectCardResistances>.toCardResistanceList(): List<CardResistance> {
+    return this.map { item ->
+        CardResistance(
+            typeKey = item.link_card_type_id,
+            value = item.value_
+        )
+    }
+}
+
+fun List<SelectCardWeaknesses>.toCardWeaknessList(): List<CardWeakness> {
+    return this.map { item ->
+        CardWeakness(
+            typeKey = item.link_card_type_id,
+            value = item.value_
         )
     }
 }

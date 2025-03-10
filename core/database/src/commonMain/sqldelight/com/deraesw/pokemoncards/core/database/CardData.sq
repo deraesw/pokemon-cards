@@ -60,6 +60,13 @@ CREATE TABLE IF NOT EXISTS card_resistance(
     FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS card_retreat_cost(
+    link_card_id TEXT NOT NULL,
+    link_card_type_id TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE,
+    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
+);
+
 countCardDataForSet:
 SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
 
@@ -101,6 +108,11 @@ SELECT card_resistance.*, card_type.name FROM card_resistance
 INNER JOIN card_type ON card_type.id = card_resistance.link_card_type_id
 WHERE card_resistance.link_card_id = :cardId;
 
+selectCardRetreatCost:
+SELECT card_retreat_cost.* FROM card_retreat_cost
+INNER JOIN card_type ON card_type.id = card_retreat_cost.link_card_type_id
+WHERE card_retreat_cost.link_card_id = :cardId;
+
 selectLastInsertId:
 SELECT last_insert_rowid();
 
@@ -125,6 +137,9 @@ INSERT OR IGNORE INTO card_weakness VALUES :data;
 
 insertCardResistance:
 INSERT OR IGNORE INTO card_resistance VALUES :data;
+
+insertCardRetreatCost:
+INSERT OR IGNORE INTO card_retreat_cost VALUES :data;
 
 deleteCard:
 DELETE FROM card_data WHERE card_data.id = :card_id;

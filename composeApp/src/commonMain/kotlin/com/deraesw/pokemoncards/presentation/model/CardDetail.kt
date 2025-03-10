@@ -2,6 +2,7 @@ package com.deraesw.pokemoncards.presentation.model
 
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardResistance
+import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.CardWeakness
 
 data class CardDetail(
@@ -16,5 +17,6 @@ data class CardDetail(
     val types: List<String> = emptyList(),
     val attacks: List<CardAttacks> = emptyList(),
     val weaknesses: List<CardWeakness> = emptyList(),
-    val resistances: List<CardResistance> = emptyList()
+    val resistances: List<CardResistance> = emptyList(),
+    val retreatCost: List<CardTypeKey> = emptyList(),
 )

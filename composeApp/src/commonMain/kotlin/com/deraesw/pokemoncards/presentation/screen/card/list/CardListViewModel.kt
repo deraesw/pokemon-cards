@@ -14,6 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -44,26 +45,35 @@ class CardListViewModel(
                         sortCardData = state.sortCardData
                     )
                 }
-        }.stateIn(
+        }
+        .catch {
+            Logger.error("CardListViewModel", "fetchCardList error - ${it.message}")
+        }
+        .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5000),
             initialValue = CardListState(isLoading = true)
         )
 
     private val cardId = MutableStateFlow("")
-    val cardDetail: StateFlow<CardDetail?> = cardId.flatMapLatest { id ->
-        Logger.debug("CardListViewModel", "fetchCard - $id")
-        if (id.isEmpty()) return@flatMapLatest flowOf(null)
-        cardRepository
-            .getCard(id)
-            .map {
-                it.toCardDetail()
-            }
-    }.stateIn(
-        scope = viewModelScope,
-        started = WhileSubscribed(5000),
-        initialValue = null
-    )
+    val cardDetail: StateFlow<CardDetail?> = cardId
+        .flatMapLatest { id ->
+            Logger.debug("CardListViewModel", "fetchCard - $id")
+            if (id.isEmpty()) return@flatMapLatest flowOf(null)
+            cardRepository
+                .getCard(id)
+                .map {
+                    it.toCardDetail()
+                }
+        }
+        .catch {
+            Logger.error("CardListViewModel", "fetchCard error - ${it.message}")
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(5000),
+            initialValue = null
+        )
 
     fun selectCardSet(cardSetId: String) {
         Logger.debug("CardListViewModel", "fetchCardList - $cardSetId")

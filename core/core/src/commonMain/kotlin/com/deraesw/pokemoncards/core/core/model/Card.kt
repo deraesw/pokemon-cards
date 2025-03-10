@@ -20,7 +20,8 @@ data class Card(
     val types: List<CardType> = listOf(),
     val attacks: List<CardAttacks> = listOf(),
     val weaknesses: List<CardWeakness> = listOf(),
-    val resistances: List<CardResistance> = listOf()
+    val resistances: List<CardResistance> = listOf(),
+    val retreatCost: List<CardTypeKey> = listOf()
 )
 
 data class CardType(

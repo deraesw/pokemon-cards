@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.SortData
+import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.domain.NetworkManager
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -38,7 +40,11 @@ class CardSetViewModel(
                     ),
                 )
             }
-        }.stateIn(
+        }
+        .catch {
+            Logger.error("CardSetViewModel", "fetchCardSets error - ${it.message}")
+        }
+        .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5000),
             initialValue = _uiState.value

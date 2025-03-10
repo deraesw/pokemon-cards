@@ -14,6 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.deraesw.pokemoncards.core.core.model.CardResistance
+import com.deraesw.pokemoncards.core.core.model.CardTypeKey
+import com.deraesw.pokemoncards.core.core.model.CardWeakness
+import com.deraesw.pokemoncards.presentation.compose.PcsTypeIcon
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
@@ -42,70 +46,111 @@ fun BattleStatsSection(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = "Weakness",
-                    style = PokemonCardTheme.typography.labelLarge,
-                    color = ColorPalette.Gray500,
-                    modifier = Modifier
+                SubTitle(text = "Weakness")
+                Weaknesses(
+                    weaknesses = cardDetail.weaknesses,
+                    modifier = Modifier.padding(top = 8.dp)
                 )
-                cardDetail.weaknesses.forEach {
-                    val attackIcon = remember { getAttackIcon(it.typeKey) }
-                    if (attackIcon != null) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                            modifier = Modifier.padding(top = 8.dp)
-                        ) {
-                            Image(
-                                painter = painterResource(attackIcon),
-                                contentDescription = "icon attack of type ${it.typeKey}",
-                                modifier = Modifier.size(28.dp)
-                            )
-                            Text(
-                                text = it.value,
-                                style = PokemonCardTheme.typography.titleLarge,
-                            )
-                        }
-                    }
-                }
             }
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = "Resistance",
-                    style = PokemonCardTheme.typography.labelLarge,
-                    color = ColorPalette.Gray500,
+                SubTitle(text = "Resistance")
+                Resistances(
+                    resistances = cardDetail.resistances,
+                    modifier = Modifier.padding(top = 8.dp)
                 )
+            }
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                SubTitle(text = "Retreat cost")
+                RetreatCost(
+                    retreatCost = cardDetail.retreatCost,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+        }
+    }
+}
 
-                cardDetail.resistances.forEach {
-                    val attackIcon = remember { getAttackIcon(it.typeKey) }
-                    if (attackIcon != null) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                            modifier = Modifier.padding(top = 8.dp)
-                        ) {
-                            Image(
-                                painter = painterResource(attackIcon),
-                                contentDescription = "icon attack of type ${it.typeKey}",
-                                modifier = Modifier.size(28.dp)
-                            )
-                            Text(
-                                text = it.value,
-                                style = PokemonCardTheme.typography.titleLarge,
-                            )
-                        }
-                    }
-                }
-            }
-            Column(
-                modifier = Modifier.weight(1f)
+@Composable
+private fun SubTitle(
+    text: String
+) {
+    Text(
+        text = text,
+        style = PokemonCardTheme.typography.labelLarge,
+        color = ColorPalette.Gray500,
+    )
+}
+
+@Composable
+private fun RetreatCost(
+    retreatCost: List<CardTypeKey>,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier
+    ) {
+        retreatCost.forEach {
+            PcsTypeIcon(
+                type = it,
+                modifier = Modifier.size(28.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun Weaknesses(
+    weaknesses: List<CardWeakness>,
+    modifier: Modifier = Modifier
+) {
+    weaknesses.forEach {
+        val attackIcon = remember { getAttackIcon(it.typeKey) }
+        if (attackIcon != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = modifier
             ) {
+                Image(
+                    painter = painterResource(attackIcon),
+                    contentDescription = "icon attack of type ${it.typeKey}",
+                    modifier = Modifier.size(28.dp)
+                )
                 Text(
-                    text = "Retreat cost",
-                    style = PokemonCardTheme.typography.labelLarge,
-                    color = ColorPalette.Gray500,
+                    text = it.value,
+                    style = PokemonCardTheme.typography.titleLarge,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Resistances(
+    resistances: List<CardResistance>,
+    modifier: Modifier = Modifier
+) {
+    resistances.forEach {
+        val attackIcon = remember { getAttackIcon(it.typeKey) }
+        if (attackIcon != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = modifier
+            ) {
+                Image(
+                    painter = painterResource(attackIcon),
+                    contentDescription = "icon attack of type ${it.typeKey}",
+                    modifier = Modifier.size(28.dp)
+                )
+                Text(
+                    text = it.value,
+                    style = PokemonCardTheme.typography.titleLarge,
                 )
             }
         }

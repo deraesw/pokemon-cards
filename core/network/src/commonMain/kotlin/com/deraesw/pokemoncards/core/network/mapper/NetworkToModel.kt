@@ -50,27 +50,53 @@ internal object NetworkToModel {
             artist = this.artist,
             flavorText = this.flavorText,
             rarity = this.rarity,
-            resistances = this.resistances?.map {
-                CardResistance(
-                    typeKey = it.type.uppercase(),
-                    value = it.value
-                )
-            } ?: listOf(),
-            weaknesses = this.weaknesses?.map {
-                CardWeakness(
-                    typeKey = it.type.uppercase(),
-                    value = it.value
-                )
-            } ?: listOf(),
-            types = this.types?.map { CardType(id = it.uppercase(), name = it) } ?: listOf(),
-            attacks = this.attacks?.map { attack ->
-                CardAttacks(
-                    name = attack.name,
-                    damage = attack.damage ?: "",
-                    description = attack.text ?: "",
-                    cost = attack.cost.map { CardTypeKey(it) }
-                )
-            } ?: listOf()
+            types = this.toCardTypes(),
+            attacks = this.toCardsAttacks(),
+            resistances = this.toCardResistances(),
+            weaknesses = this.toCardsWeaknesses(),
+            retreatCost = this.toRetreatCost()
         )
+    }
+
+    private fun NetworkCardData.toRetreatCost(): List<CardTypeKey> {
+        return this.retreatCost?.map { (CardTypeKey(it)) } ?: listOf()
+    }
+
+    private fun NetworkCardData.toCardTypes(): List<CardType> {
+        return this.types?.map {
+            CardType(
+                id = it.uppercase(),
+                name = it
+            )
+        } ?: listOf()
+    }
+
+    private fun NetworkCardData.toCardsAttacks(): List<CardAttacks> {
+        return this.attacks?.map { attack ->
+            CardAttacks(
+                name = attack.name,
+                damage = attack.damage ?: "",
+                description = attack.text ?: "",
+                cost = attack.cost.map { CardTypeKey(it) }
+            )
+        } ?: listOf()
+    }
+
+    private fun NetworkCardData.toCardsWeaknesses(): List<CardWeakness> {
+        return this.weaknesses?.map {
+            CardWeakness(
+                typeKey = it.type.uppercase(),
+                value = it.value
+            )
+        } ?: listOf()
+    }
+
+    private fun NetworkCardData.toCardResistances(): List<CardResistance> {
+        return this.resistances?.map {
+            CardResistance(
+                typeKey = it.type.uppercase(),
+                value = it.value
+            )
+        } ?: listOf()
     }
 }
