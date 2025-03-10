@@ -9,8 +9,11 @@ import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.SortCardData
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.core.database.Card_attacks_cost
+import com.deraesw.pokemoncards.core.database.Card_evolve_to
 import com.deraesw.pokemoncards.core.database.Card_resistance
 import com.deraesw.pokemoncards.core.database.Card_retreat_cost
+import com.deraesw.pokemoncards.core.database.Card_rules
+import com.deraesw.pokemoncards.core.database.Card_sub_types
 import com.deraesw.pokemoncards.core.database.Card_weakness
 import com.deraesw.pokemoncards.core.database.factory.DatabaseFactory
 import com.deraesw.pokemoncards.core.database.mapper.toCardDetailFlow
@@ -136,6 +139,36 @@ class CardDaoImp(
         saveCardResistance(card)
         Logger.debug("CardDao", "insert card - save card retreat cost.")
         saveCardRetreatCost(card)
+
+        Logger.debug("CardDao", "insert card - save card evolve to.")
+        card.evolvesTo.forEach {
+            queries.insertCardEvolveTo(
+                Card_evolve_to(
+                    link_card_id = card.id,
+                    text = it
+                )
+            )
+        }
+
+        Logger.debug("CardDao", "insert card - save card rules.")
+        card.rules.forEach {
+            queries.insertCardRules(
+                Card_rules(
+                    link_card_id = card.id,
+                    rule = it
+                )
+            )
+        }
+
+        Logger.debug("CardDao", "insert card - save card sub types.")
+        card.subTypes.forEach {
+            queries.insertCardSubType(
+                Card_sub_types(
+                    link_card_id = card.id,
+                    sub_type = it
+                )
+            )
+        }
     }
 
     private fun saveCardAttacks(card: Card) {

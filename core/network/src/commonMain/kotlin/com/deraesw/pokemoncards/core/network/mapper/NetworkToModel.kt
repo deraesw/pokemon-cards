@@ -45,7 +45,6 @@ internal object NetworkToModel {
             imageSmall = this.images.small,
             imageLarge = this.images.large,
             evolvesFrom = this.evolvesFrom,
-            convertedRetreatCost = this.convertedRetreatCost,
             number = this.number,
             artist = this.artist,
             flavorText = this.flavorText,
@@ -54,7 +53,10 @@ internal object NetworkToModel {
             attacks = this.toCardsAttacks(),
             resistances = this.toCardResistances(),
             weaknesses = this.toCardsWeaknesses(),
-            retreatCost = this.toRetreatCost()
+            retreatCost = this.toRetreatCost(),
+            rules = this.rules ?: listOf(),
+            subTypes = this.subTypes ?: listOf(),
+            evolvesTo = this.evolvesTo ?: listOf()
         )
     }
 

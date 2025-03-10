@@ -7,11 +7,12 @@ CREATE TABLE IF NOT EXISTS card_data(
     image_small TEXT DEFAULT NULL,
     image_large TEXT DEFAULT NULL,
     evolves_from TEXT DEFAULT NULL,
-    converted_retreat_cost INTEGER DEFAULT -1,
     number TEXT,
+    numberSort INTEGER DEFAULT -1,
     artist TEXT DEFAULT NULL,
     flavor_text TEXT DEFAULT NULL,
-    rarity TEXT
+    rarity TEXT,
+    super_type TEXT DEFAULT NULL
 );
 CREATE INDEX IF NOT EXISTS index_link_card_set ON card_data(link_card_set);
 
@@ -67,6 +68,24 @@ CREATE TABLE IF NOT EXISTS card_retreat_cost(
     FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS card_rules(
+    link_card_id TEXT NOT NULL,
+    rule TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_sub_types(
+    link_card_id TEXT NOT NULL,
+    sub_type TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_evolve_to(
+    link_card_id TEXT NOT NULL,
+    text TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE
+);
+
 countCardDataForSet:
 SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
 
@@ -75,7 +94,7 @@ SELECT * FROM card_data WHERE link_card_set = :cardSetId
 ORDER BY
     CASE
         WHEN :sorter = 'NAME' THEN card_data.name
-        WHEN :sorter = 'CARD_NUMBER' THEN card_data.number
+        WHEN :sorter = 'CARD_NUMBER' THEN card_data.numberSort
     END ASC;
 
 selectCardData:
@@ -140,6 +159,15 @@ INSERT OR IGNORE INTO card_resistance VALUES :data;
 
 insertCardRetreatCost:
 INSERT OR IGNORE INTO card_retreat_cost VALUES :data;
+
+insertCardSubType:
+INSERT OR IGNORE INTO card_sub_types VALUES :data;
+
+insertCardRules:
+INSERT OR IGNORE INTO card_rules VALUES :data;
+
+insertCardEvolveTo:
+INSERT OR IGNORE INTO card_evolve_to VALUES :data;
 
 deleteCard:
 DELETE FROM card_data WHERE card_data.id = :card_id;

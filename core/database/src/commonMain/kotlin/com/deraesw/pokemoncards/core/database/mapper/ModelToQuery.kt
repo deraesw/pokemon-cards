@@ -23,26 +23,6 @@ fun List<CardSet>.toCardSetEntity(): List<Card_set> {
     }
 }
 
-fun List<Card>.toCardEntity(baseId: String): List<Card_data> {
-    return this.map {
-        Card_data(
-            id = it.id,
-            link_card_set = baseId,
-            name = it.name,
-            level = it.level,
-            hp = it.hp,
-            image_small = it.imageSmall,
-            image_large = it.imageLarge,
-            evolves_from = it.evolvesFrom,
-            converted_retreat_cost = it.convertedRetreatCost?.toLong(),
-            number = it.number,
-            artist = it.artist,
-            flavor_text = it.flavorText,
-            rarity = it.rarity
-        )
-    }
-}
-
 fun Card.toCardEntity(baseId: String): Card_data {
     return Card_data(
         id = this.id,
@@ -53,20 +33,13 @@ fun Card.toCardEntity(baseId: String): Card_data {
         image_small = this.imageSmall,
         image_large = this.imageLarge,
         evolves_from = this.evolvesFrom,
-        converted_retreat_cost = this.convertedRetreatCost?.toLong(),
         number = this.number,
         artist = this.artist,
         flavor_text = this.flavorText,
-        rarity = this.rarity
+        rarity = this.rarity,
+        super_type = this.superType,
+        numberSort = this.number?.toLongOrNull() ?: -1,
     )
-}
-
-fun List<Card>.toJunctionCardTypeEntity(): List<Junction_card_card_type> {
-    return this.flatMap { card ->
-        card.types.map {
-            Junction_card_card_type(card_id = card.id, type_id = it.id)
-        }
-    }
 }
 
 fun Card.toJunctionCardTypeEntity(): List<Junction_card_card_type> {

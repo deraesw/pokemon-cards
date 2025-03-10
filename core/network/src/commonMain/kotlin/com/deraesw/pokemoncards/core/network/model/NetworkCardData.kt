@@ -9,25 +9,23 @@ internal data class NetworkCardData(
     val name: String,
     @SerialName("supertype") val superType: String,
     val number: String,
-    @SerialName("subtypes") val subTypes: List<String> = listOf(),
+    @SerialName("subtypes") val subTypes: List<String>? = null,
     val level: String? = null,
     val hp: String? = null,
     val types: List<String>? = null,
     val evolvesFrom: String? = null,
+    val evolvesTo: List<String>? = null,
     val abilities: List<NetworkCardAbility>? = null,
     val attacks: List<NetworkCardAttack>? = null,
     val weaknesses: List<NetworkCardWeakness>? = null,
     val resistances: List<NetworkCardResistance>? = null,
     val retreatCost: List<String>? = null,
-    val convertedRetreatCost: Int? = null,
+    val rules: List<String>? = null,
     val artist: String? = null,
     val rarity: String? = null,
     val flavorText: String? = null,
-//    @SerialName("nationalPokedexNumbers") val nationalPokedexNumbers: List<Int>? = null,
-//    @SerialName("legalities") val legalities: CardLegalities,
+    val legalities: CardLegalities,
     val images: NetworkCardImages,
-//    @SerialName("tcgplayer") val tcgplayer: Tcgplayer? = null,
-//    @SerialName("cardmarket") val cardmarket: Cardmarket? = null,
     val set: NetworkCardSetData
 )
 
@@ -68,4 +66,11 @@ internal data class NetworkCardResistance(
 @Serializable
 internal data class NetworkCardSetData(
     val id: String
+)
+
+@Serializable
+internal data class CardLegalities(
+    val standard: String,
+    val expanded: String,
+    val unlimited: String
 )

@@ -79,7 +79,6 @@ fun Card_data.toCardDetail(
         imageSmall = this.image_small,
         imageLarge = this.image_large,
         evolvesFrom = this.evolves_from,
-        convertedRetreatCost = this.converted_retreat_cost?.toInt(),
         number = this.number,
         artist = this.artist,
         flavorText = this.flavor_text,
