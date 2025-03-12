@@ -78,6 +78,11 @@ class CardDaoImp(
             .executeAsList()
             .map { CardTypeKey(it.link_card_type_id) }
 
+//        val subTypes = queries
+//            .selectCardSubType(cardId)
+//            .executeAsList()
+//            .map { it.sub_type }
+
         return queries
             .selectCardData(cardId)
             .asFlow()
@@ -141,16 +146,16 @@ class CardDaoImp(
         saveCardRetreatCost(card)
 
         Logger.debug("CardDao", "insert card - save card evolve to.")
-        card.evolvesTo.forEach {
-            queries.insertCardEvolveTo(
-                Card_evolve_to(
-                    link_card_id = card.id,
-                    text = it
-                )
-            )
-        }
+        saveEvolveTo(card)
 
         Logger.debug("CardDao", "insert card - save card rules.")
+        saveCardRules(card)
+
+        Logger.debug("CardDao", "insert card - save card sub types.")
+        saveCardSubType(card)
+    }
+
+    private fun saveCardRules(card: Card) {
         card.rules.forEach {
             queries.insertCardRules(
                 Card_rules(
@@ -159,8 +164,20 @@ class CardDaoImp(
                 )
             )
         }
+    }
 
-        Logger.debug("CardDao", "insert card - save card sub types.")
+    private fun saveEvolveTo(card: Card) {
+        card.evolvesTo.forEach {
+            queries.insertCardEvolveTo(
+                Card_evolve_to(
+                    link_card_id = card.id,
+                    text = it
+                )
+            )
+        }
+    }
+
+    private fun saveCardSubType(card: Card) {
         card.subTypes.forEach {
             queries.insertCardSubType(
                 Card_sub_types(

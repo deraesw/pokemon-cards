@@ -10,6 +10,7 @@ import com.deraesw.pokemoncards.core.core.model.CardWeakness
 import com.deraesw.pokemoncards.core.database.Card_data
 import com.deraesw.pokemoncards.core.database.Card_set
 import com.deraesw.pokemoncards.core.database.Card_type
+import com.deraesw.pokemoncards.core.database.SelectCardData
 import com.deraesw.pokemoncards.core.database.SelectCardResistances
 import com.deraesw.pokemoncards.core.database.SelectCardWeaknesses
 import kotlinx.coroutines.flow.Flow
@@ -46,7 +47,7 @@ fun List<Card_data>.toCardDetailList(): List<Card> {
     return this.map { item -> item.toCardDetail() }
 }
 
-fun Flow<Card_data>.toCardDetailFlow(
+fun Flow<SelectCardData>.toCardDetailFlow(
     types: List<CardType> = emptyList(),
     attacks: List<CardAttacks> = emptyList(),
     weaknesses: List<CardWeakness> = emptyList(),
@@ -84,6 +85,37 @@ fun Card_data.toCardDetail(
         flavorText = this.flavor_text,
         rarity = this.rarity,
         superType = null,
+        types = types,
+        attacks = attacks,
+        setId = this.link_card_set,
+        weaknesses = weaknesses,
+        resistances = resistances,
+        retreatCost = retreatCost
+    )
+}
+
+fun SelectCardData.toCardDetail(
+    types: List<CardType> = emptyList(),
+    attacks: List<CardAttacks> = emptyList(),
+    weaknesses: List<CardWeakness> = emptyList(),
+    resistances: List<CardResistance> = emptyList(),
+    retreatCost: List<CardTypeKey> = emptyList()
+): Card {
+    return Card(
+        id = this.id,
+        name = this.name,
+        level = this.level,
+        hp = this.hp,
+        imageSmall = this.image_small,
+        imageLarge = this.image_large,
+        evolvesFrom = this.evolves_from,
+        number = this.number,
+        artist = this.artist,
+        flavorText = this.flavor_text,
+        rarity = this.rarity,
+        superType = this.super_type,
+        subTypes = this.sub_type?.split("|") ?: listOf(),
+        rules = this.rules?.split("|") ?: listOf(),
         types = types,
         attacks = attacks,
         setId = this.link_card_set,

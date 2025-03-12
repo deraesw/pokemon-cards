@@ -26,23 +26,42 @@ fun CardDetailSection(
         Text(
             text = "Card detail",
             style = PokemonCardTheme.typography.titleMedium,
-//            color = ColorPalette.Gray700,
         )
         Spacer(modifier = Modifier.size(8.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            TileInfo(title = "Rarity", content = cardDetail.rarity)
-            TileInfo(title = "Artist", content = cardDetail.artist)
+            TileInfo(
+                title = "Rarity",
+                content = cardDetail.rarity,
+                modifier = Modifier.weight(1f)
+            )
+            TileInfo(
+                title = "Artist",
+                content = cardDetail.artist,
+                modifier = Modifier.weight(1f)
+            )
         }
-//        Row(
-//            horizontalArrangement = Arrangement.SpaceBetween,
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            TileInfo(title = "Rarity", content = cardDetail.rarity)
-//            TileInfo(title = "Artist", content = cardDetail.artist)
-//        }
+        Spacer(modifier = Modifier.size(4.dp))
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            TileInfo(
+                title = "Sub-type",
+                content = cardDetail.subTypes,
+                modifier = Modifier.weight(1f)
+            )
+            if (cardDetail.evolvesFrom.isNotEmpty()) {
+                TileInfo(
+                    title = "Evolve from",
+                    content = cardDetail.evolvesFrom,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.size(8.dp))
     }
 }
 
@@ -52,8 +71,8 @@ private fun TileInfo(
     content: String,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
+        horizontalAlignment = Alignment.Start,
         modifier = modifier
     ) {
         Text(
@@ -61,7 +80,6 @@ private fun TileInfo(
             style = PokemonCardTheme.typography.labelLarge,
             color = ColorPalette.Gray500,
         )
-        Spacer(modifier = Modifier.size(4.dp))
         Text(
             text = content,
             style = PokemonCardTheme.typography.labelLarge,

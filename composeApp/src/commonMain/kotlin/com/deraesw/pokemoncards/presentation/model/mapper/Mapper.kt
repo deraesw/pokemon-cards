@@ -30,6 +30,9 @@ fun Card.toCardDetail(): CardDetail {
         artist = this.artist ?: "",
         weaknesses = this.weaknesses,
         resistances = this.resistances,
-        retreatCost = this.retreatCost
+        retreatCost = this.retreatCost,
+        subTypes = this.subTypes.joinToString(),
+        evolvesFrom = this.evolvesFrom ?: "",
+        rules = this.rules.firstOrNull() ?: ""
     )
 }

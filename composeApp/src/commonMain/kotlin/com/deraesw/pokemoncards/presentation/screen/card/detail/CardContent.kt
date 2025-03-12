@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
@@ -138,7 +140,7 @@ fun CardInformationSection(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.fillMaxHeight(),
+        modifier = modifier.fillMaxHeight().verticalScroll(rememberScrollState()),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -186,18 +188,65 @@ fun CardInformationSection(
             )
             PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
             if (cardDetail.flavorText.isNotEmpty()) {
-                Row {
-                    Icon(
-                        Icons.Default.Info,
-                        contentDescription = "info",
-                        tint = ColorPalette.Blue500,
-                    )
-                    Text(
-                        text = cardDetail.flavorText,
-                        style = PokemonCardTheme.typography.labelLarge,
-                    )
-                }
+                FlavorBox(flavorText = cardDetail.flavorText)
             }
+
+            if (cardDetail.rules.isNotEmpty()) {
+                RulesBox(rules = cardDetail.rules)
+            }
+        }
+    }
+}
+
+@Composable
+fun RulesBox(
+    rules: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(ColorPalette.Gray100)
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+    ) {
+        Column {
+            Text(
+                text = "Rules",
+                style = PokemonCardTheme.typography.labelLarge,
+                color = ColorPalette.Blue700,
+            )
+            Text(
+                text = rules,
+                style = PokemonCardTheme.typography.labelMedium,
+            )
+        }
+    }
+}
+
+@Composable
+fun FlavorBox(
+    flavorText: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(ColorPalette.Gray100)
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+    ) {
+        Row {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = "info",
+                tint = ColorPalette.Blue500,
+            )
+            Spacer(modifier = Modifier.size(8.dp))
+            Text(
+                text = flavorText,
+                style = PokemonCardTheme.typography.labelMedium,
+            )
         }
     }
 }

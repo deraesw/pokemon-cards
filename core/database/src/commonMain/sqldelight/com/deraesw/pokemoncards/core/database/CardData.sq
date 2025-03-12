@@ -98,7 +98,15 @@ ORDER BY
     END ASC;
 
 selectCardData:
-SELECT * FROM card_data WHERE id = :cardId;
+SELECT
+    card_data.*,
+    GROUP_CONCAT(card_rules.rule, '|') AS rules,
+    GROUP_CONCAT(card_sub_types.sub_type, '|') AS sub_type
+FROM card_data
+LEFT OUTER JOIN card_rules ON card_rules.link_card_id = card_data.id
+LEFT OUTER JOIN card_sub_types ON card_sub_types.link_card_id = card_data.id
+WHERE id = :cardId
+GROUP BY card_data.id;
 
 selectAllCardTypes:
 SELECT * FROM card_type;
@@ -131,6 +139,12 @@ selectCardRetreatCost:
 SELECT card_retreat_cost.* FROM card_retreat_cost
 INNER JOIN card_type ON card_type.id = card_retreat_cost.link_card_type_id
 WHERE card_retreat_cost.link_card_id = :cardId;
+
+selectCardSubType:
+SELECT * FROM card_sub_types WHERE card_sub_types.link_card_id = :cardId;
+
+selectCardRules:
+SELECT * FROM card_rules WHERE card_rules.link_card_id = :cardId;
 
 selectLastInsertId:
 SELECT last_insert_rowid();
