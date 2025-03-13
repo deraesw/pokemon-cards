@@ -30,4 +30,5 @@ fun CardSortButton(
 val sortData = listOf(
     Sort(SortCardData.CARD_NUMBER.name, "Card Number"),
     Sort(SortCardData.NAME.name, "Name"),
+    Sort(SortCardData.HP.name, "Hp"),
 )

@@ -48,7 +48,6 @@ fun PcsSortButton(
             onClick = { expanded = !expanded },
             modifier = Modifier
                 .size(size)
-//                .width(128.dp)
                 .defaultMinSize(
                     minWidth = ButtonDefaults.MinWidth,
                     minHeight = 24.dp

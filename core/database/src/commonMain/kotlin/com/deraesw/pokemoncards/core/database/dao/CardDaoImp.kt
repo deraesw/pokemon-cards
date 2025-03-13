@@ -78,11 +78,6 @@ class CardDaoImp(
             .executeAsList()
             .map { CardTypeKey(it.link_card_type_id) }
 
-//        val subTypes = queries
-//            .selectCardSubType(cardId)
-//            .executeAsList()
-//            .map { it.sub_type }
-
         return queries
             .selectCardData(cardId)
             .asFlow()

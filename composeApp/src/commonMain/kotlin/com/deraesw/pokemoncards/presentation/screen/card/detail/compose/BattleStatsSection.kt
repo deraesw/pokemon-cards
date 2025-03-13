@@ -25,6 +25,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.battle_stats
+import pokemoncards.composeapp.generated.resources.resistance
+import pokemoncards.composeapp.generated.resources.retreat_cost
+import pokemoncards.composeapp.generated.resources.weakness
 
 @Composable
 fun BattleStatsSection(
@@ -46,7 +49,7 @@ fun BattleStatsSection(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                SubTitle(text = "Weakness")
+                SubTitle(text = stringResource(Res.string.weakness))
                 Weaknesses(
                     weaknesses = cardDetail.weaknesses,
                     modifier = Modifier.padding(top = 8.dp)
@@ -55,7 +58,7 @@ fun BattleStatsSection(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                SubTitle(text = "Resistance")
+                SubTitle(text = stringResource(Res.string.resistance))
                 Resistances(
                     resistances = cardDetail.resistances,
                     modifier = Modifier.padding(top = 8.dp)
@@ -64,7 +67,7 @@ fun BattleStatsSection(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                SubTitle(text = "Retreat cost")
+                SubTitle(text = stringResource(Res.string.retreat_cost))
                 RetreatCost(
                     retreatCost = cardDetail.retreatCost,
                     modifier = Modifier.padding(top = 8.dp)

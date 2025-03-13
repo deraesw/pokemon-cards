@@ -14,6 +14,13 @@ import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
+import org.jetbrains.compose.resources.stringResource
+import pokemoncards.composeapp.generated.resources.Res
+import pokemoncards.composeapp.generated.resources.artist
+import pokemoncards.composeapp.generated.resources.card_detail
+import pokemoncards.composeapp.generated.resources.evolve_from
+import pokemoncards.composeapp.generated.resources.rarity
+import pokemoncards.composeapp.generated.resources.sub_type
 
 @Composable
 fun CardDetailSection(
@@ -24,7 +31,7 @@ fun CardDetailSection(
         modifier = modifier
     ) {
         Text(
-            text = "Card detail",
+            text = stringResource(Res.string.card_detail),
             style = PokemonCardTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.size(8.dp))
@@ -33,12 +40,12 @@ fun CardDetailSection(
             modifier = Modifier.fillMaxWidth()
         ) {
             TileInfo(
-                title = "Rarity",
+                title = stringResource(Res.string.rarity),
                 content = cardDetail.rarity,
                 modifier = Modifier.weight(1f)
             )
             TileInfo(
-                title = "Artist",
+                title = stringResource(Res.string.artist),
                 content = cardDetail.artist,
                 modifier = Modifier.weight(1f)
             )
@@ -49,13 +56,13 @@ fun CardDetailSection(
             modifier = Modifier.fillMaxWidth()
         ) {
             TileInfo(
-                title = "Sub-type",
+                title = stringResource(Res.string.sub_type),
                 content = cardDetail.subTypes,
                 modifier = Modifier.weight(1f)
             )
             if (cardDetail.evolvesFrom.isNotEmpty()) {
                 TileInfo(
-                    title = "Evolve from",
+                    title = stringResource(Res.string.evolve_from),
                     content = cardDetail.evolvesFrom,
                     modifier = Modifier.weight(1f)
                 )

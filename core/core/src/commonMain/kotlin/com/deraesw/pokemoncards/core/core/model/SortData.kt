@@ -5,5 +5,5 @@ enum class SortData {
 }
 
 enum class SortCardData {
-    CARD_NUMBER, NAME,
+    CARD_NUMBER, NAME, HP
 }

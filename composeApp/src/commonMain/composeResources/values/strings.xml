@@ -11,6 +11,15 @@
     <string name="format_legality">Format legality</string>
 
     <string name="battle_stats">Battle stats</string>
+    <string name="attacks">Attacks</string>
+    <string name="weakness">Weakness</string>
+    <string name="resistance">Resistance</string>
+    <string name="retreat_cost">Retreat cost</string>
+    <string name="card_detail">Card detail</string>
+    <string name="rarity">Rarity</string>
+    <string name="artist">Artist</string>
+    <string name="sub_type">Sub-type</string>
+    <string name="evolve_from">Evolve from</string>
 
     <string name="pokemon_card_number">#%1$s</string>
     <string name="pokemon_card_hp">HP %1$s</string>
@@ -20,4 +29,7 @@
     <string name="sort_by_name">Name</string>
     <string name="sort_by_release_date">Release date</string>
     <string name="sort_by_card_count">Card count</string>
+    <string name="sort_by_card_number">Card number</string>
+    <string name="sort_by_hp">Hp</string>
+
 </resources>

@@ -29,7 +29,9 @@ import com.deraesw.pokemoncards.presentation.theme.colorCardType
 import com.deraesw.pokemoncards.presentation.theme.colorOverlayCardType
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import pokemoncards.composeapp.generated.resources.Res
+import pokemoncards.composeapp.generated.resources.attacks
 import pokemoncards.composeapp.generated.resources.icon_colorless_attack
 import pokemoncards.composeapp.generated.resources.icon_darkness_attack
 import pokemoncards.composeapp.generated.resources.icon_fairy_attack
@@ -49,7 +51,7 @@ fun AttacksSection(
         modifier = modifier
     ) {
         Text(
-            text = "Attaks",
+            text = stringResource(Res.string.attacks),
             style = PokemonCardTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.size(8.dp))
@@ -85,7 +87,9 @@ fun AttacksSection(
                             style = PokemonCardTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.End,
-                            modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 8.dp),
                         )
                     }
                     Text(
