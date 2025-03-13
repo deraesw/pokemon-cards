@@ -40,7 +40,10 @@ class CardListViewModel(
                 .map {
                     Logger.debug("CardListViewModel", "fetchCardList list found - ${it.size}")
                     CardListState(
-                        cardList = it.toCardListItems(),
+                        cardList = filterCards(
+                            query = state.searchQuery,
+                            list = it.toCardListItems()
+                        ),
                         isLoading = false,
                         sortCardData = state.sortCardData
                     )
@@ -83,6 +86,11 @@ class CardListViewModel(
         }
     }
 
+    fun updateSearchQuery(query: String) {
+        localState.update {
+            it.copy(searchQuery = query)
+        }
+    }
 
     fun selectCard(cardId: String) {
         Logger.debug("CardListViewModel", "selectCard - $cardId")
@@ -114,11 +122,25 @@ class CardListViewModel(
             networkManager.fetchCard(carId = cardId)
         }
     }
+
+    private fun filterCards(
+        query: String,
+        list: List<CardListItem>
+    ): List<CardListItem> {
+        return if (query.isEmpty()) {
+            list
+        } else {
+            list.filter {
+                it.name.contains(query, ignoreCase = true)
+            }
+        }
+    }
 }
 
 data class CardListLocalState(
     val cardSetId: String = "",
-    val sortCardData: SortCardData = SortCardData.CARD_NUMBER
+    val sortCardData: SortCardData = SortCardData.CARD_NUMBER,
+    val searchQuery: String = ""
 )
 
 data class CardListState(

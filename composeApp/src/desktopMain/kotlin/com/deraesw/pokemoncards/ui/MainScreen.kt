@@ -147,6 +147,12 @@ fun DetailSection(
                 },
                 onSortSelect = {
                     cardListViewModel.setSortCardData(it)
+                },
+                onClearQuery = {
+                    cardListViewModel.updateSearchQuery("")
+                },
+                onQueryChange = {
+                    cardListViewModel.updateSearchQuery(it)
                 }
             )
         }
@@ -168,6 +174,8 @@ fun CardListActionSection(
     sortCardData: SortCardData,
     onClickReSync: () -> Unit,
     onSortSelect: (SortCardData) -> Unit,
+    onClearQuery: () -> Unit,
+    onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -176,8 +184,8 @@ fun CardListActionSection(
         modifier = modifier.fillMaxSize()
     ) {
         PcsSearchComponent(
-            onClearQuery = {},
-            onQueryChange = {},
+            onClearQuery = onClearQuery,
+            onQueryChange = onQueryChange,
             placeholder = "Search card list on this set...",
             modifier = Modifier.width(256.dp)
         )
