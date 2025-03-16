@@ -17,6 +17,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
@@ -34,6 +35,9 @@ class CardListViewModel(
 
     private val localState = MutableStateFlow(CardListLocalState())
 
+    private val _loadingState = MutableStateFlow(true)
+    val loadingState = _loadingState.asStateFlow()
+
     val uiState: StateFlow<CardListState> = localState
         .debounce(500)
         .flatMapLatest { state ->
@@ -49,9 +53,10 @@ class CardListViewModel(
                             query = state.searchQuery,
                             list = it.toCardListItems()
                         ),
-                        isLoading = false,
                         sortCardData = state.sortCardData
-                    )
+                    ).also {
+                        _loadingState.tryEmit(false)
+                    }
                 }
         }
         .catch {
@@ -60,7 +65,7 @@ class CardListViewModel(
         .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5000),
-            initialValue = CardListState(isLoading = true)
+            initialValue = CardListState()
         )
 
     private val cardId = MutableStateFlow("")
@@ -89,6 +94,7 @@ class CardListViewModel(
         }
         Logger.debug("CardListViewModel", "fetchCardList - $cardSetId")
         this.cardId.value = ""
+        this._loadingState.tryEmit(true)
         this.localState.update {
             it.copy(cardSetId = cardSetId)
         }
@@ -153,6 +159,5 @@ data class CardListLocalState(
 
 data class CardListState(
     val cardList: List<CardListItem> = listOf(),
-    val isLoading: Boolean = false,
     val sortCardData: SortCardData = SortCardData.CARD_NUMBER
 )
