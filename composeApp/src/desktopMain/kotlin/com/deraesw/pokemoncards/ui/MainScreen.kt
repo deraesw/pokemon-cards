@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,10 +40,8 @@ import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailStat
 import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailViewModel
 import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetViewModel
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
-import org.jetbrains.compose.resources.stringResource
+import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import org.koin.compose.koinInject
-import pokemoncards.composeapp.generated.resources.Res
-import pokemoncards.composeapp.generated.resources.select_card_set
 
 @Composable
 fun MainScreen(
@@ -89,7 +88,7 @@ fun TwoPanelLayout(
         ) {
             AnimatedContent(
                 targetState = uiState.value is CardSetDetailState.Success,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 when (val state = uiState.value) {
                     is CardSetDetailState.Success -> {
@@ -103,10 +102,34 @@ fun TwoPanelLayout(
                     }
 
                     else -> {
-                        Text(
-                            text = stringResource(Res.string.select_card_set),
-                            modifier = Modifier.align(Alignment.Center)
-                        )
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(Color.White)
+                                    .padding(
+                                        top = 16.dp,
+                                        start = 32.dp,
+                                        end = 32.dp,
+                                        bottom = 48.dp
+                                    )
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = "No card set selected",
+                                        style = PokemonCardTheme.typography.titleMedium
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text = "Please select a set to see all card for that set.",
+                                        style = PokemonCardTheme.typography.bodyMedium
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -146,12 +169,15 @@ fun DetailSection(
                     cardListViewModel.reSyncCardList()
                 },
                 onSortSelect = {
+                    cardListViewModel.dismissSelectedCard()
                     cardListViewModel.setSortCardData(it)
                 },
                 onClearQuery = {
+                    cardListViewModel.dismissSelectedCard()
                     cardListViewModel.updateSearchQuery("")
                 },
                 onQueryChange = {
+                    cardListViewModel.dismissSelectedCard()
                     cardListViewModel.updateSearchQuery(it)
                 }
             )
@@ -187,6 +213,7 @@ fun CardListActionSection(
             onClearQuery = onClearQuery,
             onQueryChange = onQueryChange,
             placeholder = "Search card list on this set...",
+            background = Color.White,
             modifier = Modifier.width(256.dp)
         )
 
@@ -212,7 +239,6 @@ fun CardListActionSection(
                     .clickable {
                         onClickReSync()
                     }
-//                    .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 Icon(
                     Icons.Default.AccountBox,

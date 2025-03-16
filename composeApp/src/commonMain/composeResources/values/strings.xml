@@ -32,4 +32,6 @@
     <string name="sort_by_card_number">Card number</string>
     <string name="sort_by_hp">Hp</string>
 
+    <string name="card_list_search_placeholder">Search card list on this set...</string>
+
 </resources>
