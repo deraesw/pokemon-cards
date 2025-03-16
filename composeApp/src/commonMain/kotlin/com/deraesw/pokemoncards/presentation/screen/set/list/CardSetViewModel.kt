@@ -7,20 +7,19 @@ import com.deraesw.pokemoncards.core.core.model.SortData
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.domain.NetworkManager
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.IO
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class CardSetViewModel(
     private val cardSetRepository: CardSetRepository,
     private val networkManager: NetworkManager
@@ -28,7 +27,7 @@ class CardSetViewModel(
 
     private val _uiState = MutableStateFlow(CardSetState())
     val uiState: StateFlow<CardSetState> = _uiState
-        //.debounce(300) to read about it
+        .debounce(300)
         .flatMapLatest { state ->
             cardSetRepository.allCardSets(
                 sorter = state.sortData
@@ -53,9 +52,6 @@ class CardSetViewModel(
     fun setSelectedCardSet(id: String) {
         _uiState.update {
             it.copy(selectedCardSetId = id)
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            networkManager.fetchSetCardsList(id)
         }
     }
 

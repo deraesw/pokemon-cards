@@ -24,7 +24,7 @@ internal data class NetworkCardData(
     val artist: String? = null,
     val rarity: String? = null,
     val flavorText: String? = null,
-    val legalities: CardLegalities,
+    val legalities: CardLegalities? = null,
     val images: NetworkCardImages,
     val set: NetworkCardSetData
 )
@@ -70,7 +70,7 @@ internal data class NetworkCardSetData(
 
 @Serializable
 internal data class CardLegalities(
-    val standard: String,
-    val expanded: String,
-    val unlimited: String
+    val standard: String? = null,
+    val expanded: String? = null,
+    val unlimited: String? = null
 )

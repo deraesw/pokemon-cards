@@ -102,8 +102,18 @@ class CardDaoImp(
         cardSetId: String,
         cardList: List<Card>
     ) {
-        cardList.forEach { card ->
-            insertCard(card)
+        queries.transaction {
+            cardList.forEach { card ->
+                runCatching {
+                    saveCardData(card)
+                }.onFailure {
+                    Logger.error(
+                        "CardDao",
+                        "Error while inserting cards list data ${card}: ${it.message}"
+                    )
+                    this.rollback()
+                }
+            }
         }
     }
 

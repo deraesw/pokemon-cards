@@ -10,11 +10,15 @@ import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.model.CardListItem
 import com.deraesw.pokemoncards.presentation.model.mapper.toCardDetail
 import com.deraesw.pokemoncards.presentation.model.mapper.toCardListItems
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -22,7 +26,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class CardListViewModel(
     private val cardRepository: CardRepository,
     private val networkManager: NetworkManager
@@ -31,6 +35,7 @@ class CardListViewModel(
     private val localState = MutableStateFlow(CardListLocalState())
 
     val uiState: StateFlow<CardListState> = localState
+        .debounce(500)
         .flatMapLatest { state ->
             cardRepository
                 .getCardList(
@@ -79,6 +84,9 @@ class CardListViewModel(
         )
 
     fun selectCardSet(cardSetId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            networkManager.fetchSetCardsList(cardSetId)
+        }
         Logger.debug("CardListViewModel", "fetchCardList - $cardSetId")
         this.cardId.value = ""
         this.localState.update {
