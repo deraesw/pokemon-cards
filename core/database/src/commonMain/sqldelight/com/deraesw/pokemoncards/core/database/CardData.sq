@@ -100,12 +100,18 @@ ORDER BY
 
 selectCardData:
 SELECT
-    card_data.*,
-    GROUP_CONCAT(card_rules.rule, '|') AS rules,
-    GROUP_CONCAT(card_sub_types.sub_type, '|') AS sub_type
+    card_data.*, cr.rules, cst.sub_type
 FROM card_data
-LEFT OUTER JOIN card_rules ON card_rules.link_card_id = card_data.id
-LEFT OUTER JOIN card_sub_types ON card_sub_types.link_card_id = card_data.id
+LEFT JOIN (
+	SELECT card_rules.link_card_id, GROUP_CONCAT(card_rules.rule, '|') AS rules
+	FROM card_rules
+	GROUP BY card_rules.link_card_id
+) cr ON cr.link_card_id = card_data.id
+LEFT JOIN (
+	SELECT card_sub_types.link_card_id, GROUP_CONCAT(card_sub_types.sub_type, '|') AS sub_type
+	FROM card_sub_types
+	GROUP BY card_sub_types.link_card_id
+) AS cst ON cst.link_card_id = card_data.id
 WHERE id = :cardId
 GROUP BY card_data.id;
 
