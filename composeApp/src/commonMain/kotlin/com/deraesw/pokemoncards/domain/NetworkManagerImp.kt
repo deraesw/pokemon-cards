@@ -1,5 +1,7 @@
 package com.deraesw.pokemoncards.domain
 
+import com.deraesw.pokemoncards.core.core.bus.SyncBus
+import com.deraesw.pokemoncards.core.core.bus.SyncEvent
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.core.network.service.PokemonCardApiService
 import com.deraesw.pokemoncards.data.repository.AppPreferencesRepository
@@ -10,7 +12,8 @@ class NetworkManagerImp(
     private val pokemonService: PokemonCardApiService,
     private val cardSetRepository: CardSetRepository,
     private val cardRepository: CardRepository,
-    private val appPreferencesRepository: AppPreferencesRepository
+    private val appPreferencesRepository: AppPreferencesRepository,
+    private val syncBus: SyncBus
 ) : NetworkManager {
     private var syncInProgress = false
 
@@ -52,6 +55,7 @@ class NetworkManagerImp(
             }
         }
         Logger.info("NetworkManager", "Fetching set cards.")
+        syncBus.sendEvent(SyncEvent.StartCardSync)
 
         val data = pokemonService
             .getSetCards(carSetId)

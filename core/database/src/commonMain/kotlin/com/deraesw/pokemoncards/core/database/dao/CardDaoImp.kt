@@ -3,6 +3,8 @@ package com.deraesw.pokemoncards.core.database.dao
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
+import com.deraesw.pokemoncards.core.core.bus.SyncBus
+import com.deraesw.pokemoncards.core.core.bus.SyncEvent
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardTypeKey
@@ -29,6 +31,7 @@ import kotlinx.coroutines.flow.Flow
 
 class CardDaoImp(
     private val databaseFactory: DatabaseFactory,
+    private val syncBus: SyncBus
 ) : CardDao {
     private val queries by lazy {
         databaseFactory.database.cardDataQueries
@@ -105,6 +108,7 @@ class CardDaoImp(
         queries.transaction {
             cardList.forEach { card ->
                 runCatching {
+                    syncBus.sendEvent(SyncEvent.CardSyncProgress(card.name))
                     saveCardData(card)
                 }.onFailure {
                     Logger.error(
@@ -113,6 +117,15 @@ class CardDaoImp(
                     )
                     this.rollback()
                 }
+            }
+            this.afterCommit {
+                Logger.debug("CardDao", "Card list inserted successfully")
+                syncBus.sendEvent(SyncEvent.CompleteCardSync)
+            }
+
+            this.afterRollback {
+                Logger.debug("CardDao", "Card list rollback")
+                syncBus.sendEvent(SyncEvent.CompleteCardSync)
             }
         }
     }

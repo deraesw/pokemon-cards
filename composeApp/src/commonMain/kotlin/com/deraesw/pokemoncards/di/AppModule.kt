@@ -1,5 +1,6 @@
 package com.deraesw.pokemoncards.di
 
+import com.deraesw.pokemoncards.core.core.bus.SyncBus
 import com.deraesw.pokemoncards.core.database.di.databaseModule
 import com.deraesw.pokemoncards.core.network.di.networkModule
 import com.deraesw.pokemoncards.data.repository.AppPreferencesRepository
@@ -26,6 +27,7 @@ fun pcsInitKoin(
     return startKoin {
         appDeclaration()
         modules(
+            module { single { SyncBus() } },
             databaseModule,
             networkModule,
             dataModule,
@@ -48,5 +50,5 @@ private val domainModule = module {
 val presentationModule = module {
     viewModel { CardSetViewModel(get(), get()) }
     viewModel { CardSetDetailViewModel(get()) }
-    viewModel { CardListViewModel(get(), get()) }
+    viewModel { CardListViewModel(get(), get(), get()) }
 }
