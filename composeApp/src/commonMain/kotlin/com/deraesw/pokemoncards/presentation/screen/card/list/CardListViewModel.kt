@@ -44,7 +44,6 @@ class CardListViewModel(
     val syncState = syncBus
         .events
         .map {
-            Logger.debug("CardListViewModel", "sync state - $it")
             SyncState(
                 syncType = when (it) {
                     SyncEvent.None -> SyncState.Type.NONE
@@ -90,7 +89,6 @@ class CardListViewModel(
                     sorter = state.sortCardData
                 )
                 .map {
-                    Logger.debug("CardListViewModel", "fetchCardList list found - ${it.size}")
                     val cardList = filterCards(
                         query = state.searchQuery,
                         list = it.toCardListItems()
@@ -116,7 +114,6 @@ class CardListViewModel(
     private val cardId = MutableStateFlow("")
     val cardDetail: StateFlow<CardDetail?> = cardId
         .flatMapLatest { id ->
-            Logger.debug("CardListViewModel", "fetchCard - $id")
             if (id.isEmpty()) return@flatMapLatest flowOf(null)
             cardRepository
                 .getCard(id)
@@ -134,10 +131,12 @@ class CardListViewModel(
         )
 
     fun selectCardSet(cardSetId: String) {
+        if (this.localState.value.cardSetId == cardSetId) return
+
         viewModelScope.launch(Dispatchers.IO) {
             networkManager.fetchSetCardsList(cardSetId)
         }
-        Logger.debug("CardListViewModel", "fetchCardList - $cardSetId")
+
         this.cardId.value = ""
         this._loadingState.tryEmit(true)
         this.localState.update {
@@ -163,7 +162,6 @@ class CardListViewModel(
     }
 
     fun dismissSelectedCard() {
-        Logger.debug("CardListViewModel", "dismissSelectedCard")
         this.cardId.value = ""
     }
 
