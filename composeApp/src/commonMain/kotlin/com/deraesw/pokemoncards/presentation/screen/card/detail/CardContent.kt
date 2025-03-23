@@ -34,8 +34,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.presentation.compose.CardTypeBox
-import com.deraesw.pokemoncards.presentation.compose.Constant
 import com.deraesw.pokemoncards.presentation.compose.PcsInfoBox
+import com.deraesw.pokemoncards.presentation.compose.PcsPill
 import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
 import com.deraesw.pokemoncards.presentation.compose.images.PcsImage
 import com.deraesw.pokemoncards.presentation.model.CardDetail
@@ -261,49 +261,33 @@ private fun OtherSubTitleSection(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = modifier
-                .clip(RoundedCornerShape(Constant.PERCENT_50))
-                .background(ColorPalette.Purple200)
-                .padding(horizontal = 8.dp)
-        ) {
-            Image(
-                Icons.Default.Person,
-                contentDescription = "Info",
-                modifier = Modifier.size(16.dp),
-                colorFilter = tint(ColorPalette.Purple800)
-            )
-            Text(
-                text = superType.type,
-                style = PokemonCardTheme.typography.bodyMedium,
-                color = ColorPalette.Purple800,
-                fontWeight = FontWeight.SemiBold
-            )
-        }
-        if (subType.isNotEmpty()) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = modifier
-                    .clip(RoundedCornerShape(Constant.PERCENT_50))
-                    .background(ColorPalette.Blue200)
-                    .padding(horizontal = 8.dp)
-            ) {
+        PcsPill(
+            text = superType.type,
+            backgroundColor = ColorPalette.Purple200,
+            contentColor = ColorPalette.Purple800,
+            icon = {
                 Image(
-                    Icons.Default.Build,
-                    contentDescription = "Info",
+                    Icons.Default.Person,
+                    contentDescription = "Person icon",
                     modifier = Modifier.size(16.dp),
-                    colorFilter = tint(ColorPalette.Blue800)
-                )
-                Text(
-                    text = subType,
-                    style = PokemonCardTheme.typography.bodyMedium,
-                    color = ColorPalette.Blue800,
-                    fontWeight = FontWeight.SemiBold
+                    colorFilter = tint(ColorPalette.Purple800)
                 )
             }
+        )
+        if (subType.isNotEmpty()) {
+            PcsPill(
+                text = subType,
+                backgroundColor = ColorPalette.Blue200,
+                contentColor = ColorPalette.Blue800,
+                icon = {
+                    Image(
+                        Icons.Default.Build,
+                        contentDescription = "Build icon",
+                        modifier = Modifier.size(16.dp),
+                        colorFilter = tint(ColorPalette.Blue800)
+                    )
+                }
+            )
         }
     }
 }
