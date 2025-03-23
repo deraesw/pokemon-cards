@@ -1,7 +1,5 @@
 package com.deraesw.pokemoncards
 
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -9,18 +7,25 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.deraesw.pokemoncards.di.appModules
+import com.deraesw.pokemoncards.core.database.factory.DriverFactory
+import com.deraesw.pokemoncards.di.pcsInitKoin
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import com.deraesw.pokemoncards.ui.MainScreen
-import kotlinx.coroutines.launch
+import com.deraesw.pokemoncards.ui.MainViewModel
 import org.jetbrains.compose.resources.stringResource
-import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.module
 import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.app_name
 
 fun main() = application {
-    startKoin {
-        modules(appModules)
+    pcsInitKoin {
+        modules(
+            module {
+                single { DriverFactory() }
+                viewModel { MainViewModel(get()) }
+            }
+        )
     }
     Window(
         onCloseRequest = ::exitApplication,
@@ -32,14 +37,6 @@ fun main() = application {
             position = WindowPosition.Aligned(alignment = Alignment.Center)
         )
     ) {
-        val corountine = rememberCoroutineScope()
-        SideEffect {
-            println("SideEffect")
-            corountine.launch {
-                println("launch")
-                SyncManager.initialSync()
-            }
-        }
         PokemonCardTheme {
             MainScreen()
         }

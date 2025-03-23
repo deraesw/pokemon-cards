@@ -1,0 +1,185 @@
+CREATE TABLE IF NOT EXISTS card_data(
+    id  TEXT PRIMARY KEY NOT NULL,
+    link_card_set TEXT NOT NULL,
+    name TEXT NOT NULL,
+    level TEXT DEFAULT NULL,
+    hp TEXT DEFAULT NULL,
+    image_small TEXT DEFAULT NULL,
+    image_large TEXT DEFAULT NULL,
+    evolves_from TEXT DEFAULT NULL,
+    number TEXT,
+    numberSort INTEGER DEFAULT -1,
+    artist TEXT DEFAULT NULL,
+    flavor_text TEXT DEFAULT NULL,
+    rarity TEXT,
+    super_type TEXT DEFAULT NULL
+);
+CREATE INDEX IF NOT EXISTS index_link_card_set ON card_data(link_card_set);
+
+CREATE TABLE IF NOT EXISTS card_type (
+    id  TEXT PRIMARY KEY NOT NULL,
+    name TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS junction_card_card_type (
+    card_id TEXT NOT NULL,
+    type_id TEXT NOT NULL,
+    FOREIGN KEY (card_id) REFERENCES card_data(id) ON DELETE CASCADE,
+    FOREIGN KEY (type_id) REFERENCES card_type(id) ON DELETE CASCADE,
+    PRIMARY KEY (card_id, type_id)
+);
+
+CREATE TABLE IF NOT EXISTS card_attacks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    link_card_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    damage TEXT NOT NULL,
+    description TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_attacks_cost (
+    link_card_attacks_id INTEGER NOT NULL,
+    link_card_type_id TEXT NOT NULL,
+    FOREIGN KEY (link_card_attacks_id) REFERENCES card_attacks(id) ON DELETE CASCADE,
+    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_weakness(
+    link_card_id TEXT NOT NULL,
+    link_card_type_id TEXT NOT NULL,
+    value TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE,
+    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_resistance(
+    link_card_id TEXT NOT NULL,
+    link_card_type_id TEXT NOT NULL,
+    value TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE,
+    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_retreat_cost(
+    link_card_id TEXT NOT NULL,
+    link_card_type_id TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE,
+    FOREIGN KEY (link_card_type_id) REFERENCES card_type(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_rules(
+    link_card_id TEXT NOT NULL,
+    rule TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_sub_types(
+    link_card_id TEXT NOT NULL,
+    sub_type TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS card_evolve_to(
+    link_card_id TEXT NOT NULL,
+    text TEXT NOT NULL,
+    FOREIGN KEY (link_card_id) REFERENCES card_data(id) ON DELETE CASCADE
+);
+
+countCardDataForSet:
+SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
+
+selectAllCardData:
+SELECT * FROM card_data WHERE link_card_set = :cardSetId
+ORDER BY
+    CASE
+        WHEN :sorter = 'NAME' THEN card_data.name
+        WHEN :sorter = 'CARD_NUMBER' THEN card_data.numberSort
+        WHEN :sorter = 'HP' THEN card_data.hp
+    END ASC;
+
+selectCardData:
+SELECT
+    card_data.*, cr.rules, cst.sub_type
+FROM card_data
+LEFT JOIN (
+	SELECT card_rules.link_card_id, GROUP_CONCAT(card_rules.rule, '|') AS rules
+	FROM card_rules
+	GROUP BY card_rules.link_card_id
+) cr ON cr.link_card_id = card_data.id
+LEFT JOIN (
+	SELECT card_sub_types.link_card_id, GROUP_CONCAT(card_sub_types.sub_type, '|') AS sub_type
+	FROM card_sub_types
+	GROUP BY card_sub_types.link_card_id
+) AS cst ON cst.link_card_id = card_data.id
+WHERE id = :cardId
+GROUP BY card_data.id;
+
+selectCardTypes:
+SELECT card_type.* FROM card_type
+INNER JOIN junction_card_card_type ON junction_card_card_type.type_id = card_type.id
+WHERE junction_card_card_type.card_id = :cardId;
+
+selectCardAttacks:
+SELECT * FROM card_attacks
+WHERE card_attacks.link_card_id = :cardId;
+
+selectCardAttacksCost:
+SELECT card_type.name FROM card_attacks_cost
+INNER JOIN card_type ON card_type.id = card_attacks_cost.link_card_type_id
+WHERE card_attacks_cost.link_card_attacks_id = :attackId;
+
+selectCardWeaknesses:
+SELECT card_weakness.*, card_type.name FROM card_weakness
+INNER JOIN card_type ON card_type.id = card_weakness.link_card_type_id
+WHERE card_weakness.link_card_id = :cardId;
+
+selectCardResistances:
+SELECT card_resistance.*, card_type.name FROM card_resistance
+INNER JOIN card_type ON card_type.id = card_resistance.link_card_type_id
+WHERE card_resistance.link_card_id = :cardId;
+
+selectCardRetreatCost:
+SELECT card_retreat_cost.* FROM card_retreat_cost
+INNER JOIN card_type ON card_type.id = card_retreat_cost.link_card_type_id
+WHERE card_retreat_cost.link_card_id = :cardId;
+
+selectLastInsertId:
+SELECT last_insert_rowid();
+
+insertCardData:
+INSERT OR REPLACE INTO card_data VALUES :data;
+
+insertCardType:
+INSERT OR IGNORE INTO card_type(id, name) VALUES (:id, :name);
+
+insertCardTypeJunction:
+INSERT OR IGNORE INTO junction_card_card_type VALUES :data;
+
+insertCardAttacks:
+INSERT OR IGNORE INTO card_attacks(link_card_id, name, damage, description)
+VALUES (:cardId, :name, :damage, :desciption);
+
+insertCardAttacksCost:
+INSERT OR IGNORE INTO card_attacks_cost VALUES :data;
+
+insertCardWeakness:
+INSERT OR IGNORE INTO card_weakness VALUES :data;
+
+insertCardResistance:
+INSERT OR IGNORE INTO card_resistance VALUES :data;
+
+insertCardRetreatCost:
+INSERT OR IGNORE INTO card_retreat_cost VALUES :data;
+
+insertCardSubType:
+INSERT OR IGNORE INTO card_sub_types VALUES :data;
+
+insertCardRules:
+INSERT OR IGNORE INTO card_rules VALUES :data;
+
+insertCardEvolveTo:
+INSERT OR IGNORE INTO card_evolve_to VALUES :data;
+
+deleteCard:
+DELETE FROM card_data WHERE card_data.id = :card_id;

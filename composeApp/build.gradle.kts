@@ -45,6 +45,10 @@ kotlin {
             implementation(libs.sql.delight.android)
         }
         commonMain.dependencies {
+            implementation(projects.core.core)
+            implementation(projects.core.database)
+            implementation(projects.core.network)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -77,6 +81,21 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
 
             implementation(libs.ktor.client.cio)
+            implementation(libs.sql.delight.sqlite)
+        }
+        commonTest.dependencies {
+            implementation(libs.junit)
+            implementation(libs.kotlin.test)
+            implementation(libs.koin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.ktor.client.mock)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.turbine)
+            implementation(libs.sql.delight.sqlite)
+        }
+        jvmTest.dependencies {
+            implementation(libs.turbine)
             implementation(libs.sql.delight.sqlite)
         }
     }

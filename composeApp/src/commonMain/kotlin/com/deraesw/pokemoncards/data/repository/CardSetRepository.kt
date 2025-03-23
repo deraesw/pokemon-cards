@@ -1,7 +1,7 @@
 package com.deraesw.pokemoncards.data.repository
 
-import com.deraesw.pokemoncards.model.CardSet
-import com.deraesw.pokemoncards.model.SortData
+import com.deraesw.pokemoncards.core.core.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.SortData
 import kotlinx.coroutines.flow.Flow
 
 interface CardSetRepository {
