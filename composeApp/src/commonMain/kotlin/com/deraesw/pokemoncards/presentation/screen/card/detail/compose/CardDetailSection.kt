@@ -51,24 +51,26 @@ fun CardDetailSection(
             )
         }
         Spacer(modifier = Modifier.size(4.dp))
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            TileInfo(
-                title = stringResource(Res.string.sub_type),
-                content = cardDetail.subTypes,
-                modifier = Modifier.weight(1f)
-            )
-            if (cardDetail.evolvesFrom.isNotEmpty()) {
+        if (cardDetail.isPokemon) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 TileInfo(
-                    title = stringResource(Res.string.evolve_from),
-                    content = cardDetail.evolvesFrom,
+                    title = stringResource(Res.string.sub_type),
+                    content = cardDetail.subTypes,
                     modifier = Modifier.weight(1f)
                 )
+                if (cardDetail.evolvesFrom.isNotEmpty()) {
+                    TileInfo(
+                        title = stringResource(Res.string.evolve_from),
+                        content = cardDetail.evolvesFrom,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
+            Spacer(modifier = Modifier.size(8.dp))
         }
-        Spacer(modifier = Modifier.size(8.dp))
     }
 }
 

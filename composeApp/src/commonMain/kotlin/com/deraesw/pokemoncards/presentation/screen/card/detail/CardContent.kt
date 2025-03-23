@@ -1,5 +1,6 @@
 package com.deraesw.pokemoncards.presentation.screen.card.detail
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,8 +18,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -27,16 +29,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter.Companion.tint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.presentation.compose.CardTypeBox
+import com.deraesw.pokemoncards.presentation.compose.Constant
+import com.deraesw.pokemoncards.presentation.compose.PcsInfoBox
 import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
 import com.deraesw.pokemoncards.presentation.compose.images.PcsImage
 import com.deraesw.pokemoncards.presentation.model.CardDetail
+import com.deraesw.pokemoncards.presentation.model.SuperType
 import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.AttacksSection
 import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.BattleStatsSection
 import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.CardDetailSection
+import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.FlavorBox
+import com.deraesw.pokemoncards.presentation.screen.card.detail.compose.RulesBox
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import org.jetbrains.compose.resources.stringResource
@@ -94,7 +102,7 @@ fun CardContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
 
-            ) {
+                ) {
                 CardImageSection(
                     imageUrl = cardDetail.imageLarge,
                     modifier = Modifier.width(464.dp).padding(start = 16.dp, end = 8.dp)
@@ -140,7 +148,9 @@ fun CardInformationSection(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.fillMaxHeight().verticalScroll(rememberScrollState()),
+        modifier = modifier
+            .fillMaxHeight()
+            .verticalScroll(rememberScrollState()),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -161,92 +171,139 @@ fun CardInformationSection(
                     color = ColorPalette.Gray500
                 )
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Text(
-                    text = stringResource(Res.string.pokemon_card_hp, cardDetail.hp),
-                    style = PokemonCardTheme.typography.headlineSmall,
-                    color = ColorPalette.Gray700,
+
+            if (cardDetail.isPokemon) {
+                PokemonCardSubTitleSection(
+                    hp = cardDetail.hp,
+                    types = cardDetail.types
                 )
 
-                cardDetail.types.forEach { type ->
-                    CardTypeBox(type = type)
-                }
-            }
-            if (cardDetail.attacks.isNotEmpty()) {
                 PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
                 AttacksSection(cardDetail.attacks)
+                PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
+                BattleStatsSection(cardDetail = cardDetail)
+                PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
+            } else {
+                OtherSubTitleSection(
+                    superType = cardDetail.superType,
+                    subType = cardDetail.subTypes,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+
+                Column {
+                    Text(
+                        text = "Card rules",
+                        style = PokemonCardTheme.typography.titleMedium,
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
+                    cardDetail.rules.forEach {
+                        PcsInfoBox(
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        ) {
+                            Text(
+                                text = it,
+                                style = PokemonCardTheme.typography.bodyMedium,
+                                color = ColorPalette.Gray800,
+                            )
+                        }
+                    }
+                }
             }
-            PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
-            BattleStatsSection(cardDetail = cardDetail)
-            PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
             CardDetailSection(
                 cardDetail = cardDetail,
                 modifier = Modifier.fillMaxWidth(0.8f)
             )
-            PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
-            if (cardDetail.flavorText.isNotEmpty()) {
-                FlavorBox(flavorText = cardDetail.flavorText)
-            }
+            if (cardDetail.isPokemon) {
+                PcsHorDivider(modifier = Modifier.padding(vertical = 8.dp))
+                if (cardDetail.flavorText.isNotEmpty()) {
+                    FlavorBox(flavorText = cardDetail.flavorText)
+                }
 
-            if (cardDetail.rules.isNotEmpty()) {
-                RulesBox(rules = cardDetail.rules)
+                if (cardDetail.pokemonRule.isNotEmpty()) {
+                    RulesBox(rules = cardDetail.pokemonRule)
+                }
             }
         }
     }
 }
 
 @Composable
-fun RulesBox(
-    rules: String,
+private fun PokemonCardSubTitleSection(
+    hp: String,
+    types: List<String>,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(ColorPalette.Gray100)
-            .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
-        Column {
-            Text(
-                text = "Rules",
-                style = PokemonCardTheme.typography.labelLarge,
-                color = ColorPalette.Blue700,
-            )
-            Text(
-                text = rules,
-                style = PokemonCardTheme.typography.labelMedium,
-            )
+        Text(
+            text = stringResource(Res.string.pokemon_card_hp, hp),
+            style = PokemonCardTheme.typography.headlineSmall,
+            color = ColorPalette.Gray700,
+        )
+
+        types.forEach { type ->
+            CardTypeBox(type = type)
         }
     }
 }
 
 @Composable
-fun FlavorBox(
-    flavorText: String,
+private fun OtherSubTitleSection(
+    superType: SuperType,
+    subType: String = "",
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(ColorPalette.Gray100)
-            .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
-        Row {
-            Icon(
-                imageVector = Icons.Default.Info,
-                contentDescription = "info",
-                tint = ColorPalette.Blue500,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = modifier
+                .clip(RoundedCornerShape(Constant.PERCENT_50))
+                .background(ColorPalette.Purple200)
+                .padding(horizontal = 8.dp)
+        ) {
+            Image(
+                Icons.Default.Person,
+                contentDescription = "Info",
+                modifier = Modifier.size(16.dp),
+                colorFilter = tint(ColorPalette.Purple800)
             )
-            Spacer(modifier = Modifier.size(8.dp))
             Text(
-                text = flavorText,
-                style = PokemonCardTheme.typography.labelMedium,
+                text = superType.type,
+                style = PokemonCardTheme.typography.bodyMedium,
+                color = ColorPalette.Purple800,
+                fontWeight = FontWeight.SemiBold
             )
+        }
+        if (subType.isNotEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = modifier
+                    .clip(RoundedCornerShape(Constant.PERCENT_50))
+                    .background(ColorPalette.Blue200)
+                    .padding(horizontal = 8.dp)
+            ) {
+                Image(
+                    Icons.Default.Build,
+                    contentDescription = "Info",
+                    modifier = Modifier.size(16.dp),
+                    colorFilter = tint(ColorPalette.Blue800)
+                )
+                Text(
+                    text = subType,
+                    style = PokemonCardTheme.typography.bodyMedium,
+                    color = ColorPalette.Blue800,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
         }
     }
 }

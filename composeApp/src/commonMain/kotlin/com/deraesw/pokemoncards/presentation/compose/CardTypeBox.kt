@@ -30,7 +30,6 @@ fun CardTypeBox(
             text = type,
             style = PokemonCardTheme.typography.bodyMedium,
             modifier = Modifier.padding(horizontal = 16.dp),
-            //color = color,
             fontWeight = FontWeight.SemiBold
         )
     }

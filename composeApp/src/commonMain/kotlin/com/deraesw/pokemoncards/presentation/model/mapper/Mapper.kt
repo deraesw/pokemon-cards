@@ -3,6 +3,7 @@ package com.deraesw.pokemoncards.presentation.model.mapper
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.model.CardListItem
+import com.deraesw.pokemoncards.presentation.model.SuperType
 
 fun List<Card>.toCardListItems(): List<CardListItem> {
     return this.map { it.toCardListItem() }
@@ -33,6 +34,13 @@ fun Card.toCardDetail(): CardDetail {
         retreatCost = this.retreatCost,
         subTypes = this.subTypes.joinToString(),
         evolvesFrom = this.evolvesFrom ?: "",
-        rules = this.rules.firstOrNull() ?: ""
+        rules = this.rules,
+        superType = when (superType?.uppercase()) {
+            "POKEMON" -> SuperType.POKEMON
+            "ITEM" -> SuperType.ITEM
+            "ENERGY" -> SuperType.ENERGY
+            "TRAINER" -> SuperType.TRAINER
+            else -> SuperType.POKEMON
+        }
     )
 }
