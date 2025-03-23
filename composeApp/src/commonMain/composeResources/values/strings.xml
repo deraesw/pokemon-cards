@@ -34,4 +34,9 @@
 
     <string name="card_list_search_placeholder">Search card list on this set...</string>
 
+    <string name="sync_in_progress">Synchronization in progress</string>
+    <string name="no_result_found">No result found!</string>
+    <string name="no_result_found_extra_info">We couldn't find what you're looking for. Please try again with different search terms.</string>
+
+    <string name="description_search_icon">search icons</string>
 </resources>

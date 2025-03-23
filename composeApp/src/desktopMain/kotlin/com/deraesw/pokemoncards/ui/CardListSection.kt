@@ -3,7 +3,6 @@ package com.deraesw.pokemoncards.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,13 +12,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -31,8 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter.Companion.tint
 import androidx.compose.ui.unit.dp
+import com.deraesw.pokemoncards.presentation.compose.CardEmptySearch
 import com.deraesw.pokemoncards.presentation.screen.card.detail.CardContent
 import com.deraesw.pokemoncards.presentation.screen.card.list.CardListContent
 import com.deraesw.pokemoncards.presentation.screen.card.list.CardListViewModel
@@ -82,32 +78,11 @@ fun CardListSection(
             exit = fadeOut(),
         ) {
             if (uiState.showEmptySearch) {
-                Box(
+                CardEmptySearch(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.White)
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.align(Alignment.Center)
-                    ) {
-                        Image(
-                            Icons.Default.Search,
-                            contentDescription = "Search icon",
-                            colorFilter = tint(ColorPalette.Gray600),
-                            modifier = Modifier.size(64.dp).padding(bottom = 16.dp)
-                        )
-                        Text(
-                            text = "No result found!",
-                            style = PokemonCardTheme.typography.titleMedium,
-                        )
-                        Text(
-                            text = "We couldn't find what you're looking for. Please try again with different search terms.",
-                            style = PokemonCardTheme.typography.bodyMedium,
-                        )
-                    }
-                }
+                )
             } else {
                 CardListContent(
                     cards = uiState.cardList,
