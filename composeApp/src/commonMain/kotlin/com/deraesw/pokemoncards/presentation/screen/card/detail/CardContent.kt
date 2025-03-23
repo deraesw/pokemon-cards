@@ -101,8 +101,7 @@ fun CardContent(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-
-                ) {
+            ) {
                 CardImageSection(
                     imageUrl = cardDetail.imageLarge,
                     modifier = Modifier.width(464.dp).padding(start = 16.dp, end = 8.dp)

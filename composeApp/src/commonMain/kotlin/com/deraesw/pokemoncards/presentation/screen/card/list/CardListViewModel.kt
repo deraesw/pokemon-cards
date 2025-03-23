@@ -91,12 +91,14 @@ class CardListViewModel(
                 )
                 .map {
                     Logger.debug("CardListViewModel", "fetchCardList list found - ${it.size}")
+                    val cardList = filterCards(
+                        query = state.searchQuery,
+                        list = it.toCardListItems()
+                    )
                     CardListState(
-                        cardList = filterCards(
-                            query = state.searchQuery,
-                            list = it.toCardListItems()
-                        ),
-                        sortCardData = state.sortCardData
+                        cardList = cardList,
+                        sortCardData = state.sortCardData,
+                        showEmptySearch = cardList.isEmpty() && state.searchQuery.isNotEmpty()
                     ).also {
                         _loadingState.tryEmit(false)
                     }
@@ -208,7 +210,8 @@ data class CardListLocalState(
 
 data class CardListState(
     val cardList: List<CardListItem> = listOf(),
-    val sortCardData: SortCardData = SortCardData.CARD_NUMBER
+    val sortCardData: SortCardData = SortCardData.CARD_NUMBER,
+    val showEmptySearch: Boolean = false
 )
 
 data class SyncState(
