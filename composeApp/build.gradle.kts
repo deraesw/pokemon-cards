@@ -137,17 +137,16 @@ compose.desktop {
         mainClass = "com.deraesw.pokemoncards.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.deraesw.pokemoncards"
+            modules("java.sql")
+            targetFormats(
+                TargetFormat.Dmg,
+                TargetFormat.Msi,
+                TargetFormat.Deb,
+                TargetFormat.Exe
+            )
+            packageName = "WdrPokemonCards"
             packageVersion = "1.0.0"
-        }
-    }
-}
-
-sqldelight {
-    databases {
-        create("PokemonCardDatabase") {
-            packageName = "com.deraesw.pokemoncards.data.database"
+            description = "Learning Compose Multiplatform App: Pokemon Cards application"
         }
     }
 }

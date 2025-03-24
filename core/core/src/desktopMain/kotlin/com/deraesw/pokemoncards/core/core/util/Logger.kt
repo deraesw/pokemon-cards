@@ -13,5 +13,4 @@ actual object Logger {
     actual fun info(tag: String, message: String) {
         println("Info - $tag: $message")
     }
-
 }
