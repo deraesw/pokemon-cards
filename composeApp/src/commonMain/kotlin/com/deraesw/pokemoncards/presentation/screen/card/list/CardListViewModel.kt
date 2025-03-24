@@ -6,8 +6,8 @@ import com.deraesw.pokemoncards.core.core.bus.SyncBus
 import com.deraesw.pokemoncards.core.core.bus.SyncEvent
 import com.deraesw.pokemoncards.core.core.model.SortCardData
 import com.deraesw.pokemoncards.core.core.util.Logger
-import com.deraesw.pokemoncards.data.repository.CardRepository
-import com.deraesw.pokemoncards.domain.NetworkManager
+import com.deraesw.pokemoncards.core.data.domain.NetworkManager
+import com.deraesw.pokemoncards.core.data.repository.CardRepository
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.model.CardListItem
 import com.deraesw.pokemoncards.presentation.model.mapper.toCardDetail

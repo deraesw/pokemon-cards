@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.data.repository
+package com.deraesw.pokemoncards.core.data.repository
 
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.SortData

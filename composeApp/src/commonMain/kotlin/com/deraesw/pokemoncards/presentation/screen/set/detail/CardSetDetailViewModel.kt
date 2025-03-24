@@ -2,7 +2,7 @@ package com.deraesw.pokemoncards.presentation.screen.set.detail
 
 import androidx.lifecycle.ViewModel
 import com.deraesw.pokemoncards.core.core.model.CardSet
-import com.deraesw.pokemoncards.data.repository.CardSetRepository
+import com.deraesw.pokemoncards.core.data.repository.CardSetRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

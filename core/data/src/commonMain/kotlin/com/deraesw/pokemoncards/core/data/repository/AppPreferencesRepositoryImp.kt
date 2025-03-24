@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.data.repository
+package com.deraesw.pokemoncards.core.data.repository
 
 import com.deraesw.pokemoncards.core.database.dao.AppPreferencesDao
 
@@ -14,3 +14,4 @@ class AppPreferencesRepositoryImp(
         appPreferencesDao.insertLastSyncTime()
     }
 }
+

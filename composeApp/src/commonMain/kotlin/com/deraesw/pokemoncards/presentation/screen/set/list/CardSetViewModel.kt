@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.SortData
 import com.deraesw.pokemoncards.core.core.util.Logger
-import com.deraesw.pokemoncards.data.repository.CardSetRepository
-import com.deraesw.pokemoncards.domain.NetworkManager
+import com.deraesw.pokemoncards.core.data.domain.NetworkManager
+import com.deraesw.pokemoncards.core.data.repository.CardSetRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow

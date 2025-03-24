@@ -1,12 +1,12 @@
-package com.deraesw.pokemoncards.domain
+package com.deraesw.pokemoncards.core.data.domain
 
 import com.deraesw.pokemoncards.core.core.bus.SyncBus
 import com.deraesw.pokemoncards.core.core.bus.SyncEvent
 import com.deraesw.pokemoncards.core.core.util.Logger
+import com.deraesw.pokemoncards.core.data.repository.AppPreferencesRepository
+import com.deraesw.pokemoncards.core.data.repository.CardRepository
+import com.deraesw.pokemoncards.core.data.repository.CardSetRepository
 import com.deraesw.pokemoncards.core.network.service.PokemonCardApiService
-import com.deraesw.pokemoncards.data.repository.AppPreferencesRepository
-import com.deraesw.pokemoncards.data.repository.CardRepository
-import com.deraesw.pokemoncards.data.repository.CardSetRepository
 
 class NetworkManagerImp(
     private val pokemonService: PokemonCardApiService,

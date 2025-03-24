@@ -2,7 +2,7 @@ package com.deraesw.pokemoncards.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.deraesw.pokemoncards.domain.NetworkManager
+import com.deraesw.pokemoncards.core.data.domain.NetworkManager
 import kotlinx.coroutines.launch
 
 class MainViewModel(

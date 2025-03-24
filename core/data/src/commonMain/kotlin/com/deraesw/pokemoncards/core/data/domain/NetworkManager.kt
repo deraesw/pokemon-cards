@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.domain
+package com.deraesw.pokemoncards.core.data.domain
 
 interface NetworkManager {
     suspend fun initialSync()
