@@ -2,20 +2,28 @@ package com.deraesw.pokemoncards.presentation.screen.card.list.compose
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -30,8 +38,8 @@ import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 fun CardListItemLarge(
     card: CardListItem,
     modifier: Modifier = Modifier,
-    onCardClick: (String) -> Unit = {},
     hovered: String = "",
+    onCardClick: (String) -> Unit = {},
     onHover: (String) -> Unit = {}
 ) {
     val rotationYAnimation by animateFloatAsState(
@@ -62,7 +70,7 @@ fun CardListItemLarge(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
+
         ) {
             if (card.imageSmall != null) {
                 PcsImage(
@@ -71,6 +79,7 @@ fun CardListItemLarge(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
+                        .padding(8.dp)
                         .graphicsLayer {
                             rotationY = rotationYAnimation
                             rotationZ = rotationZAnimation
@@ -81,11 +90,45 @@ fun CardListItemLarge(
                         }
                 )
             }
-            Text(
-                text = card.name,
-                style = PokemonCardTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(32.dp)
+                    .background(Color.White)
+            ) {
+                Text(
+                    text = card.name,
+                    style = PokemonCardTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 4.dp)
+                        .weight(1.1f)
+                        .basicMarquee()
+                )
+                Box(
+                    modifier = Modifier
+                        .clip(CutCornerShape(topStart = 16.dp))
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    ColorPalette.Gray400,
+                                    ColorPalette.Gray100,
+                                    ColorPalette.Gray400
+                                )
+                            )
+                        )
+                        .fillMaxHeight()
+                        .weight(0.9f)
+                ) {
+                    Text(
+                        text = card.superType.type,
+                        style = PokemonCardTheme.typography.titleSmall,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                    )
+                }
+            }
         }
     }
 }

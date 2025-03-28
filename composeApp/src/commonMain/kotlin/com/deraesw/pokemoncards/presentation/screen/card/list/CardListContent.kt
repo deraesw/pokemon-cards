@@ -43,9 +43,7 @@ fun CardListContent(
                 CardListItemLarge(
                     card = card,
                     hovered = active,
-                    onHover = {
-                        active = it
-                    },
+                    onHover = { active = it },
                     onCardClick = onCardClick,
                 )
             }

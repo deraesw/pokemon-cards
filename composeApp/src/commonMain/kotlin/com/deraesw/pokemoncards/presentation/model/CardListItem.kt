@@ -4,4 +4,5 @@ data class CardListItem(
     val id: String,
     val name: String,
     val imageSmall: String? = null,
+    val superType: SuperType = SuperType.POKEMON,
 )

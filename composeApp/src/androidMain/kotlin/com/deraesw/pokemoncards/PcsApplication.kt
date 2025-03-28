@@ -14,11 +14,6 @@ class PcsApplication : Application() {
             module {
                 single { DriverFactory(get()) }
             }
-//            modules(androidDataModule)
         }
-//        startKoin {
-//            androidContext(this@PcsApplication)
-//            modules(androidDataModule + appModules)
-//        }
     }
 }

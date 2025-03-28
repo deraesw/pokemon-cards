@@ -13,7 +13,8 @@ fun Card.toCardListItem(): CardListItem {
     return CardListItem(
         id = this.id,
         name = this.name,
-        imageSmall = this.imageSmall
+        imageSmall = this.imageSmall,
+        superType = superType.toSuperType()
     )
 }
 
@@ -35,12 +36,14 @@ fun Card.toCardDetail(): CardDetail {
         subTypes = this.subTypes.joinToString(),
         evolvesFrom = this.evolvesFrom ?: "",
         rules = this.rules,
-        superType = when (superType?.uppercase()) {
-            "POKEMON" -> SuperType.POKEMON
-            "ITEM" -> SuperType.ITEM
-            "ENERGY" -> SuperType.ENERGY
-            "TRAINER" -> SuperType.TRAINER
-            else -> SuperType.POKEMON
-        }
+        superType = superType.toSuperType()
     )
+}
+
+private fun String?.toSuperType() = when (this?.uppercase()) {
+    "POKEMON" -> SuperType.POKEMON
+    "ITEM" -> SuperType.ITEM
+    "ENERGY" -> SuperType.ENERGY
+    "TRAINER" -> SuperType.TRAINER
+    else -> SuperType.POKEMON
 }

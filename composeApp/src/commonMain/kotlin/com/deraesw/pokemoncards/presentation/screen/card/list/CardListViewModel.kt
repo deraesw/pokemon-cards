@@ -157,7 +157,11 @@ class CardListViewModel(
     }
 
     fun selectCard(cardId: String) {
-        Logger.debug("CardListViewModel", "selectCard - $cardId")
+        val cardList = uiState.value.cardList
+        val cardIndex = cardList.indexOfFirst { it.id == cardId }
+        val previousId = cardList.getOrNull(cardIndex - 1)?.id
+        val nextId = cardList.getOrNull(cardIndex + 1)?.id
+        Logger.debug("CardListViewModel", "selectCard - $cardId, $previousId, $nextId")
         this.cardId.value = cardId
     }
 

@@ -84,7 +84,7 @@ fun Card_data.toCardDetail(
         artist = this.artist,
         flavorText = this.flavor_text,
         rarity = this.rarity,
-        superType = null,
+        superType = this.super_type,
         types = types,
         attacks = attacks,
         setId = this.link_card_set,
