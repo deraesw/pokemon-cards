@@ -17,7 +17,7 @@ class NetworkManagerImp(
 ) : NetworkManager {
     private var syncInProgress = false
 
-    override suspend fun initialSync() {
+    override suspend fun initialSync(complete: () -> Unit) {
         println("Trigger logic to initial sync")
         if (syncInProgress) return
         syncInProgress = true
@@ -25,6 +25,7 @@ class NetworkManagerImp(
         val lastSync = appPreferencesRepository.getLastSyncTime()
         if (lastSync != null) {
             println("Already perform an initial sync. $lastSync")
+            complete()
             return
         }
 
@@ -41,6 +42,7 @@ class NetworkManagerImp(
         println("Sync done...")
         appPreferencesRepository.saveLastSyncTime()
         syncInProgress = false
+        complete()
     }
 
     override suspend fun fetchSetCardsList(

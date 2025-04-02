@@ -44,9 +44,7 @@ import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import org.koin.compose.koinInject
 
 @Composable
-fun MainScreen(
-    viewModel: MainViewModel = koinInject()
-) {
+fun MainScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -76,6 +76,8 @@ kotlin {
             implementation(libs.landscapist.coil3)
 
             implementation(libs.sql.delight.coroutines.extensions)
+
+            implementation(libs.jetbrains.navigation)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
