@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.ui
+package com.deraesw.pokemoncards.ui.compose.section
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
