@@ -7,9 +7,9 @@ import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.CardType
 import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.CardWeakness
-import com.deraesw.pokemoncards.core.database.Card_data
 import com.deraesw.pokemoncards.core.database.Card_set
 import com.deraesw.pokemoncards.core.database.Card_type
+import com.deraesw.pokemoncards.core.database.SelectAllCardData
 import com.deraesw.pokemoncards.core.database.SelectCardData
 import com.deraesw.pokemoncards.core.database.SelectCardResistances
 import com.deraesw.pokemoncards.core.database.SelectCardWeaknesses
@@ -39,11 +39,11 @@ fun Card_set.toCardSet(): CardSet {
     )
 }
 
-fun Flow<List<Card_data>>.toCardDetailListFlow(): Flow<List<Card>> {
+fun Flow<List<SelectAllCardData>>.toCardDetailListFlow(): Flow<List<Card>> {
     return this.map { list -> list.toCardDetailList() }
 }
 
-fun List<Card_data>.toCardDetailList(): List<Card> {
+fun List<SelectAllCardData>.toCardDetailList(): List<Card> {
     return this.map { item -> item.toCardDetail() }
 }
 
@@ -65,13 +65,7 @@ fun Flow<SelectCardData>.toCardDetailFlow(
     }
 }
 
-fun Card_data.toCardDetail(
-    types: List<CardType> = emptyList(),
-    attacks: List<CardAttacks> = emptyList(),
-    weaknesses: List<CardWeakness> = emptyList(),
-    resistances: List<CardResistance> = emptyList(),
-    retreatCost: List<CardTypeKey> = emptyList()
-): Card {
+fun SelectAllCardData.toCardDetail(): Card {
     return Card(
         id = this.id,
         name = this.name,
@@ -85,12 +79,10 @@ fun Card_data.toCardDetail(
         flavorText = this.flavor_text,
         rarity = this.rarity,
         superType = this.super_type,
-        types = types,
-        attacks = attacks,
+        types = this.types?.split("|")?.map {
+            CardType(it, it)
+        } ?: listOf(),
         setId = this.link_card_set,
-        weaknesses = weaknesses,
-        resistances = resistances,
-        retreatCost = retreatCost
     )
 }
 

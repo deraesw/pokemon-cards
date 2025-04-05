@@ -14,6 +14,10 @@ fun Card.toCardListItem(): CardListItem {
         id = this.id,
         name = this.name,
         imageSmall = this.imageSmall,
+        imageLarge = this.imageLarge,
+        mainType = (this.types.firstOrNull()?.name ?: "").also {
+            println("Main Type: ${this.types}")
+        },
         superType = superType.toSuperType()
     )
 }

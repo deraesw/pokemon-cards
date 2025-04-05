@@ -25,20 +25,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.deraesw.pokemoncards.data.DisplaySelectorData
 import com.deraesw.pokemoncards.presentation.compose.CardEmptySearch
 import com.deraesw.pokemoncards.presentation.compose.CardSynchronization
 import com.deraesw.pokemoncards.presentation.compose.deactivateClick
 import com.deraesw.pokemoncards.presentation.screen.card.detail.CardContent
+import com.deraesw.pokemoncards.presentation.screen.card.list.CardGridContent
 import com.deraesw.pokemoncards.presentation.screen.card.list.CardListContent
 import com.deraesw.pokemoncards.presentation.screen.card.list.CardListViewModel
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 
 @Composable
 fun CardListSection(
+    displaySelector: DisplaySelectorData,
     cardListViewModel: CardListViewModel,
     modifier: Modifier = Modifier
 ) {
     val state: LazyGridState = rememberLazyGridState()
+//    val listState: LazyListState = rememberLazyListState()
     val uiState by cardListViewModel.uiState.collectAsState()
     val cardDetail by cardListViewModel.cardDetail.collectAsState()
     val loadingState by cardListViewModel.loadingState.collectAsState()
@@ -81,20 +85,36 @@ fun CardListSection(
                         .background(Color.White)
                 )
             } else {
-                CardListContent(
-                    cards = uiState.cardList,
-                    modifier = Modifier.fillMaxSize().padding(16.dp),
-                    state = state,
-                    onCardClick = cardListViewModel::selectCard,
-                    scrollIndicatorSlot = {
-                        VerticalScrollbar(
-                            adapter = rememberScrollbarAdapter(state),
-                            modifier = Modifier
-                                .align(Alignment.CenterEnd)
-                                .fillMaxHeight()
-                        )
-                    }
-                )
+                if (displaySelector == DisplaySelectorData.Grid) {
+                    CardGridContent(
+                        cards = uiState.cardList,
+                        modifier = Modifier.fillMaxSize().padding(16.dp),
+                        state = state,
+                        onCardClick = cardListViewModel::selectCard,
+                        scrollIndicatorSlot = {
+                            VerticalScrollbar(
+                                adapter = rememberScrollbarAdapter(state),
+                                modifier = Modifier
+                                    .align(Alignment.CenterEnd)
+                                    .fillMaxHeight()
+                            )
+                        }
+                    )
+                } else {
+                    CardListContent(
+                        cards = uiState.cardList,
+                        modifier = Modifier.fillMaxSize().padding(16.dp),
+                        onCardClick = cardListViewModel::selectCard,
+                        scrollIndicatorSlot = {
+                            VerticalScrollbar(
+                                adapter = rememberScrollbarAdapter(state),
+                                modifier = Modifier
+                                    .align(Alignment.CenterEnd)
+                                    .fillMaxHeight()
+                            )
+                        }
+                    )
+                }
             }
 
             cardDetail?.apply {

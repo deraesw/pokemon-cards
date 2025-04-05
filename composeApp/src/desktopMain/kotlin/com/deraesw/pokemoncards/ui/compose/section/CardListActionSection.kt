@@ -22,17 +22,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.core.core.model.SortCardData
+import com.deraesw.pokemoncards.data.DisplaySelectorData
 import com.deraesw.pokemoncards.presentation.compose.CardSortButton
 import com.deraesw.pokemoncards.presentation.compose.PcsSearchComponent
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
+import com.deraesw.pokemoncards.ui.compose.widget.DisplaySelector
 
 @Composable
 fun CardListActionSection(
     sortCardData: SortCardData,
+    displaySelector: DisplaySelectorData,
     onClickReSync: () -> Unit,
     onSortSelect: (SortCardData) -> Unit,
     onClearQuery: () -> Unit,
     onQueryChange: (String) -> Unit,
+    onClickDisplaySelector: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -52,6 +56,10 @@ fun CardListActionSection(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            DisplaySelector(
+                selector = displaySelector,
+                onClick = onClickDisplaySelector
+            )
             CardSortButton(
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = Color.White,

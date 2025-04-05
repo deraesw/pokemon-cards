@@ -8,11 +8,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.SortCardData
+import com.deraesw.pokemoncards.data.DisplaySelectorData
 import com.deraesw.pokemoncards.presentation.screen.card.list.CardListViewModel
 import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailContent
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
@@ -26,6 +31,8 @@ fun CardSetDetailPane(
     cardListViewModel: CardListViewModel,
     modifier: Modifier = Modifier
 ) {
+    var displaySelector by remember { mutableStateOf(DisplaySelectorData.Grid) }
+
     Column(
         modifier = modifier
     ) {
@@ -47,6 +54,13 @@ fun CardSetDetailPane(
         ) {
             CardListActionSection(
                 sortCardData = sortCardData,
+                displaySelector = displaySelector,
+                onClickDisplaySelector = {
+                    displaySelector = when (displaySelector) {
+                        DisplaySelectorData.Grid -> DisplaySelectorData.List
+                        DisplaySelectorData.List -> DisplaySelectorData.Grid
+                    }
+                },
                 onClickReSync = {
                     cardListViewModel.reSyncCardList()
                 },
@@ -68,6 +82,7 @@ fun CardSetDetailPane(
             thickness = 1.dp,
         )
         CardListSection(
+            displaySelector = displaySelector,
             cardListViewModel = cardListViewModel,
             modifier = Modifier
                 .fillMaxWidth()

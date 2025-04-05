@@ -90,7 +90,14 @@ countCardDataForSet:
 SELECT COUNT(*) FROM card_data WHERE link_card_set = :cardSetId;
 
 selectAllCardData:
-SELECT * FROM card_data WHERE link_card_set = :cardSetId
+SELECT card_data.*, card_type_ref.types
+FROM card_data
+LEFT JOIN (
+	SELECT junction_card_card_type.card_id, GROUP_CONCAT(junction_card_card_type.type_id, '|') AS types
+	FROM junction_card_card_type
+	GROUP BY junction_card_card_type.card_id
+) card_type_ref ON card_type_ref.card_id = card_data.id
+WHERE link_card_set = :cardSetId
 ORDER BY
     CASE
         WHEN :sorter = 'NAME' THEN card_data.name
