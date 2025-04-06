@@ -13,6 +13,7 @@ fun Card.toCardListItem(): CardListItem {
     return CardListItem(
         id = this.id,
         name = this.name,
+        number = this.number ?: "",
         imageSmall = this.imageSmall,
         imageLarge = this.imageLarge,
         mainType = (this.types.firstOrNull()?.name ?: "").also {

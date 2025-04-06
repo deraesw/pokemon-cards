@@ -5,8 +5,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CutCornerShape
@@ -27,6 +31,9 @@ import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import com.deraesw.pokemoncards.presentation.theme.colorCardType
 import com.deraesw.pokemoncards.presentation.theme.colorOverlayCardType
+import org.jetbrains.compose.resources.stringResource
+import pokemoncards.composeapp.generated.resources.Res
+import pokemoncards.composeapp.generated.resources.pokemon_card_number
 
 @Composable
 fun CardItemForList(
@@ -37,18 +44,16 @@ fun CardItemForList(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .height(IntrinsicSize.Min)
             .clickable {
                 onCardClick(cardListItem.id)
             }
             .drawBehind {
                 drawRect(
                     brush = Brush.horizontalGradient(
-                        colors = listOf(
-                            Color.White,
-                            colorCardType(cardListItem.mainType),
-                            colorOverlayCardType(cardListItem.mainType)
-                        ),
-//                        startX = (size.width / 3)
+                        0.0f to Color.White,
+                        0.7f to colorCardType(cardListItem.mainType),
+                        1.0f to colorOverlayCardType(cardListItem.mainType)
                     )
                 )
             }
@@ -60,13 +65,24 @@ fun CardItemForList(
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.fillMaxSize()
             ) {
-                Text(
-                    text = cardListItem.name,
-                    style = PokemonCardTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = cardListItem.name,
+                        style = PokemonCardTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Text(
+                        text = stringResource(Res.string.pokemon_card_number, cardListItem.number),
+                        style = PokemonCardTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = ColorPalette.Gray500
+                    )
+                }
             }
         }
 
@@ -111,8 +127,6 @@ private fun CardImage(
                     .fillMaxWidth()
                     .padding(8.dp)
             )
-        } else {
-
         }
     }
 }
