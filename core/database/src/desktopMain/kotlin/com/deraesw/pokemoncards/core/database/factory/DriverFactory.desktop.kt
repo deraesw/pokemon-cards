@@ -3,13 +3,13 @@ package com.deraesw.pokemoncards.core.database.factory
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import com.deraesw.pokemoncards.core.core.util.Logger
-import com.deraesw.pokemoncards.core.core.util.SystemUtil.isMac
-import com.deraesw.pokemoncards.core.core.util.SystemUtil.isWindow
+import com.deraesw.pokemoncards.core.core.util.SystemUtil
 import com.deraesw.pokemoncards.core.database.PokemonCardDatabase
 import java.io.File
 import java.util.Properties
 
 actual class DriverFactory {
+    // TODO handle exceptions for file handling
     actual fun createDriver(): SqlDriver {
         val driver: SqlDriver = JdbcSqliteDriver(
             url = "jdbc:sqlite:${getDatabasePath()}",
@@ -20,19 +20,9 @@ actual class DriverFactory {
     }
 
     private fun getDatabasePath(): String {
-        val appData = when {
-            isWindow() -> {
-                System.getenv("APPDATA") ?: System.getProperty("user.home")
-            }
-
-            isMac() -> {
-                System.getProperty("user.home") + "/Library/Application Support"
-            }
-
-            else -> System.getProperty("user.home")
-        }
+        val appData = SystemUtil.getDataDirectoryPath()
         Logger.debug("D", "appData: $appData")
-        val dbDir = File("$appData/PokemonCardsApp")
+        val dbDir = File("$appData/data")
 
         if (!dbDir.exists()) {
             dbDir.mkdirs()

@@ -3,6 +3,8 @@ package com.deraesw.pokemoncards.core.core.util
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 object DateUtil {
     val currentUtcDateTime: String = Clock.System.now().toString()
@@ -27,5 +29,10 @@ object DateUtil {
         }.onFailure {
             println("Error: ${it.message} - ${it.printStackTrace()}")
         }.getOrDefault("Unknown")
+    }
+
+    fun getDateForLogs(): String {
+        val localDate = Clock.System.now().toLocalDateTime(TimeZone.UTC)
+        return with(localDate) { "$monthNumber-$dayOfMonth-$year" }
     }
 }
