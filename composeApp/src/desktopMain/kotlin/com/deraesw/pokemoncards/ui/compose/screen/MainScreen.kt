@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.ui
+package com.deraesw.pokemoncards.ui.compose.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background

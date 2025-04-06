@@ -22,6 +22,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -33,6 +35,8 @@ import com.deraesw.pokemoncards.presentation.compose.images.PcsImage
 import com.deraesw.pokemoncards.presentation.model.CardListItem
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
+import com.deraesw.pokemoncards.presentation.theme.colorCardType
+import com.deraesw.pokemoncards.presentation.theme.colorOverlayCardType
 
 @Composable
 fun CardListItemLarge(
@@ -65,6 +69,18 @@ fun CardListItemLarge(
             .background(ColorPalette.Gray050)
             .clickable {
                 onCardClick(card.id)
+            }.drawBehind {
+                drawRect(
+                    brush = Brush.radialGradient(
+                        colors = listOf(
+                            Color.White,
+                            colorCardType(card.mainType),
+                            colorOverlayCardType(card.mainType)
+                        ),
+                        center = Offset(0f, 0f),
+                        radius = (this.size.height * 1.5).toFloat()
+                    )
+                )
             }
     ) {
         Column(

@@ -1,19 +1,9 @@
 package com.deraesw.pokemoncards
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
@@ -21,12 +11,13 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.core.database.factory.DriverFactory
 import com.deraesw.pokemoncards.di.pcsInitKoin
-import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
-import com.deraesw.pokemoncards.ui.MainScreen
-import com.deraesw.pokemoncards.ui.MainViewModel
+import com.deraesw.pokemoncards.ui.compose.screen.LauncherScreen
+import com.deraesw.pokemoncards.ui.compose.screen.MainScreen
+import com.deraesw.pokemoncards.viewmodels.MainViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.core.module.dsl.viewModel
@@ -35,6 +26,13 @@ import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.app_name
 
 fun main() = application {
+    Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+        Logger.error(
+            "",
+            "Uncaught exception in thread ${thread.name}: ${throwable.message}",
+            throwable
+        )
+    }
     pcsInitKoin {
         modules(
             module {
@@ -94,48 +92,7 @@ private fun ApplicationScope.launchApplication() {
         )
     ) {
         PokemonCardTheme {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(ColorPalette.Indigo900)
-            ) {
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.align(Alignment.Center)
-                ) {
-                    Text(
-                        text = stringResource(Res.string.app_name),
-                        style = PokemonCardTheme.typography.titleLarge,
-                        color = Color.White
-                    )
-                    Text(
-                        text = "Please wait while we are initializing the application...",
-                        style = PokemonCardTheme.typography.bodyMedium,
-                        color = Color.White,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                    LinearProgressIndicator()
-                }
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 8.dp)
-                ) {
-                    Text(
-                        text = "Version 1.0.0",
-                        style = PokemonCardTheme.typography.labelMedium,
-                        color = Color.White
-                    )
-                    Text(
-                        text = "© 2025 Pokemon Cards.",
-                        style = PokemonCardTheme.typography.labelSmall,
-                        color = Color.White
-                    )
-                }
-            }
+            LauncherScreen()
         }
     }
 }

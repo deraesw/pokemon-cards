@@ -1,4 +1,4 @@
-package com.deraesw.pokemoncards.ui
+package com.deraesw.pokemoncards.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
