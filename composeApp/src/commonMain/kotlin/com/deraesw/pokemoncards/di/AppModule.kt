@@ -27,10 +27,6 @@ fun pcsInitKoin(
     }
 }
 
-//private val domainModule = module {
-//    singleOf(::NetworkManagerImp) bind NetworkManager::class
-//}
-
 val presentationModule = module {
     viewModel { CardSetViewModel(get(), get()) }
     viewModel { CardSetDetailViewModel(get()) }

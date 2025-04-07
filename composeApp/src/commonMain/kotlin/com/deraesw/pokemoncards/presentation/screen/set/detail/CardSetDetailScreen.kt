@@ -1,5 +1,6 @@
 package com.deraesw.pokemoncards.presentation.screen.set.detail
 
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -12,14 +13,7 @@ fun CardSetDetailScreen(
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
-    when (val state = uiState.value) {
-        is CardSetDetailState.Success -> {
-            CardSetDetailContent(
-                set = state.cardSet,
-                modifier = modifier
-            )
-        }
+    Scaffold { paddingValue ->
 
-        else -> {}
     }
 }

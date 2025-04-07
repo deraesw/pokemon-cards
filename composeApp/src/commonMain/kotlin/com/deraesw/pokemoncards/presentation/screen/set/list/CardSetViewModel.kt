@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class CardSetViewModel(
@@ -48,6 +49,12 @@ class CardSetViewModel(
             started = WhileSubscribed(5000),
             initialValue = _uiState.value
         )
+
+    fun initialSync() {
+        viewModelScope.launch {
+            networkManager.initialSync()
+        }
+    }
 
     fun setSelectedCardSet(id: String) {
         _uiState.update {

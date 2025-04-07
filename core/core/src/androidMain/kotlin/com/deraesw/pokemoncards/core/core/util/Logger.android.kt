@@ -8,8 +8,10 @@ actual object Logger {
     }
 
     actual fun error(tag: String, message: String, throwable: Throwable?) {
+        Log.e(tag, message, throwable)
     }
 
     actual fun info(tag: String, message: String) {
+        Log.i(tag, message)
     }
 }

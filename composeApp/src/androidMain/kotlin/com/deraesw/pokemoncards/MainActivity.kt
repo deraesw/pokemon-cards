@@ -10,15 +10,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            val corountine = rememberCoroutineScope()
-//            SideEffect {
-//                println("SideEffect")
-//                corountine.launch {
-//                    println("launch")
-//                    SyncManager.initialSync()
-//                }
-//            }
-            App()
+            MobileApp()
         }
     }
 }
@@ -26,5 +18,5 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App()
+    MobileApp()
 }
