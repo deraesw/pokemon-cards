@@ -8,5 +8,6 @@ data class CardSetDetail(
     val printedTotal: Int,
     val updatedAt: String,
     val formatedUpdatedAt: String,
+    val formatedReleaseDate: String,
     val imageLogo: String? = null
 )

@@ -43,7 +43,7 @@ fun StatSection(
 }
 
 @Composable
-private fun TileInfo(
+fun TileInfo(
     title: String,
     content: String,
     modifier: Modifier = Modifier

@@ -27,12 +27,16 @@ fun MobileApp(
         ) {
             cardSetList(
                 viewModel = viewModel,
-                onCardSetClick = {
-                    navController.navigate("cardSetDetail")
+                onCardSetClick = { setId ->
+                    navController.navigate("cardSetDetail/$setId")
                 }
             )
 
-            cardSetDetail()
+            cardSetDetail(
+                onNavigateBack = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

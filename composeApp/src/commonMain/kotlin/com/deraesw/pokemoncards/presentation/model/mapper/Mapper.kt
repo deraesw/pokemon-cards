@@ -58,6 +58,7 @@ fun CardSetModel.toCardSetDetail(): CardSetDetail {
         printedTotal = this.printedTotal,
         updatedAt = this.updatedAt,
         formatedUpdatedAt = DateUtil.convertToDateTimeDisplay(updatedAt),
+        formatedReleaseDate = DateUtil.convertDateToDisplayDate(releaseDate),
         imageLogo = this.imageLogo,
     )
 }

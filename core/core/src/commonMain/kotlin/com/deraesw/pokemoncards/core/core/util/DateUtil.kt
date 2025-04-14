@@ -11,7 +11,7 @@ object DateUtil {
 
     fun convertDateToDisplayDate(date: String): String {
         val localDate = LocalDate.parse(date.replace("/", "-"))
-        val month = localDate.month.name.lowercase().replaceFirstChar { it.uppercase() }
+        val month = localDate.month.name.lowercase().replaceFirstChar { it.uppercase() }.take(3)
         val day = localDate.dayOfMonth.toString()
         val year = localDate.year.toString()
         return "$month $day, $year"

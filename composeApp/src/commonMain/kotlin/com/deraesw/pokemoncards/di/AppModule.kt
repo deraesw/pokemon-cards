@@ -10,6 +10,7 @@ import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 fun pcsInitKoin(
@@ -29,6 +30,18 @@ fun pcsInitKoin(
 
 val presentationModule = module {
     viewModel { CardSetViewModel(get(), get()) }
-    viewModel { CardSetDetailViewModel(get()) }
+    viewModel {
+        if (it.size() == 0) {
+            CardSetDetailViewModel(
+                cardSetRepository = get(),
+                providedSetId = null
+            )
+        } else {
+            CardSetDetailViewModel(
+                cardSetRepository = get(),
+                providedSetId = get(parameters = { parametersOf(it[0]) })
+            )
+        }
+    }
     viewModel { CardListViewModel(get(), get(), get()) }
 }
