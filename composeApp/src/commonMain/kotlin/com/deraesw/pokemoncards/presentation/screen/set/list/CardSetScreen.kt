@@ -20,6 +20,7 @@ fun CardSetScreen(
             modifier = modifier.padding(paddingValue),
             cardSetModelList = uiState.cardSetModelList,
             cardSetSelected = uiState.selectedCardSetId,
+            selectorIndicator = false,
             onCardSetClick = {
                 viewModel.setSelectedCardSet(it)
                 onCardSetClick(it)

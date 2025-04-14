@@ -55,6 +55,7 @@ fun CardSetPane(
                         .fillMaxHeight()
                 )
             },
+            selectorIndicator = true,
             modifier = Modifier.padding(end = 10.dp)
         )
     }
