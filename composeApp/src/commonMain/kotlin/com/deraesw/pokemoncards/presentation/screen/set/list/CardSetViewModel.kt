@@ -2,11 +2,12 @@ package com.deraesw.pokemoncards.presentation.screen.set.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.SortData
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.core.data.domain.NetworkManager
 import com.deraesw.pokemoncards.core.data.repository.CardSetRepository
+import com.deraesw.pokemoncards.presentation.model.CardSetListItem
+import com.deraesw.pokemoncards.presentation.model.mapper.toCardSetList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,9 +35,9 @@ class CardSetViewModel(
                 sorter = state.sortData
             ).map { cardSetList ->
                 state.copy(
-                    cardSetList = filterCardSets(
+                    cardSetModelList = filterCardSets(
                         query = state.searchQuery,
-                        list = cardSetList
+                        list = cardSetList.toCardSetList()
                     ),
                 )
             }
@@ -76,8 +77,8 @@ class CardSetViewModel(
 
     private fun filterCardSets(
         query: String,
-        list: List<CardSet>
-    ): List<CardSet> {
+        list: List<CardSetListItem>
+    ): List<CardSetListItem> {
         return if (query.isEmpty()) {
             list
         } else {
@@ -89,7 +90,7 @@ class CardSetViewModel(
 }
 
 data class CardSetState(
-    val cardSetList: List<CardSet> = listOf(),
+    val cardSetModelList: List<CardSetListItem> = listOf(),
     val selectedCardSetId: String? = null,
     val sortData: SortData = SortData.NAME,
     val searchQuery: String = ""

@@ -8,7 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import org.jetbrains.compose.resources.stringResource
@@ -19,7 +18,8 @@ import pokemoncards.composeapp.generated.resources.total_cards
 
 @Composable
 fun StatSection(
-    set: CardSet,
+    totalCards: String,
+    printedCards: String,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -27,12 +27,12 @@ fun StatSection(
     ) {
         TileInfo(
             title = stringResource(Res.string.total_cards),
-            content = set.total.toString()
+            content = totalCards
         )
         Spacer(modifier = Modifier.size(8.dp))
         TileInfo(
             title = stringResource(Res.string.printed_cards),
-            content = set.printedTotal.toString()
+            content = printedCards
         )
         Spacer(modifier = Modifier.size(8.dp))
         TileInfo(

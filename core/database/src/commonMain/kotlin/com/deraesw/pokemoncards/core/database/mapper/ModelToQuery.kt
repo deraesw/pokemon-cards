@@ -1,12 +1,12 @@
 package com.deraesw.pokemoncards.core.database.mapper
 
 import com.deraesw.pokemoncards.core.core.model.Card
-import com.deraesw.pokemoncards.core.core.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.CardSetModel
 import com.deraesw.pokemoncards.core.database.Card_data
 import com.deraesw.pokemoncards.core.database.Card_set
 import com.deraesw.pokemoncards.core.database.Junction_card_card_type
 
-fun List<CardSet>.toCardSetEntity(): List<Card_set> {
+fun List<CardSetModel>.toCardSetEntity(): List<Card_set> {
     return this.map {
         Card_set(
             id = it.id,

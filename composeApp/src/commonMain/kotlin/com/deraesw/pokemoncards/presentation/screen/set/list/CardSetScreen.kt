@@ -18,7 +18,7 @@ fun CardSetScreen(
     Scaffold { paddingValue ->
         CardSetContent(
             modifier = modifier.padding(paddingValue),
-            cardSetList = uiState.cardSetList,
+            cardSetModelList = uiState.cardSetModelList,
             cardSetSelected = uiState.selectedCardSetId,
             onCardSetClick = {
                 viewModel.setSelectedCardSet(it)

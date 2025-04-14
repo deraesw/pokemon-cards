@@ -1,7 +1,7 @@
 package com.deraesw.pokemoncards.core.network.service
 
 import com.deraesw.pokemoncards.core.core.model.Card
-import com.deraesw.pokemoncards.core.core.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.CardSetModel
 import com.deraesw.pokemoncards.core.core.util.Constant
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.core.network.client.NetworkClient
@@ -25,7 +25,7 @@ class PokemonCardApiServiceImp(
     private val tag = "PokemonCardApiService"
     private val baseUrl = "https://api.pokemontcg.io/v2"
 
-    override suspend fun getAllSets(): List<CardSet> {
+    override suspend fun getAllSets(): List<CardSetModel> {
         Logger.debug(tag, "getAllSets")
         return runCatching {
             val response = networkClient

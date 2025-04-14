@@ -34,8 +34,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.presentation.compose.divider.PcsHorDivider
+import com.deraesw.pokemoncards.presentation.model.CardSetListItem
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.presentation.theme.PokemonCardTheme
 import com.skydoves.landscapist.ImageOptions
@@ -46,11 +46,11 @@ fun CardSetContent(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
     onCardSetClick: (String) -> Unit = {},
-    cardSetList: List<CardSet> = listOf(),
+    cardSetModelList: List<CardSetListItem> = listOf(),
     cardSetSelected: String? = null,
     scrollableContent: @Composable (BoxScope.() -> Unit) = {}
 ) {
-    if (cardSetList.isEmpty()) {
+    if (cardSetModelList.isEmpty()) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = modifier.fillMaxSize()
@@ -65,7 +65,7 @@ fun CardSetContent(
                 modifier = modifier
             ) {
                 items(
-                    items = cardSetList,
+                    items = cardSetModelList,
                     key = { cardSet -> cardSet.id }
                 ) { cardSet ->
                     Row(
@@ -168,7 +168,7 @@ private fun SymbolImage(
 
 @Composable
 private fun RowDetails(
-    cardSet: CardSet,
+    cardSet: CardSetListItem,
     modifier: Modifier = Modifier,
 ) {
     Column(

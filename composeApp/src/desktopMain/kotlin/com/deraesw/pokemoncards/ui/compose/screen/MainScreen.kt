@@ -12,12 +12,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.presentation.screen.card.list.CardListViewModel
-import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailState
 import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailViewModel
 import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetViewModel
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
@@ -45,6 +45,7 @@ fun TwoPanelLayout(
 ) {
     val uiState by setDetailViewModel.uiState.collectAsState()
     val uiCardState by cardListViewModel.uiState.collectAsState()
+    val isCardSetSelected = remember { uiState.cardSetDetail != null }
 
     Row(
         modifier = Modifier.fillMaxWidth()
@@ -69,24 +70,20 @@ fun TwoPanelLayout(
                 .clip(RoundedCornerShape(16.dp))
         ) {
             AnimatedContent(
-                targetState = uiState is CardSetDetailState.Success,
+                targetState = isCardSetSelected,
                 modifier = Modifier.fillMaxSize(),
             ) {
-                when (val state = uiState) {
-                    is CardSetDetailState.Success -> {
-                        CardSetDetailPane(
-                            sortCardData = uiCardState.sortCardData,
-                            cardSet = state.cardSet,
-                            cardListViewModel = cardListViewModel,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-
-                    else -> {
-                        NoCardSetSelected(
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
+                uiState.cardSetDetail?.let { detail ->
+                    CardSetDetailPane(
+                        sortCardData = uiCardState.sortCardData,
+                        cardSetModel = detail,
+                        cardListViewModel = cardListViewModel,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } ?: run {
+                    NoCardSetSelected(
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             }
         }

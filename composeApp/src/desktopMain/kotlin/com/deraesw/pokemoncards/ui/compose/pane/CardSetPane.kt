@@ -40,7 +40,7 @@ fun CardSetPane(
         )
         PcsHorDivider()
         CardSetContent(
-            cardSetList = uiState.cardSetList,
+            cardSetModelList = uiState.cardSetModelList,
             cardSetSelected = uiState.selectedCardSetId,
             listState = state,
             onCardSetClick = {

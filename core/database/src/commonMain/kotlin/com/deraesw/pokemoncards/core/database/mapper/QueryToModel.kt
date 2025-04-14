@@ -3,7 +3,7 @@ package com.deraesw.pokemoncards.core.database.mapper
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardResistance
-import com.deraesw.pokemoncards.core.core.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.CardSetModel
 import com.deraesw.pokemoncards.core.core.model.CardType
 import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.CardWeakness
@@ -16,16 +16,16 @@ import com.deraesw.pokemoncards.core.database.SelectCardWeaknesses
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-fun Flow<List<Card_set>>.toCardSetListFlow(): Flow<List<CardSet>> {
+fun Flow<List<Card_set>>.toCardSetListFlow(): Flow<List<CardSetModel>> {
     return this.map { list -> list.toCardSetList() }
 }
 
-fun List<Card_set>.toCardSetList(): List<CardSet> {
+fun List<Card_set>.toCardSetList(): List<CardSetModel> {
     return this.map { item -> item.toCardSet() }
 }
 
-fun Card_set.toCardSet(): CardSet {
-    return CardSet(
+fun Card_set.toCardSet(): CardSetModel {
+    return CardSetModel(
         id = this.id,
         name = this.name,
         total = this.total.toInt(),

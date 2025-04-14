@@ -1,8 +1,12 @@
 package com.deraesw.pokemoncards.presentation.model.mapper
 
 import com.deraesw.pokemoncards.core.core.model.Card
+import com.deraesw.pokemoncards.core.core.model.CardSetModel
+import com.deraesw.pokemoncards.core.core.util.DateUtil
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.model.CardListItem
+import com.deraesw.pokemoncards.presentation.model.CardSetDetail
+import com.deraesw.pokemoncards.presentation.model.CardSetListItem
 import com.deraesw.pokemoncards.presentation.model.SuperType
 
 fun List<Card>.toCardListItems(): List<CardListItem> {
@@ -43,6 +47,32 @@ fun Card.toCardDetail(): CardDetail {
         rules = this.rules,
         superType = superType.toSuperType()
     )
+}
+
+fun CardSetModel.toCardSetDetail(): CardSetDetail {
+    return CardSetDetail(
+        id = this.id,
+        name = this.name,
+        series = this.series,
+        total = this.total,
+        printedTotal = this.printedTotal,
+        updatedAt = this.updatedAt,
+        formatedUpdatedAt = DateUtil.convertToDateTimeDisplay(updatedAt),
+        imageLogo = this.imageLogo,
+    )
+}
+
+fun List<CardSetModel>.toCardSetList(): List<CardSetListItem> {
+    return this.map {
+        CardSetListItem(
+            id = it.id,
+            name = it.name,
+            series = it.series,
+            total = it.total,
+            formatedReleaseDate = DateUtil.convertDateToDisplayDate(it.releaseDate),
+            imageSymbol = it.imageSymbol
+        )
+    }
 }
 
 private fun String?.toSuperType() = when (this?.uppercase()) {

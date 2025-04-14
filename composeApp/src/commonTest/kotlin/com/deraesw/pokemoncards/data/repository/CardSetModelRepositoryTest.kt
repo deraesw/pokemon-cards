@@ -9,7 +9,7 @@ import kotlin.test.Test
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class CardSetRepositoryTest {
+class CardSetModelRepositoryTest {
 
     private lateinit var repository: CardSetRepositoryImp
 

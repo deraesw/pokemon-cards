@@ -3,7 +3,7 @@ package com.deraesw.pokemoncards.core.network.mapper
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardResistance
-import com.deraesw.pokemoncards.core.core.model.CardSet
+import com.deraesw.pokemoncards.core.core.model.CardSetModel
 import com.deraesw.pokemoncards.core.core.model.CardType
 import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.CardWeakness
@@ -11,12 +11,12 @@ import com.deraesw.pokemoncards.core.network.model.NetworkCardData
 import com.deraesw.pokemoncards.core.network.model.NetworkCardSet
 
 internal object NetworkToModel {
-    fun List<NetworkCardSet>.toCardSetList(): List<CardSet> {
+    fun List<NetworkCardSet>.toCardSetList(): List<CardSetModel> {
         return this.map { item -> item.toCardSet() }
     }
 
-    private fun NetworkCardSet.toCardSet(): CardSet {
-        return CardSet(
+    private fun NetworkCardSet.toCardSet(): CardSetModel {
+        return CardSetModel(
             id = this.id,
             name = this.name,
             total = this.total,

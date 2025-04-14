@@ -15,11 +15,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.deraesw.pokemoncards.core.core.model.CardSet
 import com.deraesw.pokemoncards.core.core.model.SortCardData
 import com.deraesw.pokemoncards.data.DisplaySelectorData
+import com.deraesw.pokemoncards.presentation.model.CardSetDetail
 import com.deraesw.pokemoncards.presentation.screen.card.list.CardListViewModel
-import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailContent
+import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailContentLarge
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette
 import com.deraesw.pokemoncards.ui.compose.section.CardListActionSection
 import com.deraesw.pokemoncards.ui.compose.section.CardListSection
@@ -27,7 +27,7 @@ import com.deraesw.pokemoncards.ui.compose.section.CardListSection
 @Composable
 fun CardSetDetailPane(
     sortCardData: SortCardData,
-    cardSet: CardSet,
+    cardSetModel: CardSetDetail,
     cardListViewModel: CardListViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -36,8 +36,8 @@ fun CardSetDetailPane(
     Column(
         modifier = modifier
     ) {
-        CardSetDetailContent(
-            set = cardSet,
+        CardSetDetailContentLarge(
+            set = cardSetModel,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
