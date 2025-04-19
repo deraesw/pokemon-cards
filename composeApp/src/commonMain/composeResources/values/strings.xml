@@ -3,6 +3,7 @@
     <string name="select_card_set">Select Card set.</string>
     <string name="set_title">Set</string>
 
+    <string name="release_date">Release date</string>
     <string name="release_date_label">Release date: %1$s</string>
     <string name="total_cards">Total cards</string>
     <string name="printed_cards">Printed cards</string>
