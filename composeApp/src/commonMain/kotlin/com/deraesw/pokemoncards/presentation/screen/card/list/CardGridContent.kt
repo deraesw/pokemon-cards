@@ -13,14 +13,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.presentation.model.CardListItem
 import com.deraesw.pokemoncards.presentation.screen.card.list.compose.CardListItemLarge
 
 @Composable
 fun CardGridContent(
+    columns: GridCells,
     cards: List<CardListItem>,
     modifier: Modifier = Modifier,
+    spacingBetweenItems: Dp = 16.dp,
+    hoveredEnabled: Boolean = true,
     state: LazyGridState = rememberLazyGridState(),
     onCardClick: (String) -> Unit = {},
     scrollIndicatorSlot: @Composable () -> Unit = {}
@@ -32,9 +36,9 @@ fun CardGridContent(
     ) {
         scrollIndicatorSlot()
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 180.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            columns = columns,
+            horizontalArrangement = Arrangement.spacedBy(spacingBetweenItems),
+            verticalArrangement = Arrangement.spacedBy(spacingBetweenItems),
             state = state
         ) {
             items(
@@ -45,6 +49,7 @@ fun CardGridContent(
                     card = card,
                     hovered = active,
                     onHover = { active = it },
+                    hoveredEnabled = hoveredEnabled,
                     onCardClick = onCardClick,
                 )
             }

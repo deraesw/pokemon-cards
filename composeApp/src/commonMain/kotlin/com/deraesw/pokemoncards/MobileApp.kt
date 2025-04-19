@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.deraesw.pokemoncards.presentation.navigation.cardList
 import com.deraesw.pokemoncards.presentation.navigation.cardSetDetail
 import com.deraesw.pokemoncards.presentation.navigation.cardSetList
 import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetViewModel
@@ -33,6 +34,15 @@ fun MobileApp(
             )
 
             cardSetDetail(
+                onNavigateBack = {
+                    navController.navigateUp()
+                },
+                onCardListClick = { setId ->
+                    navController.navigate("cardList/$setId")
+                }
+            )
+
+            cardList(
                 onNavigateBack = {
                     navController.navigateUp()
                 }

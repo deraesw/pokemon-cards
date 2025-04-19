@@ -50,6 +50,7 @@ import pokemoncards.composeapp.generated.resources.total_cards
 fun CardSetDetailContent(
     set: CardSetDetail,
     onNavigateBack: () -> Unit,
+    onCardListClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -125,7 +126,9 @@ fun CardSetDetailContent(
                     )
                 }
             }
-            BottomSection()
+            BottomSection(
+                onClick = onCardListClick
+            )
         }
     }
 }

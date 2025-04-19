@@ -43,24 +43,10 @@ fun CardListItemLarge(
     card: CardListItem,
     modifier: Modifier = Modifier,
     hovered: String = "",
+    hoveredEnabled: Boolean = true,
     onCardClick: (String) -> Unit = {},
     onHover: (String) -> Unit = {}
 ) {
-    val rotationYAnimation by animateFloatAsState(
-        targetValue = if (hovered == card.id) 0f else 180f,
-        label = "rotationY"
-    )
-
-    val rotationXAnimation by animateFloatAsState(
-        targetValue = if (hovered == card.id) 0f else 50f,
-        label = "rotationX"
-    )
-
-    val rotationZAnimation by animateFloatAsState(
-        targetValue = if (hovered == card.id) 0f else 50f,
-        label = "rotationZ"
-    )
-
     Box(
         modifier = modifier
             .size(width = 180.dp, height = 240.dp)
@@ -96,14 +82,13 @@ fun CardListItemLarge(
                         .weight(1f)
                         .fillMaxWidth()
                         .padding(8.dp)
-                        .graphicsLayer {
-                            rotationY = rotationYAnimation
-                            rotationZ = rotationZAnimation
-                            rotationX = rotationXAnimation
-                        }
-                        .customHoverEffect {
-                            onHover(card.id)
-                        }
+                        .setUpHovered(
+                            hoveredEnabled = hoveredEnabled,
+                            isHovered = { hovered == card.id },
+                            onHover = {
+                                onHover(card.id)
+                            }
+                        )
                 )
             }
             Row(
@@ -147,4 +132,34 @@ fun CardListItemLarge(
             }
         }
     }
+}
+
+@Composable
+private fun Modifier.setUpHovered(
+    hoveredEnabled: Boolean,
+    isHovered: () -> Boolean,
+    onHover: (Boolean) -> Unit
+): Modifier {
+    if (hoveredEnabled) {
+        val rotationYAnimation by animateFloatAsState(
+            targetValue = if (isHovered()) 0f else 180f,
+            label = "rotationY"
+        )
+
+        val rotationXAnimation by animateFloatAsState(
+            targetValue = if (isHovered()) 0f else 50f,
+            label = "rotationX"
+        )
+
+        val rotationZAnimation by animateFloatAsState(
+            targetValue = if (isHovered()) 0f else 50f,
+            label = "rotationZ"
+        )
+        return this.graphicsLayer {
+            rotationY = rotationYAnimation
+            rotationZ = rotationZAnimation
+            rotationX = rotationXAnimation
+        }.customHoverEffect(onHover)
+    }
+    return this
 }

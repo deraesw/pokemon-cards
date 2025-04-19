@@ -43,5 +43,20 @@ val presentationModule = module {
             )
         }
     }
-    viewModel { CardListViewModel(get(), get(), get()) }
+    viewModel {
+        if (it.size() == 0) {
+            CardListViewModel(
+                cardRepository = get(),
+                networkManager = get(),
+                syncBus = get()
+            )
+        } else {
+            CardListViewModel(
+                cardRepository = get(),
+                networkManager = get(),
+                syncBus = get(),
+                providedSetId = get(parameters = { parametersOf(it[0]) })
+            )
+        }
+    }
 }

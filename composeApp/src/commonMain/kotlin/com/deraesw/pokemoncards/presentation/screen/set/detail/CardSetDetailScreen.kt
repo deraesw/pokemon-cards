@@ -12,6 +12,7 @@ import org.koin.core.parameter.parametersOf
 fun CardSetDetailScreen(
     cardSetId: String,
     onNavigateBack: () -> Unit,
+    onCardListClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardSetDetailViewModel = koinInject(
         parameters = { parametersOf(cardSetId) }
@@ -23,6 +24,7 @@ fun CardSetDetailScreen(
         CardSetDetailContent(
             set = data,
             onNavigateBack = onNavigateBack,
+            onCardListClick = { onCardListClick(cardSetId) },
             modifier = modifier
         )
     } ?: run {

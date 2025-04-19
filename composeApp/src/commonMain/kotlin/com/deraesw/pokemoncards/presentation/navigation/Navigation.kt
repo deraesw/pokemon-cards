@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.deraesw.pokemoncards.presentation.screen.card.list.CardListScreen
 import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailScreen
 import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetScreen
 import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetViewModel
@@ -24,6 +25,7 @@ fun NavGraphBuilder.cardSetList(
 
 fun NavGraphBuilder.cardSetDetail(
     onNavigateBack: () -> Unit,
+    onCardListClick: (String) -> Unit,
 ) {
     composable(
         route = "cardSetDetail/{id}",
@@ -35,6 +37,26 @@ fun NavGraphBuilder.cardSetDetail(
     ) {
         val setId = it.arguments?.getString("id") ?: return@composable
         CardSetDetailScreen(
+            cardSetId = setId,
+            onNavigateBack = onNavigateBack,
+            onCardListClick = onCardListClick
+        )
+    }
+}
+
+fun NavGraphBuilder.cardList(
+    onNavigateBack: () -> Unit,
+) {
+    composable(
+        route = "cardList/{idSet}",
+        arguments = listOf(
+            navArgument("idSet") {
+                type = NavType.StringType
+            }
+        )
+    ) {
+        val setId = it.arguments?.getString("idSet") ?: return@composable
+        CardListScreen(
             cardSetId = setId,
             onNavigateBack = onNavigateBack
         )

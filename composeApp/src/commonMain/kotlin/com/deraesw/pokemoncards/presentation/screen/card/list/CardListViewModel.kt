@@ -33,7 +33,8 @@ import kotlinx.coroutines.launch
 class CardListViewModel(
     private val cardRepository: CardRepository,
     private val networkManager: NetworkManager,
-    private val syncBus: SyncBus
+    private val syncBus: SyncBus,
+    providedSetId: String? = null
 ) : ViewModel() {
 
     private val localState = MutableStateFlow(CardListLocalState())
@@ -129,6 +130,12 @@ class CardListViewModel(
             started = WhileSubscribed(5000),
             initialValue = null
         )
+
+    init {
+        if (providedSetId != null && localState.value.cardSetId.isEmpty()) {
+            selectCardSet(providedSetId)
+        }
+    }
 
     fun selectCardSet(cardSetId: String) {
         if (this.localState.value.cardSetId == cardSetId) return

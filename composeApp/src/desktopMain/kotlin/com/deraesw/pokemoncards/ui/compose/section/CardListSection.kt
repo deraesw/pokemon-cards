@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollbarAdapter
@@ -87,6 +88,7 @@ fun CardListSection(
             } else {
                 if (displaySelector == DisplaySelectorData.Grid) {
                     CardGridContent(
+                        columns = GridCells.Adaptive(minSize = 180.dp),
                         cards = uiState.cardList,
                         modifier = Modifier.fillMaxSize().padding(16.dp),
                         state = state,
