@@ -67,20 +67,6 @@ class CardListViewModel(
             initialValue = SyncState()
         )
 
-//    init {
-//        Logger.debug("CardListViewModel", "init $syncBus")
-//        viewModelScope.launch {
-//
-//            syncBus.sendEvent(SyncEvent.StartCardSync)
-//            delay(1000)
-//            for (i in 1..10) {
-//                syncBus.sendEvent(SyncEvent.CardSyncProgress("Progress: $i"))
-//                delay(1000)
-//            }
-//            syncBus.sendEvent(SyncEvent.CompleteCardSync)
-//        }
-//    }
-
     val uiState: StateFlow<CardListState> = localState
         .debounce(500)
         .flatMapLatest { state ->

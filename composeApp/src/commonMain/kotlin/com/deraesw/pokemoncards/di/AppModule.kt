@@ -4,6 +4,7 @@ import com.deraesw.pokemoncards.core.core.bus.SyncBus
 import com.deraesw.pokemoncards.core.data.di.dataModule
 import com.deraesw.pokemoncards.core.database.di.databaseModule
 import com.deraesw.pokemoncards.core.network.di.networkModule
+import com.deraesw.pokemoncards.presentation.screen.card.detail.CardDetailViewModel
 import com.deraesw.pokemoncards.presentation.screen.card.list.CardListViewModel
 import com.deraesw.pokemoncards.presentation.screen.set.detail.CardSetDetailViewModel
 import com.deraesw.pokemoncards.presentation.screen.set.list.CardSetViewModel
@@ -58,5 +59,11 @@ val presentationModule = module {
                 providedSetId = get(parameters = { parametersOf(it[0]) })
             )
         }
+    }
+    viewModel {
+        CardDetailViewModel(
+            cardRepository = get(),
+            providedCardId = get(parameters = { parametersOf(it[0]) })
+        )
     }
 }

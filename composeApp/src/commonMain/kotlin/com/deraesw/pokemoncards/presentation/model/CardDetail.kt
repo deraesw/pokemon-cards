@@ -29,4 +29,5 @@ data class CardDetail(
     val isEnergy: Boolean = superType == SuperType.ENERGY
 
     val pokemonRule: String = rules.firstOrNull()?.takeIf { isPokemon } ?: ""
+    val mainType: String = types.firstOrNull() ?: ""
 }

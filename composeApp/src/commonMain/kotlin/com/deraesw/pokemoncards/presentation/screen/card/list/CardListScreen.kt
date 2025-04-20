@@ -38,6 +38,7 @@ import org.koin.core.parameter.parametersOf
 fun CardListScreen(
     cardSetId: String,
     onNavigateBack: () -> Unit,
+    onNavigateToCardDetail: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     cardListViewModel: CardListViewModel = koinInject(
         parameters = { parametersOf(cardSetId) }
@@ -95,7 +96,8 @@ fun CardListScreen(
                 columns = GridCells.Fixed(2),
                 cards = uiState.cardList,
                 spacingBetweenItems = 8.dp,
-                hoveredEnabled = false
+                hoveredEnabled = false,
+                onCardClick = onNavigateToCardDetail
             )
 
             AnimatedVisibility(
