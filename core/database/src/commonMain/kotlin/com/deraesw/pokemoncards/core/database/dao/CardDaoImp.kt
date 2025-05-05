@@ -7,8 +7,8 @@ import com.deraesw.pokemoncards.core.core.bus.SyncBus
 import com.deraesw.pokemoncards.core.core.bus.SyncEvent
 import com.deraesw.pokemoncards.core.core.model.Card
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
-import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.SortCardData
+import com.deraesw.pokemoncards.core.core.model.inline.CardTypeKey
 import com.deraesw.pokemoncards.core.core.util.Logger
 import com.deraesw.pokemoncards.core.database.Card_attacks_cost
 import com.deraesw.pokemoncards.core.database.Card_evolve_to

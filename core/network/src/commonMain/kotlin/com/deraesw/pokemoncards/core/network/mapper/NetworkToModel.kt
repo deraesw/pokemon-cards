@@ -5,8 +5,8 @@ import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardResistance
 import com.deraesw.pokemoncards.core.core.model.CardSetModel
 import com.deraesw.pokemoncards.core.core.model.CardType
-import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.CardWeakness
+import com.deraesw.pokemoncards.core.core.model.inline.CardTypeKey
 import com.deraesw.pokemoncards.core.network.model.NetworkCardData
 import com.deraesw.pokemoncards.core.network.model.NetworkCardSet
 

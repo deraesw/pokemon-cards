@@ -15,8 +15,8 @@ class SyncBus {
 
     fun sendEvent(event: SyncEvent) {
         coroutineScope.launch {
-            val t = _events.emit(event)
-            Logger.debug("SyncBus", "$this sendEvent - $event - $t")
+            _events.emit(event)
+            Logger.debug("SyncBus", "$this sendEvent - $event")
         }
     }
 }

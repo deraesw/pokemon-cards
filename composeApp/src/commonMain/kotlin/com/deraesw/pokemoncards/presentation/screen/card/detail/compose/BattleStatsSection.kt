@@ -15,8 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.deraesw.pokemoncards.core.core.model.CardResistance
-import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.CardWeakness
+import com.deraesw.pokemoncards.core.core.model.inline.CardTypeKey
 import com.deraesw.pokemoncards.presentation.compose.PcsTypeIcon
 import com.deraesw.pokemoncards.presentation.model.CardDetail
 import com.deraesw.pokemoncards.presentation.theme.ColorPalette

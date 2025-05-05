@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.deraesw.pokemoncards.core.core.model.CardTypeKey
+import com.deraesw.pokemoncards.core.core.model.inline.CardTypeKey
 import com.deraesw.pokemoncards.extension.toDrawableResource
 import com.deraesw.pokemoncards.presentation.theme.colorCardType
 import com.deraesw.pokemoncards.presentation.theme.colorOverlayCardType

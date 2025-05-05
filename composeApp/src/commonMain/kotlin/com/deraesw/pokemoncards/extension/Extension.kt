@@ -1,6 +1,6 @@
 package com.deraesw.pokemoncards.extension
 
-import com.deraesw.pokemoncards.core.core.model.CardTypeKey
+import com.deraesw.pokemoncards.core.core.model.inline.CardTypeKey
 import org.jetbrains.compose.resources.DrawableResource
 import pokemoncards.composeapp.generated.resources.Res
 import pokemoncards.composeapp.generated.resources.icon_colorless_attack

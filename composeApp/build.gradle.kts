@@ -153,3 +153,11 @@ compose.desktop {
         }
     }
 }
+
+// Code to show the report of Stable classes from composeCompiler.
+// It can be use for debug purpose.
+// https://developer.android.com/develop/ui/compose/performance/stability/diagnose
+// composeCompiler {
+//    reportsDestination = layout.buildDirectory.dir("compose_reports")
+//    metricsDestination = layout.buildDirectory.dir("compose_reports")
+// }

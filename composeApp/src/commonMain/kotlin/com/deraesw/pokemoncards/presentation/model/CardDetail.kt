@@ -2,8 +2,8 @@ package com.deraesw.pokemoncards.presentation.model
 
 import com.deraesw.pokemoncards.core.core.model.CardAttacks
 import com.deraesw.pokemoncards.core.core.model.CardResistance
-import com.deraesw.pokemoncards.core.core.model.CardTypeKey
 import com.deraesw.pokemoncards.core.core.model.CardWeakness
+import com.deraesw.pokemoncards.core.core.model.inline.CardTypeKey
 
 data class CardDetail(
     val id: String,

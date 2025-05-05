@@ -1,6 +1,6 @@
 package com.deraesw.pokemoncards.core.core.model
 
-import kotlin.jvm.JvmInline
+import com.deraesw.pokemoncards.core.core.model.inline.CardTypeKey
 
 data class Card(
     val id: String,
@@ -48,10 +48,3 @@ data class CardResistance(
     val typeKey: String,
     val value: String
 )
-
-@JvmInline
-value class CardTypeKey(
-    private val value: String
-) {
-    fun key(): String = value.uppercase()
-}
