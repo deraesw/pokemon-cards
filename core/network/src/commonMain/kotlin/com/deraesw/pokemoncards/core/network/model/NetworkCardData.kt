@@ -9,6 +9,8 @@ internal data class NetworkCardData(
     val name: String,
     @SerialName("supertype") val superType: String,
     val number: String,
+    val images: NetworkCardImages,
+    val set: NetworkCardSetData,
     @SerialName("subtypes") val subTypes: List<String>? = null,
     val level: String? = null,
     val hp: String? = null,
@@ -25,8 +27,6 @@ internal data class NetworkCardData(
     val rarity: String? = null,
     val flavorText: String? = null,
     val legalities: CardLegalities? = null,
-    val images: NetworkCardImages,
-    val set: NetworkCardSetData
 )
 
 @Serializable

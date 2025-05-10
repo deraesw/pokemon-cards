@@ -1,7 +1,5 @@
 package com.deraesw.pokemoncards.core.core.model
 
-import com.deraesw.pokemoncards.core.core.util.DateUtil
-
 data class CardSetModel(
     val id: String,
     val name: String,
@@ -13,6 +11,4 @@ data class CardSetModel(
     val legalities: String? = null,
     val imageSymbol: String? = null,
     val imageLogo: String? = null
-) {
-    val formatedReleaseDate = DateUtil.convertDateToDisplayDate(releaseDate)
-}
+)
