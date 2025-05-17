@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.sqlDelight)
+    id("dev.mokkery") version "2.7.2"
 }
 
 kotlin {
@@ -92,6 +93,7 @@ kotlin {
             implementation(libs.koin.test)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.mock)
+            implementation(libs.mokkery)
         }
         androidUnitTest.dependencies {
             implementation(libs.turbine)
