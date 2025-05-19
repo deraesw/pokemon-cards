@@ -32,10 +32,12 @@ kotlin {
         }
     }
 
-    jvm("desktop")
+    // default jvm, use for desktop application, need to specify desktopMain and desktopTest
+    jvm(name = "desktop")
 
     sourceSets {
         val desktopMain by getting
+        val desktopTest by getting
 
         androidMain.dependencies {
             implementation(compose.preview)
@@ -99,7 +101,10 @@ kotlin {
             implementation(libs.turbine)
             implementation(libs.sql.delight.sqlite)
         }
-        jvmTest.dependencies {
+        desktopTest.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(compose.desktop.uiTestJUnit4)
+            implementation(libs.kotlin.test.junit)
             implementation(libs.turbine)
             implementation(libs.sql.delight.sqlite)
         }
@@ -134,6 +139,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.ui.test.android)
     debugImplementation(compose.uiTooling)
 }
 

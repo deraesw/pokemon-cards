@@ -65,7 +65,7 @@ fun CardSetDetailContentLarge(
                     MainSetInformationSection(
                         setName = set.name,
                         series = set.series,
-                        releaseDate = set.formatedUpdatedAt
+                        releaseDate = set.formatedReleaseDate
                     )
                     Spacer(modifier = Modifier.size(8.dp))
                     StatSection(
