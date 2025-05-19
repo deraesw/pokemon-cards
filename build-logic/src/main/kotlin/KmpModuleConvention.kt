@@ -11,10 +11,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 class KmpModuleConvention : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            println("wes - ${target.project}")
-            println("wes - ${target.path}")
-            println("wes - ${target.name}")
-
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
             with(pluginManager) {
